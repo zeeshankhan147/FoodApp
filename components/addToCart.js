@@ -6,6 +6,7 @@ import colors from "../assets/colors/colors";
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ProductCart from './productCart';
+import {useIsFocused } from '@react-navigation/native';
 
 
 export default AddToCart = ({ route, navigation }) => {
@@ -16,25 +17,80 @@ export default AddToCart = ({ route, navigation }) => {
     const [cartData, setCartData] = useState([]);
     const [qtyPlus, setQtyPlus] = useState(1)
     const [updateTotalAmount, setUpdateTotalAmount] = useState(0)
+    const [discountTotalAmount, setDiscountTotalAmount] = useState(0)
+    const [taxTotalAmount, setTaxTotalAmount] = useState(0)
+    const [totalAmount, setTotalAmount] = useState(0)
     const [subTotal, setSubTotal] = useState(0)
     const [delivery, setDelivery] = useState(0)
-    let TotalAmount = (updateTotalAmount * DiscountPercent / 100)+(updateTotalAmount * TaxPercent / 100);
+    const isFocused = useIsFocused();
+    // let TotalAmount = (updateTotalAmount * DiscountPercent / 100)+(updateTotalAmount * TaxPercent / 100);
 
 
     const addQuantity = (price,qty) => {
-        // setQtyPlus(qty)
-        setUpdateTotalAmount(updateTotalAmount + (price * (qty-1)))
-        
+        let subTotal = 0;
+        let discountTotal = 0;
+        let taxTotal = 0;
+        let grandTotal = 0;
+        cartData.map((item,index)=>{
+            subTotal = subTotal + item.price;
+            discountTotal = discountTotal + (item.price * DiscountPercent / 100);
+            taxTotal = taxTotal + (item.price * TaxPercent / 100);
+            
+        })
+        setUpdateTotalAmount(Math.ceil(subTotal + (price * (qty-1))))
+        grandTotal =+ discountTotalAmount + taxTotalAmount;
+        setDiscountTotalAmount(Math.ceil(updateTotalAmount * DiscountPercent /100))
+        setTaxTotalAmount(Math.ceil(updateTotalAmount * TaxPercent /100))
+        setTotalAmount(Math.ceil(grandTotal));
+           
     }
     const removeQuantity = (price,qty) => {
-        // setQtyPlus(qty)
-        setUpdateTotalAmount(updateTotalAmount - (price * (qty-1)))
+        let subTotal = 0;
+        let discountTotal = 0;
+        let taxTotal = 0;
+        let grandTotal = 0;
+        cartData.map((item,index)=>{
+            subTotal = subTotal + item.price;
+            discountTotal = discountTotal + (item.price * DiscountPercent / 100);
+            taxTotal = taxTotal + (item.price * TaxPercent / 100);
+            
+        })
+        setUpdateTotalAmount(Math.ceil(subTotal - (price * (qty-1))))
+        grandTotal =+ discountTotalAmount + taxTotalAmount;
+        setDiscountTotalAmount(Math.ceil(updateTotalAmount * DiscountPercent /100))
+        setTaxTotalAmount(Math.ceil(updateTotalAmount * TaxPercent /100))
+        setTotalAmount(Math.ceil(grandTotal));
 
 
     }
 
+    const updateAmount = () =>{
+        let subTotal = 0;
+        let discountTotal = 0;
+        let taxTotal = 0;
+        let grandTotal = 0;
+        cartData.map((item,index)=>{
+            subTotal = subTotal + item.price;
+            discountTotal = discountTotal + (item.price * DiscountPercent / 100);
+            taxTotal = taxTotal + (item.price * TaxPercent / 100);
+            
+        })
+        setUpdateTotalAmount(Math.ceil(subTotal))
+        grandTotal =+ discountTotalAmount + taxTotalAmount;
+        setDiscountTotalAmount(Math.ceil(updateTotalAmount * DiscountPercent /100))
+        setTaxTotalAmount(Math.ceil(updateTotalAmount * TaxPercent /100))
+        setTotalAmount(Math.ceil(grandTotal));
+
+
+    }
     useEffect(() => {
-        
+        updateAmount()
+      
+    }, [isFocused])
+    
+
+    useEffect(() => {
+        console.log('dataaas',cartData);
 
         AsyncStorage.getItem('k2').then((value) => {
             const data = JSON.parse(value)
@@ -53,8 +109,8 @@ export default AddToCart = ({ route, navigation }) => {
 
     const renderComponentItem = ({ item, index }) => {
         //Price Calculate
-        myPrice = myPrice + (item.price) ;
-        setUpdateTotalAmount(Math.floor(myPrice))
+        // myPrice = myPrice + (item.price) ;
+        // setUpdateTotalAmount(Math.floor(myPrice))
 
         //Delivery
         let deliveryTime = item.deliveryTime;
@@ -83,6 +139,7 @@ export default AddToCart = ({ route, navigation }) => {
                 addQty={() => addQty()}
                 addQuantity={addQuantity}
                 removeQuantity={removeQuantity}
+                updateAmount={updateAmount}
 
             />
         );
@@ -106,8 +163,8 @@ export default AddToCart = ({ route, navigation }) => {
             <Text style={Styles.cartTitle}>Cart Item</Text>
             
 
-                <View style={Styles.flexContainer}>
-            <ScrollView>
+               
+            <ScrollView style={Styles.flexContainer} contentInsetAdjustmentBehavior='automatic' showsVerticalScrollIndicator={false}>
             <FlatList
                data={cartData}
                renderItem={renderComponentItem}
@@ -140,11 +197,11 @@ export default AddToCart = ({ route, navigation }) => {
            <View style={{height:200}}/>
            </ScrollView>
            
-            </View>
+       
            
 
             {cartData.length > 0 ?(
-                <View style={{flex:1,width:'100%', backgroundColor:colors.secondary,position:'absolute',bottom:0,borderTopRightRadius:30,borderTopLeftRadius:30}}>
+                <View style={Styles.modal}>
                 <View style={{paddingHorizontal:30,marginTop:30,marginBottom:90,justifyContent:'center',flexDirection:'row' }}>
                     <View style={{alignItems:'flex-start',width:'50%'}}>
                         <Text style={{color:'white', }}>Sub Total</Text>
@@ -156,10 +213,10 @@ export default AddToCart = ({ route, navigation }) => {
                     </View>
                     <View style={{alignItems:'flex-end',width:'50%'}}>
                     <Text style={{color:'white', }}>{`${currency} ${updateTotalAmount}`}</Text>
-                    <Text style={{color:'white', }}>{`${currency} ${updateTotalAmount * DiscountPercent / 100 }`}</Text>
-                    <Text style={{color:'white', }}>{`${currency} ${updateTotalAmount * TaxPercent / 100 }`}</Text>
+                    <Text style={{color:'white', }}>{`${currency} ${discountTotalAmount}`}</Text>
+                    <Text style={{color:'white', }}>{`${currency} ${taxTotalAmount}`}</Text>
                     <Text style={{color:'white', }}>{`${delivery}`}</Text>
-                    <Text style={{color:'white', }}>{`${currency} ${Math.floor(TotalAmount)}`}</Text>
+                    <Text style={{color:'white', }}>{`${currency} ${Math.floor(totalAmount)}`}</Text>
                     </View>
                 </View>
                 <TouchableOpacity onPress={()=> navigation.navigate('SignUp')} style={{paddingHorizontal:150,alignSelf:'center',height:50,backgroundColor:colors.background,alignItems:'center',justifyContent:'center',borderRadius:15,position:'absolute',bottom:20}}>
@@ -184,7 +241,8 @@ const Styles = StyleSheet.create({
 
     },
     flexContainer:{
-        // flex:1,
+        flex:1,
+        marginBottom:20,
     },
 
     headerWrapper: {
@@ -289,5 +347,24 @@ const Styles = StyleSheet.create({
     count:{
         marginLeft:10,
         marginRight:10,
+    },
+    modal:{
+        flex:1,
+        width:'100%', 
+        backgroundColor:colors.secondary,
+        position:'absolute',
+        bottom:0,
+        borderTopRightRadius:30,
+        borderTopLeftRadius:30,
+        // shadowColor: colors.black,
+        // shadowOffset: {
+        //     width: 0,
+        //     height: 2,
+        // },
+        // shadowOpacity: 0.05,
+        // shadowRadius: 20,
+        // elevation: 10,
+        // overflow: 'hidden',
+        
     }
 })
