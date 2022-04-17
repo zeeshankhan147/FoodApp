@@ -18,26 +18,38 @@ export default function signUp  ({navigation}) {
     const [userData, setUserData] = useState()
 
     useEffect(() => {
+        console.log('navvv',navigation);
       
         GoogleSignin.configure();
     }, [])
     
 
-    const googleSignUp = async () => {
-        const idToken = null;
-        
-        GoogleSignin.signIn()
-          .then(async (res) => {
-            // const getToken = await GoogleSignin.getTokens();
-            console.log('resss',res);
-            
-          })
-          .catch((err) => {
-            console.log("google Error -->>", err)
-    
-          });
-    
-        
+     const googleSignUp = async () => {
+        try {
+          await GoogleSignin.hasPlayServices();
+          const userInfo = await GoogleSignin.signIn();
+          console.log('userrr',userInfo);
+        } 
+        catch (error) {
+          if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+            // user cancelled the login flow
+          console.log(error);
+
+          } else if (error.code === statusCodes.IN_PROGRESS) {
+            // operation (e.g. sign in) is in progress already
+          console.log(error);
+
+          } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+            // play services not available or outdated
+          console.log('PLAY_SERVICES_NOT_AVAILABLE --->>',error);
+          
+
+          } else {
+            // some other error happened
+          console.log(error);
+
+          }
+        }
       };
     
 

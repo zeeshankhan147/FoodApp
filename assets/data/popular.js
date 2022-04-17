@@ -9,7 +9,7 @@ const popular = [
         sizeName:'Medium',
         sizeNumber:14,
         crust:'Thin Crust',
-        deliveryTime:35,
+        deliveryTime:null,
         DiscountPercent:10,
         TaxPercent:14,
         qty:1,

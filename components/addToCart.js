@@ -24,8 +24,6 @@ export default AddToCart = ({ route, navigation }) => {
     const [delivery, setDelivery] = useState(0)
     const isFocused = useIsFocused();
     // let TotalAmount = (updateTotalAmount * DiscountPercent / 100)+(updateTotalAmount * TaxPercent / 100);
-
-
     const addQuantity = (price,qty) => {
         let subTotal = 0;
         let discountTotal = 0;
@@ -45,17 +43,9 @@ export default AddToCart = ({ route, navigation }) => {
            
     }
     const removeQuantity = (price,qty) => {
-        let subTotal = 0;
-        let discountTotal = 0;
-        let taxTotal = 0;
         let grandTotal = 0;
-        cartData.map((item,index)=>{
-            subTotal = subTotal + item.price;
-            discountTotal = discountTotal + (item.price * DiscountPercent / 100);
-            taxTotal = taxTotal + (item.price * TaxPercent / 100);
-            
-        })
-        setUpdateTotalAmount(Math.ceil(subTotal - (price * (qty-1))))
+
+        setUpdateTotalAmount(Math.floor(updateTotalAmount - price) )
         grandTotal =+ discountTotalAmount + taxTotalAmount;
         setDiscountTotalAmount(Math.ceil(updateTotalAmount * DiscountPercent /100))
         setTaxTotalAmount(Math.ceil(updateTotalAmount * TaxPercent /100))
@@ -83,13 +73,9 @@ export default AddToCart = ({ route, navigation }) => {
 
 
     }
-    useEffect(() => {
-        updateAmount()
-      
-    }, [isFocused])
-    
 
     useEffect(() => {
+        
         console.log('dataaas',cartData);
 
         AsyncStorage.getItem('k2').then((value) => {
@@ -114,12 +100,12 @@ export default AddToCart = ({ route, navigation }) => {
 
         //Delivery
         let deliveryTime = item.deliveryTime;
-        if (deliveryTime) {
+        if (deliveryTime != null) {
             setDelivery("Free Delivery");
             
         }
         else{
-            console.log('nott');
+            setDelivery(50);
         }
 
         
@@ -139,7 +125,7 @@ export default AddToCart = ({ route, navigation }) => {
                 addQty={() => addQty()}
                 addQuantity={addQuantity}
                 removeQuantity={removeQuantity}
-                updateAmount={updateAmount}
+                // updateAmount={updateAmount}
 
             />
         );
@@ -215,7 +201,7 @@ export default AddToCart = ({ route, navigation }) => {
                     <Text style={{color:'white', }}>{`${currency} ${updateTotalAmount}`}</Text>
                     <Text style={{color:'white', }}>{`${currency} ${discountTotalAmount}`}</Text>
                     <Text style={{color:'white', }}>{`${currency} ${taxTotalAmount}`}</Text>
-                    <Text style={{color:'white', }}>{`${delivery}`}</Text>
+                    <Text style={{color:'white', }}>{`${currency} ${delivery}`}</Text>
                     <Text style={{color:'white', }}>{`${currency} ${Math.floor(totalAmount)}`}</Text>
                     </View>
                 </View>
