@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useLayoutEffect } from 'react';
 import { Text, View, Image, TouchableOpacity, StyleSheet, FlatList, Alert, SafeAreaView, ActivityIndicator,ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
@@ -24,32 +24,35 @@ export default AddToCart = ({ route, navigation }) => {
     const [delivery, setDelivery] = useState(0)
     const isFocused = useIsFocused();
     // let TotalAmount = (updateTotalAmount * DiscountPercent / 100)+(updateTotalAmount * TaxPercent / 100);
-    const addQuantity = (price,qty) => {
-        let subTotal = 0;
-        let discountTotal = 0;
-        let taxTotal = 0;
-        let grandTotal = 0;
-        cartData.map((item,index)=>{
-            subTotal = subTotal + item.price;
-            discountTotal = discountTotal + (item.price * DiscountPercent / 100);
-            taxTotal = taxTotal + (item.price * TaxPercent / 100);
+
+    
+    const addQuantity = (price) => {
+        setUpdateTotalAmount( updateTotalAmount + price)
+        // let subTotal = 0;
+        // let discountTotal = 0;
+        // let taxTotal = 0;
+        // let grandTotal = 0;
+        // cartData.map((item,index)=>{
+        //     subTotal = subTotal + item.price;
+        //     discountTotal = discountTotal + (item.price * DiscountPercent / 100);
+        //     taxTotal = taxTotal + (item.price * TaxPercent / 100);
             
-        })
-        setUpdateTotalAmount(Math.ceil(subTotal + (price * (qty-1))))
-        grandTotal =+ discountTotalAmount + taxTotalAmount;
-        setDiscountTotalAmount(Math.ceil(updateTotalAmount * DiscountPercent /100))
-        setTaxTotalAmount(Math.ceil(updateTotalAmount * TaxPercent /100))
-        setTotalAmount(Math.ceil(grandTotal));
+        // })
+        // setUpdateTotalAmount(Math.ceil(subTotal + (price * (qty-1))))
+        // grandTotal =+ discountTotalAmount + taxTotalAmount;
+        // setDiscountTotalAmount(Math.ceil(updateTotalAmount * DiscountPercent /100))
+        // setTaxTotalAmount(Math.ceil(updateTotalAmount * TaxPercent /100))
+        // setTotalAmount(Math.ceil(grandTotal));
            
     }
-    const removeQuantity = (price,qty) => {
-        let grandTotal = 0;
-
-        setUpdateTotalAmount(Math.floor(updateTotalAmount - price) )
-        grandTotal =+ discountTotalAmount + taxTotalAmount;
-        setDiscountTotalAmount(Math.ceil(updateTotalAmount * DiscountPercent /100))
-        setTaxTotalAmount(Math.ceil(updateTotalAmount * TaxPercent /100))
-        setTotalAmount(Math.ceil(grandTotal));
+    const removeQuantity = (price) => {
+        setUpdateTotalAmount( updateTotalAmount - price)
+        // let grandTotal = 0;
+        // setUpdateTotalAmount(Math.floor(updateTotalAmount - price) )
+        // grandTotal =+ discountTotalAmount + taxTotalAmount;
+        // setDiscountTotalAmount(Math.ceil(updateTotalAmount * DiscountPercent /100))
+        // setTaxTotalAmount(Math.ceil(updateTotalAmount * TaxPercent /100))
+        // setTotalAmount(Math.ceil(grandTotal));
 
 
     }
@@ -70,12 +73,16 @@ export default AddToCart = ({ route, navigation }) => {
         setDiscountTotalAmount(Math.ceil(updateTotalAmount * DiscountPercent /100))
         setTaxTotalAmount(Math.ceil(updateTotalAmount * TaxPercent /100))
         setTotalAmount(Math.ceil(grandTotal));
+        
+
 
 
     }
 
+    
+
     useEffect(() => {
-        
+            
         console.log('dataaas',cartData);
 
         AsyncStorage.getItem('k2').then((value) => {
@@ -90,8 +97,9 @@ export default AddToCart = ({ route, navigation }) => {
                 console.log('something else');
             }
         })
-
+       
     }, [])
+    
 
     const renderComponentItem = ({ item, index }) => {
         //Price Calculate
@@ -198,7 +206,7 @@ export default AddToCart = ({ route, navigation }) => {
 
                     </View>
                     <View style={{alignItems:'flex-end',width:'50%'}}>
-                    <Text style={{color:'white', }}>{`${currency} ${updateTotalAmount}`}</Text>
+                    <Text style={{color:'white', }}>{`${currency} ${Math.floor(updateTotalAmount)}`}</Text>
                     <Text style={{color:'white', }}>{`${currency} ${discountTotalAmount}`}</Text>
                     <Text style={{color:'white', }}>{`${currency} ${taxTotalAmount}`}</Text>
                     <Text style={{color:'white', }}>{`${currency} ${delivery}`}</Text>

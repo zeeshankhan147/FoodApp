@@ -28,12 +28,12 @@ export default ProductCard = (props) => {
 
     const adding = (price) => {
         setQtyPlus(qtyPlus+1)
-        addQuantity(price,qtyPlus+1)
         // updateAmount()
+        addQuantity(price)
     }
     const minus = (price) => {
         setQtyPlus(qtyPlus-1)
-        removeQuantity(price,qtyPlus-1)
+        removeQuantity(price)
         // updateAmount()
     }
 
