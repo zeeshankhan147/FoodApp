@@ -7,9 +7,7 @@ import Cart from './components/cart';
 import AddToCart from './components/addToCart';
 import ProductCard from './components/productCart';
 import SignUp from './components/signUp';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-const Tab = createBottomTabNavigator();
 
 const Stack = createNativeStackNavigator();
 

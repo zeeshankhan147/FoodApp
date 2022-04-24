@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useLayoutEffect } from 'react';
+import React, { useEffect, useState  } from 'react';
 import { Text, View, Image, TouchableOpacity, StyleSheet, FlatList, Alert, SafeAreaView, ActivityIndicator,ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
@@ -6,7 +6,8 @@ import colors from "../assets/colors/colors";
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ProductCart from './productCart';
-import {useIsFocused } from '@react-navigation/native';
+import {useIsFocused,useFocusEffect } from '@react-navigation/native';
+import { NavigationEvents } from 'react-navigation';
 
 
 export default AddToCart = ({ route, navigation }) => {
@@ -20,68 +21,47 @@ export default AddToCart = ({ route, navigation }) => {
     const [discountTotalAmount, setDiscountTotalAmount] = useState(0)
     const [taxTotalAmount, setTaxTotalAmount] = useState(0)
     const [totalAmount, setTotalAmount] = useState(0)
-    const [subTotal, setSubTotal] = useState(0)
     const [delivery, setDelivery] = useState(0)
     const isFocused = useIsFocused();
-    // let TotalAmount = (updateTotalAmount * DiscountPercent / 100)+(updateTotalAmount * TaxPercent / 100);
+   
+   
+   
 
-    
     const addQuantity = (price) => {
         setUpdateTotalAmount( updateTotalAmount + price)
-        // let subTotal = 0;
-        // let discountTotal = 0;
-        // let taxTotal = 0;
-        // let grandTotal = 0;
-        // cartData.map((item,index)=>{
-        //     subTotal = subTotal + item.price;
-        //     discountTotal = discountTotal + (item.price * DiscountPercent / 100);
-        //     taxTotal = taxTotal + (item.price * TaxPercent / 100);
             
-        // })
-        // setUpdateTotalAmount(Math.ceil(subTotal + (price * (qty-1))))
-        // grandTotal =+ discountTotalAmount + taxTotalAmount;
-        // setDiscountTotalAmount(Math.ceil(updateTotalAmount * DiscountPercent /100))
-        // setTaxTotalAmount(Math.ceil(updateTotalAmount * TaxPercent /100))
-        // setTotalAmount(Math.ceil(grandTotal));
-           
     }
     const removeQuantity = (price) => {
         setUpdateTotalAmount( updateTotalAmount - price)
-        // let grandTotal = 0;
-        // setUpdateTotalAmount(Math.floor(updateTotalAmount - price) )
-        // grandTotal =+ discountTotalAmount + taxTotalAmount;
-        // setDiscountTotalAmount(Math.ceil(updateTotalAmount * DiscountPercent /100))
-        // setTaxTotalAmount(Math.ceil(updateTotalAmount * TaxPercent /100))
-        // setTotalAmount(Math.ceil(grandTotal));
-
-
+       
     }
-
-    const updateAmount = () =>{
+    
+    function updateAmount(){
+        alert('call')
         let subTotal = 0;
         let discountTotal = 0;
         let taxTotal = 0;
         let grandTotal = 0;
-        cartData.map((item,index)=>{
-            subTotal = subTotal + item.price;
-            discountTotal = discountTotal + (item.price * DiscountPercent / 100);
-            taxTotal = taxTotal + (item.price * TaxPercent / 100);
-            
+         cartData.map((item) => {
+            subTotal += item.price;
+            discountTotal += (item.price * DiscountPercent / 100);
+            taxTotal += (item.price * TaxPercent / 100);
+
+
+
         })
-        setUpdateTotalAmount(Math.ceil(subTotal))
-        grandTotal =+ discountTotalAmount + taxTotalAmount;
-        setDiscountTotalAmount(Math.ceil(updateTotalAmount * DiscountPercent /100))
-        setTaxTotalAmount(Math.ceil(updateTotalAmount * TaxPercent /100))
-        setTotalAmount(Math.ceil(grandTotal));
+        grandTotal = discountTotal + taxTotal;
+        setUpdateTotalAmount(subTotal)
+        setDiscountTotalAmount(subTotal * DiscountPercent /100)
+        setTaxTotalAmount(subTotal * TaxPercent /100)
+        setTotalAmount(grandTotal+delivery);
         
 
-
-
     }
+  
 
-    
-
-    useEffect(() => {
+    useEffect(()  => {
+        
             
         console.log('dataaas',cartData);
 
@@ -97,11 +77,17 @@ export default AddToCart = ({ route, navigation }) => {
                 console.log('something else');
             }
         })
+        updateAmount()
+        // Will Unmount //
+        return ()=>{
+
+        }
        
     }, [])
     
 
     const renderComponentItem = ({ item, index }) => {
+        
         //Price Calculate
         // myPrice = myPrice + (item.price) ;
         // setUpdateTotalAmount(Math.floor(myPrice))
@@ -120,6 +106,7 @@ export default AddToCart = ({ route, navigation }) => {
 
     
         return (
+            
 
             <ProductCart
                 item={item}
@@ -140,8 +127,9 @@ export default AddToCart = ({ route, navigation }) => {
 
 
     }
-
+    
     return (
+        
         
         <View style={Styles.mainContainer}>
             <SafeAreaView>
@@ -196,6 +184,7 @@ export default AddToCart = ({ route, navigation }) => {
 
             {cartData.length > 0 ?(
                 <View style={Styles.modal}>
+                    
                 <View style={{paddingHorizontal:30,marginTop:30,marginBottom:90,justifyContent:'center',flexDirection:'row' }}>
                     <View style={{alignItems:'flex-start',width:'50%'}}>
                         <Text style={{color:'white', }}>Sub Total</Text>

@@ -19,6 +19,7 @@ import category from '../assets/data/category';
 import popular from '../assets/data/popular';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useIsFocused } from '@react-navigation/native';
+import { placeholder } from '@babel/types';
 
 
 Feather.loadFont();
@@ -29,6 +30,8 @@ export default Home = ({ navigation, route, props }) => {
     const [counter, setCounterState] = useState(0)
     const isFocused = useIsFocused();
     const [search, setSearch] = useState('')
+
+   
     
 
     function clear() {
@@ -50,9 +53,8 @@ export default Home = ({ navigation, route, props }) => {
     
 
     useEffect(() => {
+        
         countify();
-
-
 
     }, [isFocused])
 
@@ -128,6 +130,8 @@ export default Home = ({ navigation, route, props }) => {
                     </TouchableOpacity>
                     <View style={styles.searchTextWrapper}>
                         <TextInput 
+                       
+                        autoCapitalize="words"
                         placeholder={'Explore your food'}
                         onChange={(vl)=> setSearch(vl)}
                         
@@ -250,16 +254,19 @@ const styles = StyleSheet.create({
     },
     searchWrapper: {
         flexDirection: 'row',
-        paddingHorizontal: 30,
+        paddingHorizontal: 20,
         marginTop: 36,
         alignItems: 'center',
+        backgroundColor:'#d7d7d7f5',
+        marginHorizontal:30,
+        borderRadius:8
 
     },
     searchTextWrapper: {
         marginLeft: 14,
         flex: 1,
-        borderBottomWidth: 1,
-        borderBottomColor: colors.textDark,
+        // borderBottomWidth: 1,
+        // borderBottomColor: colors.textDark,
 
 
     },
@@ -267,7 +274,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-Semibold',
         fontSize: 16,
         color: colors.textLight,
-        marginBottom: -3,
+       
 
     },
     categoryWrapper: {
