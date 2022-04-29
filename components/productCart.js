@@ -36,6 +36,7 @@ export default ProductCard = (props) => {
         removeQuantity(price)
         // updateAmount()
     }
+    
 
    
     return(
@@ -49,7 +50,7 @@ export default ProductCard = (props) => {
                 <View style={Styles.textView}>
 
                         <Text style={Styles.title}>{title}</Text>
-                        <Text style={Styles.price}>Rs.{Math.ceil(price)* qtyPlus}</Text>
+                        <Text style={Styles.price}>Rs.{Math.round(price)* qtyPlus}</Text>
 
                     <View style={Styles.quantityController}>
                         <TouchableOpacity style={Styles.qtyPlus} key={index}  onPress={()=>  adding(price)}>

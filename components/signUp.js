@@ -16,37 +16,54 @@ export default function signUp  ({navigation}) {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [userData, setUserData] = useState()
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        console.log('navvv',navigation);
       
         GoogleSignin.configure();
     }, [])
     
 
      const googleSignUp = async () => {
+        setLoading(true)
         try {
           await GoogleSignin.hasPlayServices();
+        
           const userInfo = await GoogleSignin.signIn();
           console.log('userrr',userInfo);
+          if (userInfo) {
+              AsyncStorage.setItem('@userInfo',JSON.stringify(userInfo.user))
+          }
+          else{
+              null
+          }
+          setLoading(false)
+
         } 
         catch (error) {
           if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+            setLoading(false)
+
             // user cancelled the login flow
           console.log(error);
 
           } else if (error.code === statusCodes.IN_PROGRESS) {
+            setLoading(true)
+
             // operation (e.g. sign in) is in progress already
           console.log(error);
 
           } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
             // play services not available or outdated
           console.log('PLAY_SERVICES_NOT_AVAILABLE --->>',error);
+            setLoading(false)
+
           
 
           } else {
             // some other error happened
           console.log(error);
+          setLoading(false)
 
           }
         }
@@ -69,8 +86,12 @@ export default function signUp  ({navigation}) {
                         
                     </View>
                 </SafeAreaView>
-
-            <View style={{alignItems:'center',justifyContent:'center',marginTop:'40%',width:'100%',}}>
+                {loading ? (
+                    <View style={{alignItems:'center',justifyContent:'center',marginTop:'50%',width:'100%',}}>
+                    <ActivityIndicator size="large" color={colors.primary} />
+                    </View>
+                ):(
+                <View style={{alignItems:'center',justifyContent:'center',marginTop:'40%',width:'100%',}}>
                 <Text style={{fontSize:18,fontWeight:'600',color:colors.textDark}}>
                     Please Social Login!
                 </Text>
@@ -113,6 +134,11 @@ export default function signUp  ({navigation}) {
 
                 
             </View>
+
+
+                )}
+
+            
 
             
                 <TouchableOpacity  style={{alignItems:'center',marginTop:'35%'}}

@@ -11,100 +11,95 @@ import { NavigationEvents } from 'react-navigation';
 
 
 export default AddToCart = ({ route, navigation }) => {
-    let myPrice = 0;
     let currency = 'Rs';
     let DiscountPercent = 50;
-    let TaxPercent = 19;
+    let TaxPercent = 20;
+    let deliveryFee = 50;
     const [cartData, setCartData] = useState([]);
     const [qtyPlus, setQtyPlus] = useState(1)
     const [updateTotalAmount, setUpdateTotalAmount] = useState(0)
     const [discountTotalAmount, setDiscountTotalAmount] = useState(0)
     const [taxTotalAmount, setTaxTotalAmount] = useState(0)
     const [totalAmount, setTotalAmount] = useState(0)
-    const [delivery, setDelivery] = useState(0)
-    const isFocused = useIsFocused();
+
    
    
    
 
     const addQuantity = (price) => {
-        setUpdateTotalAmount( updateTotalAmount + price)
+        setUpdateTotalAmount( Math.round(updateTotalAmount + price))
+        setDiscountTotalAmount(Math.round((updateTotalAmount + price) * DiscountPercent /100))
+        setTaxTotalAmount(Math.round((updateTotalAmount + price) * TaxPercent /100))
+        setTotalAmount(Math.round(((updateTotalAmount + price) * DiscountPercent /100)
+                                + ((updateTotalAmount + price) * TaxPercent /100)
+                                + deliveryFee));
+
+
+
+
             
     }
     const removeQuantity = (price) => {
-        setUpdateTotalAmount( updateTotalAmount - price)
+        setUpdateTotalAmount(Math.round( updateTotalAmount - price))
+        setDiscountTotalAmount(Math.round((updateTotalAmount - price) * DiscountPercent /100))
+        setTaxTotalAmount(Math.round((updateTotalAmount - price) * TaxPercent /100))
+        setTotalAmount(Math.round(((updateTotalAmount - price) * DiscountPercent /100)
+                                + ((updateTotalAmount - price) * TaxPercent /100)
+                                + deliveryFee));
+        
+
        
     }
     
-    function updateAmount(){
-        alert('call')
+    function updateAmount(item){
+        console.log('itemmm',item)
         let subTotal = 0;
         let discountTotal = 0;
         let taxTotal = 0;
         let grandTotal = 0;
-         cartData.map((item) => {
-            subTotal += item.price;
-            discountTotal += (item.price * DiscountPercent / 100);
-            taxTotal += (item.price * TaxPercent / 100);
-
-
-
+         item.map( (i) => {
+            subTotal += i.price;
+            discountTotal += (i.price * DiscountPercent / 100);
+            taxTotal += (i.price * TaxPercent / 100);
+            
         })
         grandTotal = discountTotal + taxTotal;
-        setUpdateTotalAmount(subTotal)
-        setDiscountTotalAmount(subTotal * DiscountPercent /100)
-        setTaxTotalAmount(subTotal * TaxPercent /100)
-        setTotalAmount(grandTotal+delivery);
+        setUpdateTotalAmount(Math.round(subTotal))
+        setDiscountTotalAmount(Math.round(subTotal * DiscountPercent /100))
+        setTaxTotalAmount(Math.round(subTotal * TaxPercent /100))
+        setTotalAmount(Math.round(grandTotal + deliveryFee));
         
 
     }
   
 
     useEffect(()  => {
-        
-            
+         
         console.log('dataaas',cartData);
 
-        AsyncStorage.getItem('k2').then((value) => {
+        AsyncStorage.getItem('@cartItem').then((value) => {
             const data = JSON.parse(value)
             if (data != null) {
                 // console.log('milgya_data ', data);
                 setCartData(data)
-
+                updateAmount(data)
 
             }
             else {
                 console.log('something else');
             }
         })
-        updateAmount()
+       
         // Will Unmount //
         return ()=>{
-
+            
         }
        
     }, [])
     
 
     const renderComponentItem = ({ item, index }) => {
-        
-        //Price Calculate
-        // myPrice = myPrice + (item.price) ;
-        // setUpdateTotalAmount(Math.floor(myPrice))
-
-        //Delivery
-        let deliveryTime = item.deliveryTime;
-        if (deliveryTime != null) {
-            setDelivery("Free Delivery");
-            
-        }
-        else{
-            setDelivery(50);
-        }
-
-        
-
-    
+       
         return (
             
 
@@ -198,7 +193,7 @@ export default AddToCart = ({ route, navigation }) => {
                     <Text style={{color:'white', }}>{`${currency} ${Math.floor(updateTotalAmount)}`}</Text>
                     <Text style={{color:'white', }}>{`${currency} ${discountTotalAmount}`}</Text>
                     <Text style={{color:'white', }}>{`${currency} ${taxTotalAmount}`}</Text>
-                    <Text style={{color:'white', }}>{`${currency} ${delivery}`}</Text>
+                    <Text style={{color:'white', }}>{`${currency} ${deliveryFee}`}</Text>
                     <Text style={{color:'white', }}>{`${currency} ${Math.floor(totalAmount)}`}</Text>
                     </View>
                 </View>

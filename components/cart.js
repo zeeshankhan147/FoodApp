@@ -11,9 +11,10 @@ const Cart = ({ route, navigation }) => {
     
     const { item } = route.params;
     const [counter, setCounter] = useState(0);
+
     
     function countify (){
-        AsyncStorage.getItem('k2').then((ct)=>{
+        AsyncStorage.getItem('@cartItem').then((ct)=>{
             if (ct != null) {
                 const CNTER = JSON.parse(ct);
                 let dt = Object.keys(CNTER).length;
@@ -34,18 +35,19 @@ const Cart = ({ route, navigation }) => {
 
 
     // ADD TO CART FUNCTION //
-    const add_to_cart = (item) => {
+    const add_to_cart = async (item) => {
         const datarray = [];
         datarray.push(item);
    
-        AsyncStorage.getItem('k2').then((valo) => {
+        await AsyncStorage.getItem('@cartItem').then((valo) => {
             const data = JSON.parse(valo)
             if (data != null) {
                 data.forEach(element => {
                     if (element.id != item.id) {
-                        
                         datarray.push(element)
                         setCounter(datarray.length)
+                        // ToastAndroid.show("Add in cart this item", ToastAndroid.SHORT);
+
                         
                     }
                     else{
@@ -54,9 +56,8 @@ const Cart = ({ route, navigation }) => {
                     
                 });
                 
-                AsyncStorage.setItem('k2', JSON.stringify(datarray))
+                AsyncStorage.setItem('@cartItem', JSON.stringify(datarray))
                 console.log('next time run', JSON.stringify(datarray));
-                ToastAndroid.show("Add in cart this item", ToastAndroid.SHORT);
                 
                 {navigation.navigate('Home')}
                 
@@ -64,7 +65,7 @@ const Cart = ({ route, navigation }) => {
 
             }
             else {
-                AsyncStorage.setItem('k2', JSON.stringify(datarray))
+                AsyncStorage.setItem('@cartItem', JSON.stringify(datarray))
                 console.log('1st time', JSON.stringify(datarray));
                 ToastAndroid.show("Add in cart this item", ToastAndroid.SHORT);
                 setCounter(datarray.length)

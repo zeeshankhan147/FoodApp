@@ -35,13 +35,13 @@ export default Home = ({ navigation, route, props }) => {
     
 
     function clear() {
-        AsyncStorage.removeItem('k2')
+        AsyncStorage.removeItem('@cartItem')
         ToastAndroid.show("Clear Cart", ToastAndroid.SHORT);
         setCounterState(0)
 
     }
     function countify() {
-        AsyncStorage.getItem('k2').then((ct) => {
+        AsyncStorage.getItem('@cartItem').then((ct) => {
             
                 const CNTER = JSON.parse(ct);
                 const cft = Object.keys(CNTER).length;
@@ -53,6 +53,9 @@ export default Home = ({ navigation, route, props }) => {
     
 
     useEffect(() => {
+        AsyncStorage.getItem('@userInfo').then((user)=>{
+            console.log('infoooo',JSON.parse(user));
+        })
         
         countify();
 
