@@ -19,6 +19,7 @@ export default function signUp  ({navigation}) {
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
+        
       
         GoogleSignin.configure();
     }, [])
