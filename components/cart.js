@@ -174,7 +174,7 @@ const Cart = ({ route, navigation }) => {
                     <View style={styles.orderBtn} >
                         <View style={styles.btnWrapper}>
                             <Text style={styles.orderBtnText}>Add to Cart</Text>
-                            <Feather style={styles.orderBtnIcon} name='shopping-cart' size={20} color={colors.textDark} />
+                            <Feather style={styles.orderBtnIcon} name='shopping-cart' size={20} color={colors.background} />
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -343,7 +343,7 @@ const styles = StyleSheet.create({
     orderBtnText: {
         fontFamily: 'Montserrat-Bold',
         fontSize: 16,
-        color: colors.textDark,
+        color: colors.white,
 
 
 

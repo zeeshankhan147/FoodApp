@@ -19,8 +19,6 @@ import category from '../assets/data/category';
 import popular from '../assets/data/popular';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useIsFocused } from '@react-navigation/native';
-import { placeholder } from '@babel/types';
-
 
 Feather.loadFont();
 MaterialCommunityIcons.loadFont();
@@ -356,14 +354,14 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         flexDirection: 'row',
         overflow: 'hidden',
-        shadowColor: colors.black,
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.05,
-        shadowRadius: 20,
-        elevation: 10,
+        // shadowColor: colors.black,
+        // shadowOffset: {
+        //     width: 0,
+        //     height: 2,
+        // },
+        // shadowOpacity: 0.05,
+        // shadowRadius: 20,
+        // elevation: 10,
         marginBottom: 10,
     },
     popularTopWrapper: {

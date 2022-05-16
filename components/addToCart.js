@@ -197,10 +197,12 @@ export default AddToCart = ({ route, navigation }) => {
                     <Text style={{color:'white', }}>{`${currency} ${Math.floor(totalAmount)}`}</Text>
                     </View>
                 </View>
-                <TouchableOpacity onPress={()=> navigation.navigate('SignUp')} style={{paddingHorizontal:150,alignSelf:'center',height:50,backgroundColor:colors.background,alignItems:'center',justifyContent:'center',borderRadius:15,position:'absolute',bottom:20}}>
+                <TouchableOpacity onPress={()=> navigation.navigate('SignUp')} style={{paddingHorizontal:110,alignSelf:'center',height:50,backgroundColor:colors.background,alignItems:'center',justifyContent:'center',borderRadius:15,position:'absolute',bottom:20}}>
                 <Text style={{color:colors.textDark,fontWeight:'bold',fontSize:15}}>
-                    {`Checkout`}
+                    {`Place Order ${currency} - (${totalAmount})`}
                 </Text>
+                {/* <Feather style={{alignSelf:'flex-end'}} name='chevron-right' size={20} color={colors.secondary} /> */}
+
                 </TouchableOpacity>
             </View>
             ):(
@@ -344,5 +346,6 @@ const Styles = StyleSheet.create({
         // elevation: 10,
         // overflow: 'hidden',
         
-    }
+    },
+ 
 })

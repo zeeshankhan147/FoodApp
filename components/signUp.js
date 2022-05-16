@@ -76,10 +76,11 @@ export default function signUp  ({navigation}) {
         
         <View style={Styles.mainContainer}>
             {/* header */}
+            <ScrollView contentInsetAdjustmentBehavior='automatic' showsVerticalScrollIndicator={false}>
            
             <SafeAreaView>
                     <View style={Styles.headerWrapper}>
-                        <TouchableOpacity onPress={() => navigation.goBack()}>
+                        <TouchableOpacity onPress={() => navigation.goBack() }>
                             <View style={Styles.leftHeader}>
                                 <Feather name='chevron-left' size={12} color={colors.textDark} />
                             </View>
@@ -93,12 +94,12 @@ export default function signUp  ({navigation}) {
                     </View>
                 ):(
                 <View style={{alignItems:'center',justifyContent:'center',marginTop:'40%',width:'100%',}}>
-                <Text style={{fontSize:18,fontWeight:'600',color:colors.textDark}}>
-                    Please Social Login!
+                <Text style={{fontSize:25,fontWeight:'600',color:colors.secondary,fontFamily:'Montserrat-Bold'}}>
+                    PLEASE LOGIN!
                 </Text>
-                <View style={{}}> 
+                <View style={{height:200}}> 
                 <TextInput
-                style={{paddingHorizontal:20, borderColor:colors.primary,borderWidth:1,borderRadius:20,width:250,marginTop:40}}
+                style={{paddingHorizontal:20, borderColor:colors.primary,borderWidth:1,borderRadius:20,width:300,marginTop:40}}
                 placeholder={'Email Address'}
                 onChange={(em)=> setEmail(em)}
                 keyboardType="email-address"
@@ -108,7 +109,7 @@ export default function signUp  ({navigation}) {
                 </TextInput>
                 <TextInput
                 
-                style={{paddingHorizontal:20,borderColor:colors.primary,borderWidth:1,borderRadius:20,width:250,marginTop:30}}
+                style={{paddingHorizontal:20,borderColor:colors.primary,borderWidth:1,borderRadius:20,width:300,marginTop:20}}
                 placeholder={'Password'}
                 onChange={(pass)=> setPassword(pass)}
                 secureTextEntry
@@ -117,18 +118,22 @@ export default function signUp  ({navigation}) {
                 
                 >
                 </TextInput>
+                <TouchableOpacity onPress={()=> navigation.navigate("Register")}>
+                <Text style={{alignSelf:'center',marginTop:15, fontSize:12,color:'#1a73e8',borderBottomWidth:0.7,fontFamily:'Montserrat-SemiBold',borderColor:'#1a73e8'}}>Account! Register?</Text>
+
+                </TouchableOpacity>
                 </View>
-                <Text style={{marginTop:30,fontWeight:'800'}}>Or Sign up Other Option</Text>
+                <Text style={{marginTop:50,fontFamily:'Montserrat-Bold'}}>Or Sign up Other Option</Text>
                 <View style={{flexDirection:'row',justifyContent:'space-around',width:'50%',marginTop:20}}>
-                    <TouchableOpacity style={{width:50,height:50,backgroundColor:'#ff4e4e',borderRadius:10,alignItems:'center',justifyContent:'center'}}
+                    <TouchableOpacity style={{width:55,height:50,backgroundColor:'#ff4e4e',borderRadius:10,alignItems:'center',justifyContent:'center'}}
                     onPress={googleSignUp}
                     >
                     <MaterialCommunityIcons name='google' size={22} color={colors.white} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={{width:50,height:50,backgroundColor:'#1a73e8',borderRadius:10,alignItems:'center',justifyContent:'center'}}>
+                    <TouchableOpacity style={{width:55,height:50,backgroundColor:'#1a73e8',borderRadius:10,alignItems:'center',justifyContent:'center'}}>
                     <MaterialCommunityIcons name='facebook' size={22} color={colors.white} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={{width:50,height:50,backgroundColor:'#000',borderRadius:10,alignItems:'center',justifyContent:'center'}}>
+                    <TouchableOpacity style={{width:55,height:50,backgroundColor:'#000',borderRadius:10,alignItems:'center',justifyContent:'center'}}>
                     <MaterialCommunityIcons name='apple' size={22} color={colors.white} />
                     </TouchableOpacity>
                 </View>
@@ -145,9 +150,10 @@ export default function signUp  ({navigation}) {
                 <TouchableOpacity  style={{alignItems:'center',marginTop:'35%'}}
                 onPress={()=>Linking.openURL("https://loremipsum.com")}
                 >
-                <Text style={{}}>Privacy Policy - Terms & Condition  </Text>
+                <Text style={{marginBottom:30,fontFamily:'Montserrat-Regular',fontSize:12,}}>Privacy Policy - Terms & Condition  </Text>
                 
                 </TouchableOpacity>
+                </ScrollView>
                
         </View>
 

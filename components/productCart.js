@@ -54,11 +54,11 @@ export default ProductCard = (props) => {
 
                     <View style={Styles.quantityController}>
                         <TouchableOpacity style={Styles.qtyPlus} key={index}  onPress={()=>  adding(price)}>
-                            <Feather name='plus' size={12} color='#fff' />
+                            <Feather name='plus' size={12} color={colors.secondary} />
                         </TouchableOpacity>
                             <Text style={Styles.count} >{qtyPlus}</Text>
                         <TouchableOpacity style={Styles.qtyMinus} key={index} onPress={()=>  {qtyPlus > 1 ? minus(price) : 1}}>
-                            <Feather name='minus' size={12} color='#fff' />
+                            <Feather name='minus' size={12} color={colors.secondary} />
                         </TouchableOpacity>
                     </View>
 
@@ -166,17 +166,17 @@ const Styles = StyleSheet.create({
     },
     qtyPlus:{
         padding:3,
-        // borderWidth:1,
-        // borderColor:colors.textDark,
-        backgroundColor:'grey',
+        borderWidth:1.5,
+        borderColor:colors.secondary,
+        backgroundColor:colors.white,
         marginLeft:28,
         borderRadius:6
     },
     qtyMinus:{
         padding:3,
-        // borderWidth:1,
-        // borderColor:colors.textDark,
-        backgroundColor:'grey',
+        borderWidth:1.5,
+        borderColor:colors.secondary,
+        backgroundColor:colors.white,
         borderRadius:6
     },
     count:{
