@@ -27,7 +27,6 @@ MaterialCommunityIcons.loadFont();
 export default Home = ({ navigation, route, props }) => {
     const [counter, setCounterState] = useState(0)
     const isFocused = useIsFocused();
-    const [search, setSearch] = useState('')
 
    
     
@@ -131,10 +130,10 @@ export default Home = ({ navigation, route, props }) => {
                     </TouchableOpacity>
                     <View style={styles.searchTextWrapper}>
                         <TextInput 
-                       
+                        onFocus={()=> navigation.navigate('Search')}
                         autoCapitalize="words"
                         placeholder={'Explore your food'}
-                        onChange={(vl)=> setSearch(vl)}
+                        
                         
                         style={styles.searchText}></TextInput>
                     </View>
@@ -354,14 +353,14 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         flexDirection: 'row',
         overflow: 'hidden',
-        // shadowColor: colors.black,
-        // shadowOffset: {
-        //     width: 0,
-        //     height: 2,
-        // },
-        // shadowOpacity: 0.05,
-        // shadowRadius: 20,
-        // elevation: 10,
+        shadowColor: colors.black,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.05,
+        shadowRadius: 20,
+        elevation: 10,
         marginBottom: 10,
     },
     popularTopWrapper: {

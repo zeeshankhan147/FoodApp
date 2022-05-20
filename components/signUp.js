@@ -101,7 +101,7 @@ export default function signUp  ({navigation}) {
                 <TextInput
                 style={{paddingHorizontal:20, borderColor:colors.primary,borderWidth:1,borderRadius:20,width:300,marginTop:40}}
                 placeholder={'Email Address'}
-                onChange={(em)=> setEmail(em)}
+                onChangeText={(em)=> setEmail(em)}
                 keyboardType="email-address"
                 
                 
@@ -111,7 +111,7 @@ export default function signUp  ({navigation}) {
                 
                 style={{paddingHorizontal:20,borderColor:colors.primary,borderWidth:1,borderRadius:20,width:300,marginTop:20}}
                 placeholder={'Password'}
-                onChange={(pass)=> setPassword(pass)}
+                onChangeText={(pass)=> setPassword(pass)}
                 secureTextEntry
                 autoCorrect={false}
                 

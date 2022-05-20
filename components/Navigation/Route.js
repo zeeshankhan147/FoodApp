@@ -11,6 +11,7 @@ import ProductCart from '../productCart';
 import MyOrders from '../MyOrders';
 import AddToCart from '../addToCart';
 import Register from '../Register';
+import Search from '../Search';
 
 
 
@@ -62,6 +63,12 @@ function Route() {
         <Stack.Screen
           name="Register"
           component={Register}
+          options={{ headerShown: false }}
+
+        />
+        <Stack.Screen
+          name="Search"
+          component={Search}
           options={{ headerShown: false }}
 
         />

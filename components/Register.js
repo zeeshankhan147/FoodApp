@@ -47,7 +47,7 @@ export default function Register({ navigation }) {
                         <TextInput
                             style={{ paddingHorizontal: 20, borderColor: colors.primary, borderWidth: 1, borderRadius: 20, width: 300, marginTop: 30 }}
                             placeholder={'First Name'}
-                            onChange={(FN) => setFirsName(FN)}
+                            onChangeText={(FN) => setFirsName(FN)}
                             
 
 
@@ -57,7 +57,7 @@ export default function Register({ navigation }) {
 
                             style={{ paddingHorizontal: 20, borderColor: colors.primary, borderWidth: 1, borderRadius: 20, width: 300, marginTop: 20 }}
                             placeholder={'Last Name'}
-                            onChange={(LN) => setLastName(LN)}
+                            onChangeText={(LN) => setLastName(LN)}
                             autoCorrect={false}
 
 
@@ -67,7 +67,7 @@ export default function Register({ navigation }) {
 
                             style={{ paddingHorizontal: 20, borderColor: colors.primary, borderWidth: 1, borderRadius: 20, width: 300, marginTop: 20 }}
                             placeholder={'Email Address'}
-                            onChange={(EM) => setEmail(EM)}
+                            onChangeText={(EM) => setEmail(EM)}
                             autoCorrect={false}
 
 
@@ -77,7 +77,7 @@ export default function Register({ navigation }) {
 
                             style={{ paddingHorizontal: 20, borderColor: colors.primary, borderWidth: 1, borderRadius: 20, width: 300, marginTop: 20 }}
                             placeholder={'Phone Number EX: 333-111-888'}
-                            onChange={(NUM) => setNumber(NUM)}
+                            onChangeText={(NUM) => setNumber(NUM)}
                             keyboardType='number-pad'
                             autoCorrect={false}
 
@@ -88,7 +88,7 @@ export default function Register({ navigation }) {
 
                             style={{ paddingHorizontal: 20, borderColor: colors.primary, borderWidth: 1, borderRadius: 20, width: 300, marginTop: 20 }}
                             placeholder={'Create New Password'}
-                            onChange={(PASS) => setPassword(PASS)}
+                            onChangeText={(PASS) => setPassword(PASS)}
                             secureTextEntry
                             autoCorrect={false}
 
@@ -100,10 +100,10 @@ export default function Register({ navigation }) {
                         >
                             <Text style={{fontSize:15,color:'#fff',fontFamily:'Montserrat-Bold'}}>Register</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity  style={{alignItems:'center',marginTop:'35%'}}
+                        <TouchableOpacity  style={{alignItems:'center',marginTop:'25%'}}
                 onPress={()=>Linking.openURL("https://loremipsum.com")}
                 >
-                <Text style={{marginBottom:25,fontFamily:'Montserrat-Regular',fontSize:12,}}>Privacy Policy - Terms & Condition  </Text>
+                <Text style={{marginBottom:1,fontFamily:'Montserrat-Regular',fontSize:12,}}>Privacy Policy - Terms & Condition  </Text>
                 
                 </TouchableOpacity>
                     </View>
