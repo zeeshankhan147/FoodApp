@@ -18,7 +18,39 @@ export default function Register({ navigation }) {
     }, [])
     
     function register(){
-        alert(FirsName)
+        let userDetail = {}
+        let FN = false;
+        let LN = false;
+        let EM = false;
+        let NM = false;
+        let PS = false;
+
+        if (FirsName && LastName && Email && Number && Password) {
+            if (FirsName) {
+                FN = true;
+            }
+            else if (LastName) {
+                LN = true;
+            }
+            else if (Email.length > 6) {
+                EM = true;
+            }
+            else if (Number.length == 11) {
+                NM = true;
+            }
+            else if (Password.length >= 8) {
+                PS = true;
+            }
+            
+
+            if (FN && LN && EM && NM && PS) {
+                alert('Resgister Success')
+            }
+            
+        }
+        else{
+            Alert.alert(`Something Went Wrong!`)
+        }
         
     }
 

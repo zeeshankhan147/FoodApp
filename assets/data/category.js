@@ -25,6 +25,24 @@ const category = [
         title:'Chinese',
         selected:false,
     },
+    {
+        id:5,
+        image: require('../images/soda-icon.png'),
+        title:'Sides',
+        selected:false,
+    },
+    {
+        id:6,
+        image: require('../images/shrimp-icon.png'),
+        title:'Vegitable',
+        selected:false,
+    },
+    {
+        id:7,
+        image: require('../images/pizza-icon.png'),
+        title:'Pakistani',
+        selected:false,
+    },
     
 ];
 

@@ -123,7 +123,7 @@ export default Home = ({ navigation, route, props }) => {
                 </View>
 
                 {/* search */}
-                <View style={styles.searchWrapper}>
+                <View style={styles.searchWrapper} >
 
                     <TouchableOpacity>
                     <Feather name="search" size={20} color={colors.textDark} />
@@ -259,7 +259,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor:'#d7d7d7f5',
         marginHorizontal:30,
-        borderRadius:8
+        borderRadius:8,
+        
 
     },
     searchTextWrapper: {

@@ -62,7 +62,7 @@ export default function Search({ navigation }) {
                             placeholder={'Explore your food'}
                             onChangeText={(value) => searching(value)}
                             textValue={text}
-
+                            autoFocus={true}
 
                             style={styles.searchText}></TextInput>
                     </View>
@@ -124,7 +124,8 @@ export default function Search({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        
     },
     searchWrapper: {
         flexDirection: 'row',
@@ -153,7 +154,7 @@ const styles = StyleSheet.create({
     },
     popularWrapper: {
         paddingHorizontal: 30,
-        marginTop: 15,
+        marginTop: 0,
     },
     popularText: {
         fontSize: 18,
