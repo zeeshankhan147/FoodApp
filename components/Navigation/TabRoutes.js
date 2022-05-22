@@ -8,12 +8,14 @@ import SignUp from './../signUp';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import colors from '../../assets/colors/colors';
 
+
 Feather.loadFont();
 MaterialCommunityIcons.loadFont();
 
 import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MyOrders from '../MyOrders';
+import MyDrawer from './MyDrawer';
 
 
 const Tab = createBottomTabNavigator();
@@ -44,7 +46,7 @@ function TabRoutes() {
       initialRouteName="Home"
       backBehavior="initialRoute"
       screenOptions={{
-        headerShown:false,
+        headerShown: false,
         tabBarActiveTintColor: colors.secondary,
         tabBarShowLabel: false,
         tabBarStyle: {
@@ -54,9 +56,10 @@ function TabRoutes() {
         }
       }}
     >
+
       <Tab.Screen name="SignUp" component={SignUp}
-      // options={{ headerShown: false }}
-        
+        // options={{ headerShown: false }}
+
         options={{
           tabBarIcon: ({ focused }) => {
             return (
@@ -66,7 +69,7 @@ function TabRoutes() {
         }}
       />
       <Tab.Screen name="Home" component={Home}
-      // options={{ headerShown: false }}
+        // options={{ headerShown: false }}
 
         options={{
           tabBarIcon: ({ focused }) => {
@@ -78,7 +81,7 @@ function TabRoutes() {
       />
       <Tab.Screen name="MyOrders" component={MyOrders}
         // options={{ headerShown: true }}
-      
+
         options={{
           tabBarIcon: ({ focused }) => {
             return (
@@ -105,10 +108,10 @@ function TabRoutes() {
                   >
                     <MaterialCommunityIcons
                       name="star"
-                      style={{ color: colors.price, fontSize: 10, textAlign: "center",fontWeight:'800' }}
+                      style={{ color: colors.price, fontSize: 10, textAlign: "center", fontWeight: '800' }}
                     />
-                      
-                    
+
+
                   </View>
                 ) : <View />}
               </View>

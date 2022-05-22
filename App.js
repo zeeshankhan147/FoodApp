@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { View, Text } from 'react-native';
 
+
 import Route from './components/Navigation/Route';
 
 function App() {

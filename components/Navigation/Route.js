@@ -12,9 +12,9 @@ import MyOrders from '../MyOrders';
 import AddToCart from '../addToCart';
 import Register from '../Register';
 import Search from '../Search';
-
-
-
+import MyDrawer from './MyDrawer';
+import signUp from '../signUp';
+import home from '../home';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,7 +22,9 @@ function Route() {
 
   return (
 
+    
     <NavigationContainer>
+ 
       <Stack.Navigator
         // screenOptions={{ headerShown: false }}
 
@@ -74,6 +76,7 @@ function Route() {
         />
       </Stack.Navigator>
     </NavigationContainer>
+  
   );
 }
 

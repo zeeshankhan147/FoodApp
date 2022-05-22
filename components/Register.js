@@ -16,8 +16,8 @@ export default function Register({ navigation }) {
     const [Password, setPassword] = useState("")
     useEffect(() => {
     }, [])
-    
-    function register(){
+
+    function register() {
         let userDetail = {}
         let FN = false;
         let LN = false;
@@ -41,17 +41,17 @@ export default function Register({ navigation }) {
             else if (Password.length >= 8) {
                 PS = true;
             }
-            
+
 
             if (FN && LN && EM && NM && PS) {
                 alert('Resgister Success')
             }
-            
+
         }
-        else{
+        else {
             Alert.alert(`Something Went Wrong!`)
         }
-        
+
     }
 
     return (
@@ -71,8 +71,8 @@ export default function Register({ navigation }) {
                 </SafeAreaView>
 
 
-                <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: '40%', width: '100%', }}>
-                    <Text style={{ fontSize: 20, fontWeight: '600', color: colors.secondary,fontFamily:'Montserrat-Bold' }}>
+                <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: '30%', width: '100%', }}>
+                    <Text style={{ fontSize: 20, fontWeight: '600', color: colors.secondary, fontFamily: 'Montserrat-Bold' }}>
                         CREATE A ACCOUNT
                     </Text>
                     <View style={{ height: '100%' }}>
@@ -80,7 +80,7 @@ export default function Register({ navigation }) {
                             style={{ paddingHorizontal: 20, borderColor: colors.primary, borderWidth: 1, borderRadius: 20, width: 300, marginTop: 30 }}
                             placeholder={'First Name'}
                             onChangeText={(FN) => setFirsName(FN)}
-                            
+
 
 
                         >
@@ -127,19 +127,19 @@ export default function Register({ navigation }) {
 
                         >
                         </TextInput>
-                        <TouchableOpacity style={{ width:300, height: 50, backgroundColor: '#ff4e4e', borderRadius: 20, alignItems: 'center', justifyContent: 'center',marginTop: 20 }}
-                            onPress={()=> register()}
+                        <TouchableOpacity style={{ width: 300, height: 50, backgroundColor: '#ff4e4e', borderRadius: 20, alignItems: 'center', justifyContent: 'center', marginTop: 20 }}
+                            onPress={() => register()}
                         >
-                            <Text style={{fontSize:15,color:'#fff',fontFamily:'Montserrat-Bold'}}>Register</Text>
+                            <Text style={{ fontSize: 15, color: '#fff', fontFamily: 'Montserrat-Bold' }}>Register</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity  style={{alignItems:'center',marginTop:'25%'}}
-                onPress={()=>Linking.openURL("https://loremipsum.com")}
-                >
-                <Text style={{marginBottom:1,fontFamily:'Montserrat-Regular',fontSize:12,}}>Privacy Policy - Terms & Condition  </Text>
-                
-                </TouchableOpacity>
+                        <TouchableOpacity style={{ alignItems: 'center', marginTop: 30 }}
+                            onPress={() => Linking.openURL("https://loremipsum.com")}
+                        >
+                            <Text style={{ marginBottom: 1, fontFamily: 'Montserrat-Regular', fontSize: 12, }}>Privacy Policy - Terms & Condition  </Text>
+
+                        </TouchableOpacity>
                     </View>
-                    
+
 
 
 
