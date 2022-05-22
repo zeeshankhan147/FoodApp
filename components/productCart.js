@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, Image, TouchableOpacity, StyleSheet, FlatList, Alert,SafeAreaView ,ActivityIndicator} from 'react-native';
+import { Text, View, Image, TouchableOpacity, StyleSheet, FlatList, Alert, SafeAreaView, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import colors from "../assets/colors/colors";
@@ -22,52 +22,61 @@ export default ProductCard = (props) => {
         addQuantity,
         removeQuantity,
         updateAmount,
+        deleteItem,
     } = props;
-    
+
     const [qtyPlus, setQtyPlus] = useState(1)
 
     const adding = (price) => {
-        setQtyPlus(qtyPlus+1)
+        setQtyPlus(qtyPlus + 1)
         // updateAmount()
         addQuantity(price)
     }
     const minus = (price) => {
-        setQtyPlus(qtyPlus-1)
+        setQtyPlus(qtyPlus - 1)
         removeQuantity(price)
         // updateAmount()
     }
-    
+    const itemDel = (index) => {
+        deleteItem(index)
+    }
 
-   
-    return(
-        
+
+
+    return (
+
         <View style={Styles.container}>
-                    
-                <TouchableOpacity style={Styles.imageView} key={itemId} onPress={()=> navigation()}>
-                <Image style={Styles.image} source={image}/>
-                </TouchableOpacity>
 
-                <View style={Styles.textView}>
+            <TouchableOpacity style={Styles.imageView} key={itemId} onPress={() => navigation()}>
+                <Image style={Styles.image} source={image} />
+            </TouchableOpacity>
 
-                        <Text style={Styles.title}>{title}</Text>
-                        <Text style={Styles.price}>Rs.{Math.round(price)* qtyPlus}</Text>
+            <View style={Styles.textView}>
 
-                    <View style={Styles.quantityController}>
-                        <TouchableOpacity style={Styles.qtyPlus} key={index}  onPress={()=>  adding(price)}>
-                            <Feather name='plus' size={12} color={colors.secondary} />
-                        </TouchableOpacity>
-                            <Text style={Styles.count} >{qtyPlus}</Text>
-                        <TouchableOpacity style={Styles.qtyMinus} key={index} onPress={()=>  {qtyPlus > 1 ? minus(price) : 1}}>
-                            <Feather name='minus' size={12} color={colors.secondary} />
-                        </TouchableOpacity>
-                    </View>
+                <Text style={Styles.title}>{title}</Text>
+                <Text style={Styles.price}>Rs.{Math.round(price) * qtyPlus}</Text>
 
+                <View style={Styles.quantityController}>
+                    <TouchableOpacity style={Styles.qtyPlus} onPress={() => adding(price)}>
+                        <Feather name='plus' size={12} color={colors.secondary} />
+                    </TouchableOpacity>
+                    <Text style={Styles.count} >{qtyPlus}</Text>
+                    <TouchableOpacity style={[Styles.qtyMinus,
+                    {
+                        backgroundColor: qtyPlus > 1 ? colors.white : colors.textLight,
+                        borderColor: qtyPlus > 1 ? colors.primary : colors.textLight
+
+                    }]} key={index} onPress={() => { qtyPlus > 1 ? minus(price) : itemDel(index) }}>
+                        <Feather name={qtyPlus > 1 ? 'minus' : 'trash'} size={12} color={qtyPlus > 1 ? colors.primary : colors.white} />
+                    </TouchableOpacity>
                 </View>
-                
+
             </View>
 
+        </View>
+
     );
-    
+
 }
 const Styles = StyleSheet.create({
     mainContainer: {
@@ -115,7 +124,7 @@ const Styles = StyleSheet.create({
         paddingHorizontal: 20,
         borderBottomWidth: 0.5,
         borderBottomColor: 'gray',
-        
+
 
     },
     imageView: {
@@ -132,7 +141,7 @@ const Styles = StyleSheet.create({
     textView: {
         justifyContent: 'center',
         marginLeft: 15,
-        width:'80%'
+        width: '80%'
 
 
     },
@@ -143,44 +152,44 @@ const Styles = StyleSheet.create({
     },
     price: {
         fontSize: 10,
-        color:Colors.textDark,
-        fontWeight:'800'
+        color: Colors.textDark,
+        fontWeight: '800'
         // position:'absolute',
         // right:22,
         // top:26
     },
-    cartTitle:{
-        fontSize:30,
-        marginHorizontal:30,
-        marginVertical:15,
-        fontFamily:'Montserrat-SemiBold'
+    cartTitle: {
+        fontSize: 30,
+        marginHorizontal: 30,
+        marginVertical: 15,
+        fontFamily: 'Montserrat-SemiBold'
 
     },
-    quantityController:{
-        position:'absolute',
-        right:35,
+    quantityController: {
+        position: 'absolute',
+        right: 35,
         // top:1,
-        alignItems:'center',
-        flex:1,
-        flexDirection:'row'
+        alignItems: 'center',
+        flex: 1,
+        flexDirection: 'row'
     },
-    qtyPlus:{
-        padding:3,
-        borderWidth:1.5,
-        borderColor:colors.secondary,
-        backgroundColor:colors.white,
-        marginLeft:28,
-        borderRadius:6
+    qtyPlus: {
+        padding: 3,
+        borderWidth: 1.5,
+        borderColor: colors.secondary,
+        backgroundColor: colors.white,
+        marginLeft: 28,
+        borderRadius: 6
     },
-    qtyMinus:{
-        padding:3,
-        borderWidth:1.5,
-        borderColor:colors.secondary,
-        backgroundColor:colors.white,
-        borderRadius:6
+    qtyMinus: {
+        padding: 3,
+        borderWidth: 1.5,
+        // borderColor: colors.secondary,
+        // backgroundColor:colors.white,
+        borderRadius: 6
     },
-    count:{
-        marginLeft:10,
-        marginRight:10,
+    count: {
+        marginLeft: 10,
+        marginRight: 10,
     }
 })

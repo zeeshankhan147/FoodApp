@@ -13,70 +13,36 @@ import AddToCart from '../addToCart';
 import Register from '../Register';
 import Search from '../Search';
 import MyDrawer from './MyDrawer';
-import signUp from '../signUp';
-import home from '../home';
+import SignUp from '../signUp';
+import Home from '../home';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
+const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
 function Route() {
 
   return (
 
-    
+
     <NavigationContainer>
- 
-      <Stack.Navigator
-        // screenOptions={{ headerShown: false }}
-
-
+      <Drawer.Navigator
+      drawerContent={(props) => <MyDrawer {...props} />}
+      screenOptions={{headerShown:false}}
       >
-        {/* {MainStack(Stack)} */}
-
-        <Stack.Screen
-          name="Tab"
-          component={TabRoutes}
-          options={{ headerShown: false }}
-
-        />
-        <Stack.Screen
-          name="MyOrders"
-          component={MyOrders}
-          options={{ headerShown: true }}
-          />
-
-        <Stack.Screen
-          name="Cart"
-          component={Cart}
-          options={{ headerShown: false }}
-
-        />
-        <Stack.Screen
-          name="AddToCart"
-          component={AddToCart}
-          options={{ headerShown: false }}
-
-        />
-        <Stack.Screen
-          name="ProductCart"
-          component={ProductCart}
-          options={{ headerShown: false }}
-
-        />
-        <Stack.Screen
-          name="Register"
-          component={Register}
-          options={{ headerShown: false }}
-
-        />
-        <Stack.Screen
-          name="Search"
-          component={Search}
-          options={{ headerShown: false }}
-
-        />
-      </Stack.Navigator>
+      
+      {/* <Drawer.Screen name="MyDrawer" component={MyDrawer} /> */}
+      <Drawer.Screen name="Tab" component={TabRoutes} />
+      {/* <Drawer.Screen name="MyOrders" component={MyOrders} /> */}
+      <Drawer.Screen name="Cart" component={Cart} />
+      <Drawer.Screen name="AddToCart" component={AddToCart} />
+      <Drawer.Screen name="Register" component={Register} />
+      <Drawer.Screen name="Search" component={Search} />
+      {/* <Drawer.Screen name="SignUp" component={SignUp} /> */}
+      <Drawer.Screen name="ProductCart" component={ProductCart} />
+    </Drawer.Navigator>
     </NavigationContainer>
-  
+
   );
 }
 

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { 
-    Text, 
-    View, 
-    StyleSheet, 
-    Image, 
-    TouchableOpacity, 
-    SafeAreaView, 
-    FlatList, 
-    ScrollView, 
-    ToastAndroid, 
+import {
+    Text,
+    View,
+    StyleSheet,
+    Image,
+    TouchableOpacity,
+    SafeAreaView,
+    FlatList,
+    ScrollView,
+    ToastAndroid,
     TextInput
 } from 'react-native';
 
@@ -18,7 +18,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import category from '../assets/data/category';
 import popular from '../assets/data/popular';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useIsFocused } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 
 Feather.loadFont();
 MaterialCommunityIcons.loadFont();
@@ -28,39 +28,40 @@ export default Home = ({ navigation, route, props }) => {
     const [counter, setCounterState] = useState(0)
     const isFocused = useIsFocused();
 
-   
-    
+
+
 
     function clear() {
-        AsyncStorage.removeItem('@cartItem')
-        ToastAndroid.show("Clear Cart", ToastAndroid.SHORT);
-        setCounterState(0)
+        // AsyncStorage.removeItem('@cartItem')
+        // ToastAndroid.show("Clear Cart", ToastAndroid.SHORT);
+        // setCounterState(0)
+        navigation.openDrawer()
 
     }
     function countify() {
         AsyncStorage.getItem('@cartItem').then((ct) => {
-            
-                const CNTER = JSON.parse(ct);
-                const cft = Object.keys(CNTER).length;
-                setCounterState(cft)
+
+            const CNTER = JSON.parse(ct);
+            const cft = Object.keys(CNTER).length;
+            setCounterState(cft)
 
         })
     }
 
-    
+
 
     useEffect(() => {
-        AsyncStorage.getItem('@userInfo').then((user)=>{
-            console.log('infoooo',JSON.parse(user));
+        AsyncStorage.getItem('@userInfo').then((user) => {
+            console.log('infoooo', JSON.parse(user));
         })
-        
+
         countify();
 
     }, [isFocused])
 
     const renderCategoryItem = ({ item }) => {
 
-        
+
         return (
             <TouchableOpacity style={[styles.categoryListBox,
             {
@@ -88,10 +89,10 @@ export default Home = ({ navigation, route, props }) => {
         );
     }
 
-    
+
     return (
 
-        
+
         <View style={styles.container}>
             <ScrollView contentInsetAdjustmentBehavior='automatic' showsVerticalScrollIndicator={false}>
                 {/* header */}
@@ -126,16 +127,16 @@ export default Home = ({ navigation, route, props }) => {
                 <View style={styles.searchWrapper} >
 
                     <TouchableOpacity>
-                    <Feather name="search" size={20} color={colors.textDark} />
+                        <Feather name="search" size={20} color={colors.textDark} />
                     </TouchableOpacity>
                     <View style={styles.searchTextWrapper}>
-                        <TextInput 
-                        onFocus={()=> navigation.navigate('Search')}
-                        autoCapitalize="words"
-                        placeholder={'Explore your food'}
-                        
-                        
-                        style={styles.searchText}></TextInput>
+                        <TextInput
+                            onFocus={() => navigation.navigate('Search')}
+                            autoCapitalize="words"
+                            placeholder={'Explore your food'}
+
+
+                            style={styles.searchText}></TextInput>
                     </View>
                 </View>
 
@@ -257,10 +258,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         marginTop: 36,
         alignItems: 'center',
-        backgroundColor:'#d7d7d7f5',
-        marginHorizontal:30,
-        borderRadius:8,
-        
+        backgroundColor: '#d7d7d7f5',
+        marginHorizontal: 30,
+        borderRadius: 8,
+
 
     },
     searchTextWrapper: {
@@ -275,7 +276,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-Semibold',
         fontSize: 16,
         color: colors.textLight,
-       
+
 
     },
     categoryWrapper: {
