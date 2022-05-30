@@ -17,7 +17,7 @@ export default AddToCart = ({ route, navigation }) => {
     let TaxPercent = 20;
     let deliveryFee = 50;
     const [cartData, setCartData] = useState([]);
-    const [qtyPlus, setQtyPlus] = useState(1)
+    // const [quantity, setQuantity] = useState(1)
     const [updateTotalAmount, setUpdateTotalAmount] = useState(0)
     const [discountTotalAmount, setDiscountTotalAmount] = useState(0)
     const [taxTotalAmount, setTaxTotalAmount] = useState(0)
@@ -159,20 +159,19 @@ export default AddToCart = ({ route, navigation }) => {
 
 
     const renderComponentItem = ({ item, index }) => {
-
+        console.warn(item.data);
         return (
 
-
+            
             <ProductCart
-                item={item}
+                item={item.data}
                 index={index}
                 itemId={item.id}
                 image={item.image}
                 title={item.title}
                 price={item.price}
-                qty={item.qty}
+                qty={item.quantity}
                 navigation={() => navigation.navigate('Cart', { item: item })}
-                addQty={() => addQty()}
                 addQuantity={addQuantity}
                 removeQuantity={removeQuantity}
                 deleteItem={deleteItem}

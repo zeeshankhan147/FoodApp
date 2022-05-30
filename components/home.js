@@ -9,7 +9,8 @@ import {
     FlatList,
     ScrollView,
     ToastAndroid,
-    TextInput
+    TextInput,
+    Dimensions
 } from 'react-native';
 
 import colors from '../assets/colors/colors';
@@ -19,26 +20,32 @@ import category from '../assets/data/category';
 import popular from '../assets/data/popular';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
+import BANNER_IMAGE from '../assets/images/banner1.png'
+import ProductCart from './productCart';
 
 Feather.loadFont();
 MaterialCommunityIcons.loadFont();
-
+const BannerWidth = Dimensions.get("window").width;
+const BannerHeight = (BannerWidth / 7) * 2;
 
 export default Home = ({ navigation, route, props }) => {
     const [counter, setCounterState] = useState(0)
     const isFocused = useIsFocused();
+    const [catSelected, setCatSelected] = useState(null)
+    const [quantity, setQuantity] = useState(1)
+    
 
 
 
-
-    function clear() {
-        // AsyncStorage.removeItem('@cartItem')
-        // ToastAndroid.show("Clear Cart", ToastAndroid.SHORT);
-        // setCounterState(0)
+    function drawerOpening() {
         navigation.openDrawer()
-
     }
-    function countify() {
+
+    function categorySelection(item) {
+        setCatSelected(item.id)
+    }
+
+    function counterFunc() {
         AsyncStorage.getItem('@cartItem').then((ct) => {
 
             const CNTER = JSON.parse(ct);
@@ -47,17 +54,27 @@ export default Home = ({ navigation, route, props }) => {
 
         })
     }
+    const plusMinus = (qty) => {
+        setQuantity(qty) 
+    }
+
+    const itemDel = (index) => {
+       
+    }
 
 
 
     useEffect(() => {
+        setCatSelected(1)
         AsyncStorage.getItem('@userInfo').then((user) => {
             console.log('infoooo', JSON.parse(user));
         })
 
-        countify();
+        counterFunc();
 
     }, [isFocused])
+
+
 
     const renderCategoryItem = ({ item }) => {
 
@@ -65,28 +82,73 @@ export default Home = ({ navigation, route, props }) => {
         return (
             <TouchableOpacity style={[styles.categoryListBox,
             {
-                backgroundColor: item.selected ? colors.primary : colors.white,
+                backgroundColor: item.id == catSelected ? colors.primary : colors.white,
                 marginLeft: item.id == 1 ? 30 : 0,
-                elevation: item.selected ? 3 : 8,
+                elevation: item.id == catSelected ? 3 : 8,
+
 
             }
-            ]}>
+            ]} onPress={() => categorySelection(item)}>
                 <Image style={styles.categoryListImage} source={item.image} />
-                <Text style={styles.categorylistText}>{item.title}</Text>
+                <Text style={[styles.categorylistText, {
+                    color: item.id == catSelected ? colors.white : colors.black
+                }]}>{item.title}</Text>
                 <View style={[styles.categoryIconCircle,
                 {
-                    backgroundColor: item.selected ? colors.white : colors.secondary,
+                    backgroundColor: item.id == catSelected ? colors.white : colors.secondary,
                 }
                 ]}>
                     <Feather style={[styles.categoryListIcon,
                     {
-                        color: item.selected ? colors.black : colors.white,
+                        color: item.id == catSelected ? colors.black : colors.white,
                     }
                     ]} name="chevron-right" size={15} />
                 </View>
             </TouchableOpacity>
 
         );
+    }
+    const renderPopularItem = ({ item }) => {
+        return (
+            <TouchableOpacity key={item.id} onPress={() => navigation.navigate('Cart', { item: item })}>
+                <View style={[styles.popularCardWrapper,
+                {
+                    marginLeft: item.id == 1 ? 30 : 0,
+                }
+                ]}>
+                    <View>
+
+                        <View style={styles.popularTopWrapper}>
+                            <MaterialCommunityIcons style={styles.crownIcon} name="crown" size={15} color={colors.primary} />
+                            <Text style={styles.popularTopTitle}>top of the week</Text>
+                        </View>
+
+                        <Text style={styles.popularTitle}>{item.title}</Text>
+                        <Text style={styles.popularWeight}>Weight  {item.weight}</Text>
+
+                        <View style={styles.popularBottomItem}>
+
+                            <View style={styles.addItemBtn}>
+                                <Feather name="plus" size={16} color={colors.black} />
+                            </View>
+
+                            <View style={styles.ratingWrapper}>
+                                <MaterialCommunityIcons name="star" size={15} />
+                                <Text style={styles.ratingText}>{item.rating}</Text>
+                            </View>
+                        </View>
+
+                    </View>
+
+                    <View style={styles.popularImageWrapper}>
+                        <Image style={styles.popularImage} source={item.image} />
+                    </View>
+
+                </View>
+            </TouchableOpacity>
+
+        );
+
     }
 
 
@@ -97,7 +159,7 @@ export default Home = ({ navigation, route, props }) => {
             <ScrollView contentInsetAdjustmentBehavior='automatic' showsVerticalScrollIndicator={false}>
                 {/* header */}
                 <SafeAreaView style={styles.navBar}>
-                    <TouchableOpacity onPress={() => clear()}>
+                    <TouchableOpacity onPress={() => drawerOpening()}>
                         {/* <Image style={styles.dp} source={require('../assets/images/profile.jpg')} /> */}
                         <Feather style={styles.ic_menu} name='menu' size={26} color={colors.textDark} />
                     </TouchableOpacity>
@@ -117,10 +179,14 @@ export default Home = ({ navigation, route, props }) => {
                     </TouchableOpacity>
                 </SafeAreaView>
 
-                {/* title */}
-                <View style={styles.titleWrapper}>
-                    <Text style={styles.subTitle}>{`Chinese - Pakistani\nExclusive 20%`}</Text>
-                    <Text style={styles.title}>Special Item</Text>
+                {/* Banner */}
+                <View style={styles.bannerWrapper}>
+                    <View style={{ paddingHorizontal: 30 }} >
+                        <Image source={BANNER_IMAGE}
+                            style={{ height: '100%', width: '100%', borderRadius: 10 }}
+                            resizeMode="cover"
+                        />
+                    </View>
                 </View>
 
                 {/* search */}
@@ -157,47 +223,40 @@ export default Home = ({ navigation, route, props }) => {
 
                 {/* popular */}
                 <View style={styles.popularWrapper}>
-                    <Text style={styles.popularText}>Popular</Text>
-                    {popular.map((item) => (
-                        <TouchableOpacity key={item.id} onPress={() => navigation.navigate('Cart', { item: item })}>
-                            <View style={[styles.popularCardWrapper,
-                            {
-                                marginTop: item.id == 1 ? 15 : 20,
-                            }
-                            ]}>
-                                <View>
+                    <Text style={styles.popularText}>20% Off Exclusive Deal</Text>
+                    <View style={{ flex: 1, paddingVertical: 10, marginTop: 10 }}>
+                        <FlatList
+                            data={popular}
+                            renderItem={renderPopularItem}
+                            keyExtractor={item => item.id}
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={false}
+                            contentInsetAdjustmentBehavior='automatic'
+                        />
+                    </View>
 
-                                    <View style={styles.popularTopWrapper}>
-                                        <MaterialCommunityIcons style={styles.crownIcon} name="crown" size={15} color={colors.primary} />
-                                        <Text style={styles.popularTopTitle}>top of the week</Text>
-                                    </View>
-
-                                    <Text style={styles.popularTitle}>{item.title}</Text>
-                                    <Text style={styles.popularWeight}>Weight  {item.weight}</Text>
-
-                                    <View style={styles.popularBottomItem}>
-
-                                        <View style={styles.addItemBtn}>
-                                            <Feather name="plus" size={16} color={colors.black} />
-                                        </View>
-
-                                        <View style={styles.ratingWrapper}>
-                                            <MaterialCommunityIcons name="star" size={15} />
-                                            <Text style={styles.ratingText}>{item.rating}</Text>
-                                        </View>
-                                    </View>
-
-                                </View>
-
-                                <View style={styles.popularImageWrapper}>
-                                    <Image style={styles.popularImage} source={item.image} />
-                                </View>
-
-                            </View>
-                        </TouchableOpacity>
+                </View>
+                {/* Menu Item */}
+                <View style={{
+                    flex: 1, marginTop: 20, marginHorizontal: 0, marginBottom: 80,
+                }}>
+                   
+                    {popular.map((item,index) => (
+                         <ProductCart
+                            from={'home'}
+                            item={item}
+                            index={index}
+                            itemId={item.id}
+                            image={item.image}
+                            title={item.title}
+                            price={item.price}
+                            qty={quantity}
+                            navigation={navigation}
+                            addHome={plusMinus}
+                            removeHome={plusMinus}
+                            deleteItem={itemDel}
+                         />
                     ))}
-
-
                 </View>
             </ScrollView>
 
@@ -235,9 +294,14 @@ const styles = StyleSheet.create({
         borderColor: colors.textLight,
         borderWidth: 1,
     },
-    titleWrapper: {
-        paddingHorizontal: 30,
-        marginTop: 40,
+    bannerWrapper: {
+        marginTop: 30,
+        width: '100%',
+        height: '8%',
+
+
+
+
 
     },
     subTitle: {
@@ -256,7 +320,7 @@ const styles = StyleSheet.create({
     searchWrapper: {
         flexDirection: 'row',
         paddingHorizontal: 20,
-        marginTop: 36,
+        marginTop: 30,
         alignItems: 'center',
         backgroundColor: '#d7d7d7f5',
         marginHorizontal: 30,
@@ -339,10 +403,13 @@ const styles = StyleSheet.create({
 
     },
     popularWrapper: {
-        paddingHorizontal: 30,
+        // paddingHorizontal: 30,
         // marginTop: 20,
+        // marginBottom:180,
+        // backgroundColor:'red',
     },
     popularText: {
+        paddingLeft: 30,
         fontSize: 18,
         fontFamily: 'Montserrat-Bold',
         color: colors.black,
@@ -350,20 +417,24 @@ const styles = StyleSheet.create({
     },
     popularCardWrapper: {
         backgroundColor: colors.white,
-        marginTop: 11,
-        paddingLeft: 20,
-        borderRadius: 20,
+        marginRight: 20,
+        // marginTop: 11,
+        // paddingLeft: 10,
+        borderRadius: 10,
         flexDirection: 'row',
         overflow: 'hidden',
-        shadowColor: colors.black,
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.05,
-        shadowRadius: 20,
-        elevation: 10,
-        marginBottom: 10,
+        // shadowColor: colors.black,
+        // shadowOffset: {
+        //     width: 0,
+        //     height: 2,
+        // },
+        // shadowOpacity: 0.05,
+        // shadowRadius: 20,
+        // elevation: 10,
+        // marginBottom: 10,
+        width: 300,
+
+
     },
     popularTopWrapper: {
         flexDirection: 'row',
@@ -404,8 +475,8 @@ const styles = StyleSheet.create({
         width: 90,
         height: 53,
         backgroundColor: colors.primary,
-        borderBottomLeftRadius: 20,
-        borderTopRightRadius: 20,
+        borderBottomLeftRadius: 10,
+        borderTopRightRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
     },

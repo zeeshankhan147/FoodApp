@@ -13,6 +13,7 @@ const popular = [
         DiscountPercent:10,
         TaxPercent:14,
         qty:1,
+        description:`super delicious pizza chicken barbque all flavor availabilty crunchy joosy spicy burger..`,
         ingredient:[
             {
                 id:'1',
@@ -53,6 +54,7 @@ const popular = [
         DiscountPercent:19,
         TaxPercent:4,
         qty:1,
+        description:`super delicious pizza chicken barbque all flavor availabilty crunchy joosy spicy burger..`,
         ingredient:[
             {
                 id:'1',
@@ -93,6 +95,7 @@ const popular = [
         DiscountPercent:20,
         TaxPercent:10,
         qty:1,
+        description:`super delicious pizza chicken barbque all flavor availabilty crunchy joosy spicy burger..`,
         ingredient:[
             {
                 id:'1',
@@ -132,6 +135,7 @@ const popular = [
         DiscountPercent:12,
         TaxPercent:18,
         qty:1,
+        description:`super delicious pizza chicken barbque all flavor availabilty crunchy joosy spicy burger..`,
         ingredient:[
             {
                 id:'1',
@@ -156,6 +160,7 @@ const popular = [
         DiscountPercent:10,
         TaxPercent:14,
         qty:1,
+        description:`super delicious pizza chicken barbque all flavor availabilty crunchy joosy spicy burger..`,
         ingredient:[
             {
                 id:'1',
@@ -194,6 +199,7 @@ const popular = [
         DiscountPercent:13,
         TaxPercent:10,
         qty:1,
+        description:`super delicious pizza chicken barbque all flavor availabilty crunchy joosy spicy burger..`,
         ingredient:[
             {
                 id:'1',
@@ -232,6 +238,128 @@ const popular = [
         DiscountPercent:11,
         TaxPercent:14,
         qty:1,
+        description:`super delicious pizza chicken barbque all flavor availabilty crunchy joosy spicy burger..`,
+        ingredient:[
+            {
+                id:'1',
+                name:'Ham',
+                image: require('../images/ham.png'),
+            },
+            {
+                id:'2',
+                name:'Tomato',
+                image: require('../images/tomato.png'),
+            },
+            {
+                id:'3',
+                name:'Cheese',
+                image: require('../images/cheese.png'),
+            },
+            {
+                id:'4',
+                name:'Garlic',
+                image: require('../images/garlic.png'),
+            },
+        ],
+        
+    },
+    {
+        id:'8',
+        image: require('../images/pizza1.png'),
+        title: 'Primavera Pizza',
+        weight: '540 gr',
+        rating: '5.0',
+        price:5.99,
+        sizeName:'Medium',
+        sizeNumber:14,
+        crust:'Thin Crust',
+        deliveryTime:null,
+        DiscountPercent:10,
+        TaxPercent:14,
+        qty:1,
+        description:`super delicious pizza chicken barbque all flavor availabilty crunchy joosy spicy burger..`,
+        ingredient:[
+            {
+                id:'1',
+                name:'Ham',
+                image: require('../images/ham.png'),
+            },
+            {
+                id:'2',
+                name:'Tomato',
+                image: require('../images/tomato.png'),
+            },
+            {
+                id:'3',
+                name:'Cheese',
+                image: require('../images/cheese.png'),
+            },
+            {
+                id:'4',
+                name:'Garlic',
+                image: require('../images/garlic.png'),
+            },
+        ],
+        
+        
+    },
+
+    {
+        id:'9',
+        image: require('../images/pizza2.png'),
+        title: 'Vegiterian Pizza',
+        weight: '456 gr',
+        rating: '3.0',
+        price:4.99,
+        sizeName:'Large',
+        sizeNumber:20,
+        crust:'Thick Crust',
+        deliveryTime:25,
+        DiscountPercent:19,
+        TaxPercent:4,
+        qty:1,
+        description:`super delicious pizza chicken barbque all flavor availabilty crunchy joosy spicy burger..`,
+        ingredient:[
+            {
+                id:'1',
+                name:'Ham',
+                image: require('../images/ham.png'),
+            },
+            {
+                id:'2',
+                name:'Tomato',
+                image: require('../images/tomato.png'),
+            },
+            {
+                id:'3',
+                name:'Cheese',
+                image: require('../images/cheese.png'),
+            },
+            {
+                id:'4',
+                name:'Garlic',
+                image: require('../images/garlic.png'),
+            },
+        ],
+        
+        
+    },
+
+    {
+        id:'10',
+        image: require('../images/pizza3.png'),
+        title: 'Peporeni Pizza',
+        weight: '123 gr',
+        rating: '4.2',
+        price:10.99,
+        sizeName:'XXL',
+        sizeNumber:30,
+        crust:'XLL Crust',
+        deliveryTime:45,
+        DiscountPercent:20,
+        TaxPercent:10,
+        qty:1,
+        description:`super delicious pizza chicken barbque all flavor availabilty crunchy joosy spicy burger..`,
         ingredient:[
             {
                 id:'1',

@@ -87,7 +87,7 @@ function TabRoutes() {
             return (
               <View>
                 <MaterialCommunityIcons
-                  name={`cart`}
+                  name={`clock`}
                   size={25}
                   color={focused ? colors.secondary : 'grey'}
 

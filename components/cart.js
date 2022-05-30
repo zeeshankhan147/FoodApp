@@ -13,7 +13,7 @@ const Cart = ({ route, navigation }) => {
     const [counter, setCounter] = useState(0);
 
     
-    function countify (){
+    function counterFunc (){
         AsyncStorage.getItem('@cartItem').then((ct)=>{
             if (ct != null) {
                 const CNTER = JSON.parse(ct);
@@ -29,7 +29,7 @@ const Cart = ({ route, navigation }) => {
     }
     
     useEffect(()=>{
-        countify();
+        counterFunc();
         
     },[isFocused])
 
