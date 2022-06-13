@@ -4,26 +4,29 @@ import colors from '../assets/colors/colors';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NavigationContainer, useIsFocused } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
+import {_ADDTO_CART} from './CartAction';
 
-const Cart = ({ route, navigation }) => {
+const DetailView = ({ route, navigation }) => {
     const isFocused = useIsFocused();
+    const [qtyPlus, setQtyPlus] = useState(1)
     
     const { item } = route.params;
     const [counter, setCounter] = useState(0);
+    const [addons, setAddons] = useState([])
 
     
     function counterFunc (){
-        AsyncStorage.getItem('@cartItem').then((ct)=>{
-            if (ct != null) {
-                const CNTER = JSON.parse(ct);
-                let dt = Object.keys(CNTER).length;
-                setCounter(dt)
+        AsyncStorage.getItem('@cartItem').then((val)=>{
+            if (val != null) {
+                const COUNTER = JSON.parse(val);
+                let count = Object.keys(COUNTER).length;
+                setCounter(count)
                 
                 
             }
             else{
-                console.log('nullllla');
+                console.log('null');
             }
         })
     }
@@ -77,18 +80,68 @@ const Cart = ({ route, navigation }) => {
         })
      
     }
+    const AddCart = (item) =>{
+        let data = {
+            cart: item,
+            id: item.id,
+            title: item.title,
+            price: item.price,
+            image: item.image,
+            quantity: qtyPlus
+        }
+        _ADDTO_CART(data)
+        navigation.navigate('Home')
+
+    }
+    const addAddon = (item) =>{
+        let addonsArray = [];
+        addonsArray.push(item)
+        if (addons) {
+            addons.map((addonItem)=>{
+                addonsArray.push(addonItem) 
+        })
+        }
+        setAddons(addonsArray)
+
+    }
+    const removeAddons = (item) =>{ //Pending work remove addons.....
+        let tempAddons = addons;
+        // let tempIndex = null;
+        // tempAddons.map((value,index)=>{
+        //     if (value.id == item.id) {
+        //         tempIndex = index
+        //     }
+        // })
+        let index = tempAddons.map(function (item) { return item.id; }).indexOf(item.id);
+        tempAddons.splice(index,1)
+        setAddons(tempAddons)
+    }
     
-    const renderIngredientItem = ({ item }) => {
+    const renderIngredientItem = ({ item , index}) => {
 
         return (
-            <View style={[styles.ingredientImage,
+            <TouchableOpacity 
+            onPress={()=> addons.includes(item) ? removeAddons(item,index) : addAddon(item)} 
+            style={[styles.ingredientImage,
             {
-                marginLeft: item.id == 1 ? 30 : 0
+                marginLeft: item.id == 1 ? 30 : 0,
+                
             }
             ]}>
-
+                <View style={[
+                    {
+                        alignItems:'center',justifyContent:'center',width:15,height:15, 
+                        borderRadius:18,borderColor:'red',borderWidth:1.3, position:'absolute',
+                        left:8,top:8,
+                        backgroundColor:addons.includes(item) ? colors.primary : 'white'
+                    }
+                ]} >
+                {addons.includes(item) && 
+                <Feather name="check" size={12} color={colors.white}/>
+                }   
+                </View>
                 <Image source={item.image} />
-            </View>
+            </TouchableOpacity>
 
         );
     }
@@ -155,7 +208,7 @@ const Cart = ({ route, navigation }) => {
 
                 {/* ingredient */}
                 <View style={styles.ingredientWrapper}>
-                    <Text style={styles.ingredientText}>Ingredients</Text>
+                    <Text style={styles.ingredientText}>Add Addons</Text>
                     <View style={styles.ingredientList}>
                         <FlatList
                             data={item.ingredient}
@@ -168,9 +221,9 @@ const Cart = ({ route, navigation }) => {
                     </View>
                 </View>
 
-
-                {/* Order button */}
-                <TouchableOpacity key={item.id} onPress={() => add_to_cart(item)}>
+            </ScrollView>
+            {/* Add to Cart button */}
+            <TouchableOpacity key={item.id} onPress={() => AddCart(item)}>
                     <View style={styles.orderBtn} >
                         <View style={styles.btnWrapper}>
                             <Text style={styles.orderBtnText}>Add to Cart</Text>
@@ -178,13 +231,11 @@ const Cart = ({ route, navigation }) => {
                         </View>
                     </View>
                 </TouchableOpacity>
-
-            </ScrollView>
         </View>
 
     );
 }
-export default Cart;
+export default DetailView;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -323,10 +374,10 @@ const styles = StyleSheet.create({
     orderBtn: {
         backgroundColor: colors.primary,
         marginHorizontal: 30,
-        marginTop: 23,
+        marginTop: 40,
         borderRadius: 10,
         paddingVertical: 18,
-        // bottom:0,
+        bottom:20,
 
 
 

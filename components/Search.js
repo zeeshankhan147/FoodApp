@@ -73,7 +73,7 @@ export default function Search({ navigation }) {
                 <View style={styles.popularWrapper}>
 
                     {find ? searchData.map((item) => (
-                        <TouchableOpacity key={item.id} onPress={() => navigation.navigate('Cart', { item: item })}>
+                        <TouchableOpacity key={item.id} onPress={() => navigation.navigate('DetailView', { item: item })}>
                             <View style={[styles.popularCardWrapper,
                             {
                                 marginTop: item.id == 1 ? 15 : 20,
@@ -169,14 +169,14 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         flexDirection: 'row',
         overflow: 'hidden',
-        shadowColor: colors.black,
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.05,
-        shadowRadius: 20,
-        elevation: 10,
+        // shadowColor: colors.black,
+        // shadowOffset: {
+        //     width: 0,
+        //     height: 2,
+        // },
+        // shadowOpacity: 0.05,
+        // shadowRadius: 20,
+        // elevation: 10,
         marginBottom: 10,
     },
     popularTopWrapper: {

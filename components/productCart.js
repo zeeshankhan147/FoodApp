@@ -5,6 +5,8 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 import colors from "../assets/colors/colors";
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {_ADDTO_CART, _UPDATE_CART} from './CartAction';
+
 
 
 export default ProductCard = (props) => {
@@ -29,238 +31,74 @@ export default ProductCard = (props) => {
     } = props;
     const [qtyPlus, setQtyPlus] = useState(qty)
     const [quick, setQuick] = useState(false)
-    
-    const add_to_cart = async (item) => {
-        const datarray = [];
-        let cartDataObj = {
-            data:item,
-            id:itemId,
-            title:title,
-            price:price,
-            image:image,
-            quantity:qtyPlus
-        };
-        datarray.push(cartDataObj)
 
-        await AsyncStorage.getItem('@cartItem').then((valo) => {
-            const data = JSON.parse(valo)
-            if (data != null) {
-                data.forEach(element => {
-                    if (element.id != item.id) {
-                        let cartDataObj = {
-                            data:element,
-                            id:element.id,
-                            title:element.title,
-                            price:element.price,
-                            image:element.image,
-                            quantity:element.quantity
-                        };
-                        datarray.push(cartDataObj)
-                        setQuick(true)
-                        // setCounter(datarray.length)
-                        // ToastAndroid.show("Add in cart this item", ToastAndroid.SHORT);
-
-                        
-                    }
-                    else{
-                        ToastAndroid.show(`Warning this item is already in your cart`, ToastAndroid.LONG);
-                    }
-                    
-                });
-                
-                AsyncStorage.setItem('@cartItem', JSON.stringify(datarray))
-                console.log('next time run', JSON.stringify(datarray));
-                
-                
-            }
-            else {
-                setQuick(true)
-                AsyncStorage.setItem('@cartItem', JSON.stringify(datarray))
-                console.log('1st time', JSON.stringify(datarray));
-                ToastAndroid.show("Add in cart this item", ToastAndroid.SHORT);
-                // setCounter(datarray.length)
-               
-
-
-            }
-
-        })
-        
-        
-
-        
+    const AddCart = (item) =>{
+        let data = {
+            cart: item,
+            id: item.id,
+            title: item.title,
+            price: item.price,
+            image: item.image,
+            quantity: qtyPlus
+        }
+        _ADDTO_CART(data)
+        setQuick(true)
 
     }
-    
-    const homeAddQty = async (item) =>{
+
+    const homeAddQty = (itemIndex) => {
         setQtyPlus(qtyPlus + 1)
-        // addQuantity(price,qtyPlus + 1)
         addHome(qtyPlus + 1)
-        await AsyncStorage.getItem('@cartItem').then((val)=>{
-            const data = JSON.parse(val)
-            if (data != null) {
-                data.map((itemId,index)=>{
-                    console.warn(itemId.id);
-                    if (itemId.id == item.id) {
-                        data.splice(index,1)
-                        AsyncStorage.setItem('@cartItem',JSON.stringify(data))
-                        
-                    }
-                })
-                
-            }
-        })
-
-        const datarray = [];
-        let cartDataObj = {
-            data:item,
-            id:itemId,
-            title:title,
-            price:price,
-            image:image,
-            quantity:qtyPlus + 1 
-        };
-        datarray.push(cartDataObj)
-
-          AsyncStorage.getItem('@cartItem').then((valo) => {
-            const data = JSON.parse(valo)
-            if (data != null) {
-                data.forEach(element => {
-                    if (element.id != item.id) {
-                        let cartDataObj = {
-                            data:element,
-                            id:element.id,
-                            title:element.title,
-                            price:element.price,
-                            image:element.image,
-                            quantity:element.quantity
-                        };
-                        datarray.push(cartDataObj)
-                        // setCounter(datarray.length)
-                        // ToastAndroid.show("Add in cart this item", ToastAndroid.SHORT);
-
-                        
-                    }
-                    else{
-                        ToastAndroid.show(`Warning this item is already in your cart`, ToastAndroid.LONG);
-                    }
-                    
-                });
-                
-                AsyncStorage.setItem('@cartItem', JSON.stringify(datarray))
-                console.log('next time run', JSON.stringify(datarray));
-                
-                
-            }
-            else {
-                AsyncStorage.setItem('@cartItem', JSON.stringify(datarray))
-                console.log('1st time', JSON.stringify(datarray));
-                ToastAndroid.show("Add in cart this item", ToastAndroid.SHORT);
-                // setCounter(datarray.length)
-               
-
-
-            }
-
-        })
-
-    }
-
-    const homeRemoveQty = async (item) =>{
-        setQtyPlus(qtyPlus - 1)
-        // addQuantity(price,qtyPlus - 1)
-        removeHome(qtyPlus - 1)
-       await AsyncStorage.getItem('@cartItem').then((val)=>{
-            const data = JSON.parse(val)
-            if (data != null) {
-                data.map((itemId,index)=>{
-                    console.warn(itemId.id);
-                    if (itemId.id == item.id) {
-                        data.splice(index,1)
-                        AsyncStorage.setItem('@cartItem',JSON.stringify(data))
-                        
-                    }
-                })
-                
-            }
-        })
-
-        const datarray = [];
-        let cartDataObj = {
-            data:item,
-            id:itemId,
-            title:title,
-            price:price,
-            image:image,
-            quantity:qtyPlus - 1 
-        };
-        datarray.push(cartDataObj)
-
-         AsyncStorage.getItem('@cartItem').then((valo) => {
-            const data = JSON.parse(valo)
-            if (data != null) {
-                data.forEach(element => {
-                    if (element.id != item.id) {
-                        let cartDataObj = {
-                            data:element,
-                            id:element.id,
-                            title:element.title,
-                            price:element.price,
-                            image:element.image,
-                            quantity:element.quantity
-                        };
-                        datarray.push(cartDataObj)
-                        // setCounter(datarray.length)
-                        // ToastAndroid.show("Add in cart this item", ToastAndroid.SHORT);
-
-                        
-                    }
-                    else{
-                        ToastAndroid.show(`Warning this item is already in your cart`, ToastAndroid.LONG);
-                    }
-                    
-                });
-                
-                AsyncStorage.setItem('@cartItem', JSON.stringify(datarray))
-                console.log('next time run', JSON.stringify(datarray));
-                
-                
-            }
-            else {
-                AsyncStorage.setItem('@cartItem', JSON.stringify(datarray))
-                console.log('1st time', JSON.stringify(datarray));
-                ToastAndroid.show("Add in cart this item", ToastAndroid.SHORT);
-                // setCounter(datarray.length)
-               
-
-
-            }
+        AsyncStorage.getItem('@cartItem').then((val) => {
+           let data = JSON.parse(val)
+            data[itemIndex].quantity = data[itemIndex].quantity + 1
+            _UPDATE_CART(data,itemIndex)
 
         })
         
 
     }
 
+    const homeRemoveQty = (itemIndex) => {
+        setQtyPlus(qtyPlus - 1)
+        addHome(qtyPlus - 1)
+        AsyncStorage.getItem('@cartItem').then((val) => {
+            let data = JSON.parse(val)
+            data[itemIndex].quantity = data[itemIndex].quantity - 1
+            _UPDATE_CART(data,itemIndex)
 
-    const adding =  (price,i) => {
+        })
+    }
+
+    const adding = (price,itemIndex) => {
         setQtyPlus(qtyPlus + 1)
-        addQuantity(price,qtyPlus + 1)    
-       
+        from != 'home' ? addQuantity(price, qtyPlus + 1) : null
+        AsyncStorage.getItem('@cartItem').then((val) => {
+            let data = JSON.parse(val)
+                data[itemIndex].quantity = data[itemIndex].quantity + 1
+                _UPDATE_CART(data)
+        })
+
     }
-    const minus = async (price,i) => {
+    const minus = (price,itemIndex) => {
         setQtyPlus(qtyPlus - 1)
-        removeQuantity(price)
-        
+        from != 'home' ? addQuantity(price, qtyPlus - 1) : null
+        AsyncStorage.getItem('@cartItem').then((val) => {
+            let data = JSON.parse(val)
+                data[itemIndex].quantity = data[itemIndex].quantity - 1
+                _UPDATE_CART(data)
+        })
     }
     const itemDel = (index) => {
         deleteItem(index)
         if (from == "home") {
-             AsyncStorage.getItem('@cartItem').then((val)=>{
+            AsyncStorage.getItem('@cartItem').then((val) => {
                 const data = JSON.parse(val)
-                data.splice(index,1)
+                data.splice(index, 1)
             })
+            setQuick(false)
         }
-        setQuick(false)
+
 
     }
 
@@ -270,38 +108,37 @@ export default ProductCard = (props) => {
 
         <View>
             {from == "home" ? (
-                <TouchableOpacity onPress={() => navigation.navigate('Cart', { item: item })}
-                    style={{ marginBottom: 10, flexDirection: 'row', borderBottomWidth: 0.5, borderBottomColor: colors.textLight, paddingBottom: 8 }}>
+                <View style={{ marginBottom: 10, flexDirection: 'row', borderBottomWidth: 0.5, borderBottomColor: colors.textLight, paddingBottom: 8 }}>
                     <View style={{ width: 100, alignItems: 'center' }}>
                         {/* <Text>Category here</Text> */}
                         <Image source={item.image}
                             style={{ width: 80, height: 80, borderRadius: 10, backgroundColor: 'white' }}
                         />
                         {quick == true ? (
-                            <View 
+                            <View
                                 style={{
                                     flexDirection: 'row',
                                     borderRadius: 4, alignItems: 'center', justifyContent: 'center', marginTop: 8,
 
                                 }}>
 
-                                <TouchableOpacity onPress={() => { qtyPlus > 1 ? homeRemoveQty(item) : itemDel(index) }}
-                                style={{ backgroundColor: colors.background, paddingVertical: 3, paddingHorizontal: 3, borderRadius: 4 }}>
+                                <TouchableOpacity onPress={() => { qtyPlus > 1 ? homeRemoveQty(index) : itemDel(index) }}
+                                    style={{ backgroundColor: colors.background, paddingVertical: 3, paddingHorizontal: 3, borderRadius: 4 }}>
                                     <MaterialCommunityIcons name="minus" size={17} color={colors.white}
                                     />
                                 </TouchableOpacity>
 
                                 <Text style={{ marginHorizontal: 15, color: colors.textLight }}>{qtyPlus}</Text>
 
-                                <TouchableOpacity onPress={() => homeAddQty(item)}
-                                style={{ backgroundColor: colors.background, paddingVertical: 3, paddingHorizontal: 3, borderRadius: 4 }}>
+                                <TouchableOpacity onPress={() => homeAddQty(index)}
+                                    style={{ backgroundColor: colors.background, paddingVertical: 3, paddingHorizontal: 3, borderRadius: 4 }}>
                                     <MaterialCommunityIcons name="plus" size={17} color={colors.white}
                                     />
                                 </TouchableOpacity>
 
                             </View>
                         ) : (
-                            <TouchableOpacity onPress={() => add_to_cart(item)}
+                            <TouchableOpacity onPress={() => AddCart(item)}
                                 style={{
                                     flexDirection: 'row', backgroundColor: colors.background, paddingHorizontal: 15,
                                     borderRadius: 4, alignItems: 'center', justifyContent: 'center', marginTop: 8, paddingVertical: 3
@@ -312,13 +149,13 @@ export default ProductCard = (props) => {
                             </TouchableOpacity>
                         )}
                     </View>
-                    <View style={{ width: 220, }}>
+                    <TouchableOpacity onPress={() => navigation.navigate('DetailView', { item: item })} style={{ width: 300, }}>
                         <Text style={{ fontFamily: 'Montserrat-Bold', fontSize: 16 }}>{item.title}</Text>
                         <Text style={{ fontFamily: 'Montserrat-Regular', fontSize: 12, marginTop: 6 }}>{item.description}</Text>
                         <Text style={{ fontFamily: 'Montserrat-Bold', marginTop: 6 }}>Rs. {item.price}</Text>
 
-                    </View>
-                </TouchableOpacity>
+                    </TouchableOpacity>
+                </View>
             ) : (
                 <View style={Styles.container}>
 
@@ -332,7 +169,7 @@ export default ProductCard = (props) => {
                         <Text style={Styles.price}>Rs.{Math.round(price) * qtyPlus}</Text>
 
                         <View style={Styles.quantityController}>
-                            <TouchableOpacity style={Styles.qtyPlus} onPress={() => adding(price)}>
+                            <TouchableOpacity style={Styles.qtyPlus} onPress={() => adding(price,index)}>
                                 <Feather name='plus' size={12} color={colors.secondary} />
                             </TouchableOpacity>
                             <Text style={Styles.count} >{qtyPlus}</Text>
@@ -341,7 +178,7 @@ export default ProductCard = (props) => {
                                 backgroundColor: qtyPlus > 1 ? colors.white : colors.textLight,
                                 borderColor: qtyPlus > 1 ? colors.primary : colors.textLight
 
-                            }]} key={index} onPress={() => { qtyPlus > 1 ? minus(price) : itemDel(index) }}>
+                            }]} key={index} onPress={() => { qtyPlus > 1 ? minus(price,index) : itemDel(index) }}>
                                 <Feather name={qtyPlus > 1 ? 'minus' : 'trash'} size={12} color={qtyPlus > 1 ? colors.primary : colors.white} />
                             </TouchableOpacity>
                         </View>

@@ -23,6 +23,7 @@ export default AddToCart = ({ route, navigation }) => {
     const [taxTotalAmount, setTaxTotalAmount] = useState(0)
     const [totalAmount, setTotalAmount] = useState(0)
     const isFocused = useIsFocused();
+    const [quantity, setQuantity] = useState(1)
 
     // const clearCartItem = () =>{
     //     Alert.alert(
@@ -159,19 +160,16 @@ export default AddToCart = ({ route, navigation }) => {
 
 
     const renderComponentItem = ({ item, index }) => {
-        console.warn(item.data);
         return (
-
-            
             <ProductCart
-                item={item.data}
+                item={item}
                 index={index}
                 itemId={item.id}
                 image={item.image}
                 title={item.title}
                 price={item.price}
                 qty={item.quantity}
-                navigation={() => navigation.navigate('Cart', { item: item })}
+                navigation={() => navigation.navigate('DetailView', { item: item })}
                 addQuantity={addQuantity}
                 removeQuantity={removeQuantity}
                 deleteItem={deleteItem}
@@ -225,8 +223,8 @@ export default AddToCart = ({ route, navigation }) => {
                             <Text
                                 style={{
                                     //   textAlign: "center",
-                                    fontSize: 24,
-                                    color: "#555",
+                                    fontSize: 20,
+                                    color: "#c5c5c5",
                                     fontFamily: "Poppins-Regular",
                                 }}
                             >

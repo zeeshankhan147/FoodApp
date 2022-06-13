@@ -33,43 +33,55 @@ export default Home = ({ navigation, route, props }) => {
     const isFocused = useIsFocused();
     const [catSelected, setCatSelected] = useState(null)
     const [quantity, setQuantity] = useState(1)
-    
-
+    const [popularData, setPopularData] = useState(popular)
+   
 
 
     function drawerOpening() {
         navigation.openDrawer()
     }
 
-    function categorySelection(item) {
-        setCatSelected(item.id)
+    function categorySelection(cat) {
+        setCatSelected(cat.id)
+        let data = [];
+        popular.map((item)=>{
+            if (item.category == cat.title) {
+                data.push(item)
+
+            }
+        
+        })
+        setPopularData(data)
+        
     }
 
-    function counterFunc() {
-        AsyncStorage.getItem('@cartItem').then((ct) => {
-
-            const CNTER = JSON.parse(ct);
-            const cft = Object.keys(CNTER).length;
-            setCounterState(cft)
-
+    function counterFunc (){
+        AsyncStorage.getItem('@cartItem').then((val)=>{
+            if (val != null) {
+                const COUNTER = JSON.parse(val);
+                let count = Object.keys(COUNTER).length;
+                setCounterState(count)
+                
+                
+            }
+            else{
+                
+                console.log('null');
+            }
         })
     }
     const plusMinus = (qty) => {
-        setQuantity(qty) 
+        setQuantity(qty)
     }
 
     const itemDel = (index) => {
-       
+
     }
 
 
 
     useEffect(() => {
         setCatSelected(1)
-        AsyncStorage.getItem('@userInfo').then((user) => {
-            console.log('infoooo', JSON.parse(user));
-        })
-
         counterFunc();
 
     }, [isFocused])
@@ -110,7 +122,7 @@ export default Home = ({ navigation, route, props }) => {
     }
     const renderPopularItem = ({ item }) => {
         return (
-            <TouchableOpacity key={item.id} onPress={() => navigation.navigate('Cart', { item: item })}>
+            <TouchableOpacity key={item.id} onPress={() => navigation.navigate('DetailView', { item: item })}>
                 <View style={[styles.popularCardWrapper,
                 {
                     marginLeft: item.id == 1 ? 30 : 0,
@@ -128,12 +140,8 @@ export default Home = ({ navigation, route, props }) => {
 
                         <View style={styles.popularBottomItem}>
 
-                            <View style={styles.addItemBtn}>
-                                <Feather name="plus" size={16} color={colors.black} />
-                            </View>
-
                             <View style={styles.ratingWrapper}>
-                                <MaterialCommunityIcons name="star" size={15} />
+                                <MaterialCommunityIcons name="star" size={15} color={colors.background} />
                                 <Text style={styles.ratingText}>{item.rating}</Text>
                             </View>
                         </View>
@@ -238,11 +246,11 @@ export default Home = ({ navigation, route, props }) => {
                 </View>
                 {/* Menu Item */}
                 <View style={{
-                    flex: 1, marginTop: 20, marginHorizontal: 0, marginBottom: 80,
+                    flex: 1, marginTop: 20, marginHorizontal: 10,paddingBottom:100
                 }}>
-                   
-                    {popular.map((item,index) => (
-                         <ProductCart
+
+                    {popularData.map((item, index) => (
+                        <ProductCart
                             from={'home'}
                             item={item}
                             index={index}
@@ -255,7 +263,7 @@ export default Home = ({ navigation, route, props }) => {
                             addHome={plusMinus}
                             removeHome={plusMinus}
                             deleteItem={itemDel}
-                         />
+                        />
                     ))}
                 </View>
             </ScrollView>
@@ -297,11 +305,7 @@ const styles = StyleSheet.create({
     bannerWrapper: {
         marginTop: 30,
         width: '100%',
-        height: '8%',
-
-
-
-
+        height: 150,
 
     },
     subTitle: {
@@ -433,6 +437,7 @@ const styles = StyleSheet.create({
         // elevation: 10,
         // marginBottom: 10,
         width: 300,
+        
 
 
     },
@@ -483,12 +488,13 @@ const styles = StyleSheet.create({
     ratingWrapper: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginLeft: 20,
+        marginLeft: 45,
+        marginBottom: 20
 
     },
     ratingText: {
         fontFamily: 'Montserrat-SemiBold',
-        marginLeft: 5,
+        marginLeft: 8,
         color: colors.textDark,
     },
     popularImageWrapper: {

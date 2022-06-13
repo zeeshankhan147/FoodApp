@@ -6,7 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // Import Screens
 import TabRoutes from './TabRoutes';
-import Cart from '../cart';
+import DetailView from './../DetailView'
 import ProductCart from '../productCart';
 import MyOrders from '../MyOrders';
 import AddToCart from '../addToCart';
@@ -34,7 +34,7 @@ function Route() {
       {/* <Drawer.Screen name="MyDrawer" component={MyDrawer} /> */}
       <Drawer.Screen name="Tab" component={TabRoutes} />
       {/* <Drawer.Screen name="MyOrders" component={MyOrders} /> */}
-      <Drawer.Screen name="Cart" component={Cart} />
+      <Drawer.Screen name="DetailView" component={DetailView} />
       <Drawer.Screen name="AddToCart" component={AddToCart} />
       <Drawer.Screen name="Register" component={Register} />
       <Drawer.Screen name="Search" component={Search} />
