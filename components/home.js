@@ -229,7 +229,7 @@ export default Home = ({ navigation, route, props }) => {
                     </View>
                 </View>
 
-                {/* popular */}
+                {/* populars */}
                 <View style={styles.popularWrapper}>
                     <Text style={styles.popularText}>20% Off Exclusive Deal</Text>
                     <View style={{ flex: 1, paddingVertical: 10, marginTop: 10 }}>
