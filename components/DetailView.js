@@ -5,7 +5,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
-import {_ADDTO_CART} from './CartAction';
+import {_ADDTO_CART} from './Redux/Actions/CartAction';
 
 const DetailView = ({ route, navigation }) => {
     const isFocused = useIsFocused();
@@ -104,15 +104,9 @@ const DetailView = ({ route, navigation }) => {
         setAddons(addonsArray)
 
     }
-    const removeAddons = (item) =>{ //Pending work remove addons.....
-        let tempAddons = addons;
-        // let tempIndex = null;
-        // tempAddons.map((value,index)=>{
-        //     if (value.id == item.id) {
-        //         tempIndex = index
-        //     }
-        // })
-        let index = tempAddons.map(function (item) { return item.id; }).indexOf(item.id);
+    const removeAddons = (id) =>{ 
+        let tempAddons = [...addons];
+        let index = tempAddons.map(function (item) { return item.id; }).indexOf(id.id);
         tempAddons.splice(index,1)
         setAddons(tempAddons)
     }

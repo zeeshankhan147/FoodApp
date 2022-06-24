@@ -5,7 +5,7 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 import colors from "../assets/colors/colors";
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {_ADDTO_CART, _UPDATE_CART} from './CartAction';
+import {_ADDTO_CART, _UPDATE_CART} from './Redux/Actions/CartAction';
 
 
 
