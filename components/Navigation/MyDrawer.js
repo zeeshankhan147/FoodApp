@@ -42,7 +42,6 @@ function MyDrawer(props) {
                 </TouchableOpacity> */}
                 
             <View style={{
-                // backgroundColor:'red',
                 flexDirection: 'row',
                 alignItems: 'center',
                 padding: 20,

@@ -6,6 +6,8 @@ import colors from "../assets/colors/colors";
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {_ADDTO_CART, _UPDATE_CART} from './Redux/Actions/CartAction';
+import {useDispatch, useSelector } from "react-redux";
+
 
 
 
@@ -31,6 +33,8 @@ export default ProductCard = (props) => {
     } = props;
     const [qtyPlus, setQtyPlus] = useState(qty)
     const [quick, setQuick] = useState(false)
+    const dispatch = useDispatch();
+    const  myCart = useSelector(state => state.cart.cartData)
 
     const AddCart = (item) =>{
         let data = {
@@ -41,7 +45,7 @@ export default ProductCard = (props) => {
             image: item.image,
             quantity: qtyPlus
         }
-        _ADDTO_CART(data)
+        dispatch(_ADDTO_CART(data)) 
         setQuick(true)
 
     }
@@ -49,12 +53,16 @@ export default ProductCard = (props) => {
     const homeAddQty = (itemIndex) => {
         setQtyPlus(qtyPlus + 1)
         addHome(qtyPlus + 1)
-        AsyncStorage.getItem('@cartItem').then((val) => {
-           let data = JSON.parse(val)
-            data[itemIndex].quantity = data[itemIndex].quantity + 1
-            _UPDATE_CART(data,itemIndex)
+        // AsyncStorage.getItem('@cartItem').then((val) => {
+        //    let data = JSON.parse(val)
+        //     data[itemIndex].quantity = data[itemIndex].quantity + 1
+        //     _UPDATE_CART(data,itemIndex)
 
-        })
+        // })
+        let cartData = myCart;
+        cartData[index].quantity = cartData[index].quantity + 1
+        dispatch(_UPDATE_CART(cartData))
+
         
 
     }
@@ -62,12 +70,15 @@ export default ProductCard = (props) => {
     const homeRemoveQty = (itemIndex) => {
         setQtyPlus(qtyPlus - 1)
         addHome(qtyPlus - 1)
-        AsyncStorage.getItem('@cartItem').then((val) => {
-            let data = JSON.parse(val)
-            data[itemIndex].quantity = data[itemIndex].quantity - 1
-            _UPDATE_CART(data,itemIndex)
+        // AsyncStorage.getItem('@cartItem').then((val) => {
+        //     let data = JSON.parse(val)
+        //     data[itemIndex].quantity = data[itemIndex].quantity - 1
+        //     _UPDATE_CART(data,itemIndex)
 
-        })
+        // })
+        let cartData = myCart;
+        cartData[index].quantity = cartData[index].quantity - 1
+        dispatch(_UPDATE_CART(cartData))
     }
 
     const adding = (price,itemIndex) => {

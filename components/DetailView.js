@@ -6,6 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
 import {_ADDTO_CART} from './Redux/Actions/CartAction';
+import {useDispatch, useSelector } from "react-redux";
 
 const DetailView = ({ route, navigation }) => {
     const isFocused = useIsFocused();
@@ -14,6 +15,8 @@ const DetailView = ({ route, navigation }) => {
     const { item } = route.params;
     const [counter, setCounter] = useState(0);
     const [addons, setAddons] = useState([])
+    const dispatch = useDispatch();
+    const  myCart = useSelector(state => state.cart.cartData)
 
     
     function counterFunc (){
@@ -89,8 +92,7 @@ const DetailView = ({ route, navigation }) => {
             image: item.image,
             quantity: qtyPlus
         }
-        _ADDTO_CART(data)
-        navigation.navigate('Home')
+        dispatch(_ADDTO_CART(data))
 
     }
     const addAddon = (item) =>{
@@ -152,10 +154,10 @@ const DetailView = ({ route, navigation }) => {
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.rightHeader} onPress={() => navigation.navigate('AddToCart')}>
-                        {counter > 0 ? (
+                        {myCart.length > 0 ? (
                             <View style={{position:'absolute',top:-8,right:-8, backgroundColor:colors.background,width:20,height:20,borderRadius:20,alignItems:'center',justifyContent:'center' }}>
                             <Text style={{color:colors.textDark,fontWeight:'600'}}>
-                               {counter}
+                               {myCart.length}
                             </Text>
                         </View>
                         ):(

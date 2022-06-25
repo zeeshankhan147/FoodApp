@@ -22,6 +22,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
 import BANNER_IMAGE from '../assets/images/banner1.png'
 import ProductCart from './productCart';
+import {useDispatch, useSelector } from "react-redux";
 
 Feather.loadFont();
 MaterialCommunityIcons.loadFont();
@@ -34,6 +35,9 @@ export default Home = ({ navigation, route, props }) => {
     const [catSelected, setCatSelected] = useState(null)
     const [quantity, setQuantity] = useState(1)
     const [popularData, setPopularData] = useState(popular)
+    // const dispatch = useDispatch();
+    const  myCart = useSelector(state => state.cart.cartData)
+
    
 
 
@@ -55,21 +59,21 @@ export default Home = ({ navigation, route, props }) => {
         
     }
 
-    function counterFunc (){
-        AsyncStorage.getItem('@cartItem').then((val)=>{
-            if (val != null) {
-                const COUNTER = JSON.parse(val);
-                let count = Object.keys(COUNTER).length;
-                setCounterState(count)
+    // function counterFunc (){
+    //     AsyncStorage.getItem('@cartItem').then((val)=>{
+    //         if (val != null) {
+    //             const COUNTER = JSON.parse(val);
+    //             let count = Object.keys(COUNTER).length;
+    //             setCounterState(count)
                 
                 
-            }
-            else{
+    //         }
+    //         else{
                 
-                console.log('null');
-            }
-        })
-    }
+    //             console.log('null');
+    //         }
+    //     })
+    // }
     const plusMinus = (qty) => {
         setQuantity(qty)
     }
@@ -82,7 +86,7 @@ export default Home = ({ navigation, route, props }) => {
 
     useEffect(() => {
         setCatSelected(1)
-        counterFunc();
+        // counterFunc();
 
     }, [isFocused])
 
@@ -162,11 +166,9 @@ export default Home = ({ navigation, route, props }) => {
 
     return (
 
-
         <View style={styles.container}>
-            <ScrollView contentInsetAdjustmentBehavior='automatic' showsVerticalScrollIndicator={false}>
-                {/* header */}
-                <SafeAreaView style={styles.navBar}>
+             {/* header */}
+             <SafeAreaView style={styles.navBar}>
                     <TouchableOpacity onPress={() => drawerOpening()}>
                         {/* <Image style={styles.dp} source={require('../assets/images/profile.jpg')} /> */}
                         <Feather style={styles.ic_menu} name='menu' size={26} color={colors.textDark} />
@@ -174,10 +176,10 @@ export default Home = ({ navigation, route, props }) => {
 
 
                     <TouchableOpacity style={styles.rightHeader} onPress={() => navigation.navigate('AddToCart')}>
-                        {counter > 0 ? (
+                        {myCart.length > 0 ? (
                             <View style={{ position: 'absolute', top: -8, right: -8, backgroundColor: colors.background, width: 20, height: 20, borderRadius: 20, alignItems: 'center', justifyContent: 'center' }}>
                                 <Text style={{ color: colors.textDark, fontWeight: '600' }}>
-                                    {counter}
+                                    {myCart.length}
                                 </Text>
                             </View>
                         ) : (
@@ -186,6 +188,11 @@ export default Home = ({ navigation, route, props }) => {
                         <MaterialCommunityIcons name='shopping' size={22} color={colors.white} />
                     </TouchableOpacity>
                 </SafeAreaView>
+            <ScrollView 
+                stickyHeaderIndices={[0,1,2]}
+                scrollEnabled={true}
+                contentInsetAdjustmentBehavior='automatic' showsVerticalScrollIndicator={false}>
+               
 
                 {/* Banner */}
                 <View style={styles.bannerWrapper}>
@@ -199,7 +206,7 @@ export default Home = ({ navigation, route, props }) => {
 
                 {/* search */}
                 <View style={styles.searchWrapper} >
-
+                    <View style={styles.searchBox} >
                     <TouchableOpacity>
                         <Feather name="search" size={20} color={colors.textDark} />
                     </TouchableOpacity>
@@ -212,6 +219,8 @@ export default Home = ({ navigation, route, props }) => {
 
                             style={styles.searchText}></TextInput>
                     </View>
+                    </View>
+                    
                 </View>
 
                 {/* category */}
@@ -276,7 +285,7 @@ export default Home = ({ navigation, route, props }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-
+        backgroundColor:'#f2f2f2'
     },
 
     navBar: {
@@ -285,6 +294,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 30,
         marginTop: 40,
         alignItems: 'center',
+        marginBottom:20,
     },
     rightHeader: {
         height: 40,
@@ -322,15 +332,20 @@ const styles = StyleSheet.create({
 
     },
     searchWrapper: {
+        marginTop: 10,
+        backgroundColor:'#f2f2f2',
+        
+
+    },
+    searchBox:{
         flexDirection: 'row',
+        marginTop:20,
+        marginBottom:20,
         paddingHorizontal: 20,
-        marginTop: 30,
         alignItems: 'center',
         backgroundColor: '#d7d7d7f5',
         marginHorizontal: 30,
         borderRadius: 8,
-
-
     },
     searchTextWrapper: {
         marginLeft: 14,
@@ -345,12 +360,11 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: colors.textLight,
 
-
     },
     categoryWrapper: {
-        marginTop: 30,
-
-
+        marginTop: 20,
+        backgroundColor:'#f2f2f2',
+        
     },
     categoryText: {
         paddingLeft: 30,

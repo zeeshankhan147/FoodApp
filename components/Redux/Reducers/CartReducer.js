@@ -1,4 +1,4 @@
-import {ADD_TO_CART,UPDATE_CART} from "../actions/types"
+import {ADD_TO_CART,UPDATE_CART} from "../Actions/types"
 
 
 const INIT_STATE ={

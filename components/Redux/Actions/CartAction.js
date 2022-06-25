@@ -2,40 +2,6 @@
 import axios from "axios"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ADD_TO_CART, UPDATE_CART,} from "./types"
-export const addToCart = (product) => {
-    console.log('CartItemmm',product);
-    AsyncStorage.getItem(`@cart${MERCHANT_ID}`)
-        .then((item) => {
-            let pro = JSON.parse(item)
-            if (pro) {
-                pro.push(product)
-
-            }
-            else {
-
-                pro = [product]
-            }
-            AsyncStorage.setItem(`@cart${MERCHANT_ID}`, JSON.stringify(pro))
-            AsyncStorage.setItem(`@cartReciept${MERCHANT_ID}`, JSON.stringify(pro))
-            console.log(pro)
-        })
-    return (dispatch) => {
-        dispatch({
-            type: ADD_TO_CART,
-            data: product
-        })
-    }
-}
-
-export const updateCart = (product) => {
-    AsyncStorage.setItem(`@cart${MERCHANT_ID}`, JSON.stringify(product))
-    return (dispatch) => {
-        dispatch({
-            type: UPDATE_CART,
-            data: product
-        })
-    }
-}
 
 export const _ADDTO_CART = (item) => {
     const datarray = [];
