@@ -36,6 +36,26 @@ const popular = [
                 name:'Garlic',
                 image: require('../images/garlic.png'),
             },
+            {
+                id:'5',
+                name:'Ham',
+                image: require('../images/ham.png'),
+            },
+            {
+                id:'6',
+                name:'Tomato',
+                image: require('../images/tomato.png'),
+            },
+            {
+                id:'7',
+                name:'Cheese',
+                image: require('../images/cheese.png'),
+            },
+            {
+                id:'8',
+                name:'Garlic',
+                image: require('../images/garlic.png'),
+            },
         ],
         
         

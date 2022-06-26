@@ -19,23 +19,26 @@ const DetailView = ({ route, navigation }) => {
     const  myCart = useSelector(state => state.cart.cartData)
 
     
-    function counterFunc (){
-        AsyncStorage.getItem('@cartItem').then((val)=>{
-            if (val != null) {
-                const COUNTER = JSON.parse(val);
-                let count = Object.keys(COUNTER).length;
-                setCounter(count)
+    // function counterFunc (){
+    //     AsyncStorage.getItem('@cartItem').then((val)=>{
+    //         if (val != null) {
+    //             const COUNTER = JSON.parse(val);
+    //             let count = Object.keys(COUNTER).length;
+    //             setCounter(count)
                 
                 
-            }
-            else{
-                console.log('null');
-            }
-        })
-    }
+    //         }
+    //         else{
+    //             console.log('null');
+    //         }
+    //     })
+    // }
     
     useEffect(()=>{
-        counterFunc();
+        // counterFunc();
+        return()=>{
+            setAddons([])
+        }
         
     },[isFocused])
 
@@ -86,6 +89,7 @@ const DetailView = ({ route, navigation }) => {
     const AddCart = (item) =>{
         let data = {
             cart: item,
+            addons:addons,
             id: item.id,
             title: item.title,
             price: item.price,

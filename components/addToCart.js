@@ -7,6 +7,9 @@ import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ProductCart from './productCart';
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
+import {useDispatch, useSelector } from "react-redux";
+import { _REMOVE_CART } from './Redux/Actions/CartAction';
+
 
 
 
@@ -24,6 +27,9 @@ export default AddToCart = ({ route, navigation }) => {
     const [totalAmount, setTotalAmount] = useState(0)
     const isFocused = useIsFocused();
     const [quantity, setQuantity] = useState(1)
+    const dispatch = useDispatch();
+    const  myCart = useSelector(state => state.cart.cartData)
+
 
     // const clearCartItem = () =>{
     //     Alert.alert(
@@ -74,15 +80,11 @@ export default AddToCart = ({ route, navigation }) => {
     }
 
     const del = (index) => {
-        let temp = [];
-        cartData.splice(index, 1) //delete index of item from array
+        let data = [...cartData]
+        data.splice(index,1)
+        setCartData(data)
+        dispatch(_REMOVE_CART(data))
 
-        cartData.forEach(item => {
-            temp.push(item)
-        });
-
-        AsyncStorage.setItem('@cartItem', JSON.stringify(temp))
-        setCartData(temp)
     }
 
 
@@ -113,7 +115,6 @@ export default AddToCart = ({ route, navigation }) => {
     }
 
     function updateAmount(item) {
-        console.log('itemmm', item)
         let subTotal = 0;
         let discountTotal = 0;
         let taxTotal = 0;
@@ -135,8 +136,7 @@ export default AddToCart = ({ route, navigation }) => {
 
 
     useEffect(() => {
-
-        console.log('dataaas', cartData);
+        setCartData(myCart)
 
         AsyncStorage.getItem('@cartItem').then((value) => {
             const data = JSON.parse(value)
@@ -163,6 +163,7 @@ export default AddToCart = ({ route, navigation }) => {
         return (
             <ProductCart
                 item={item}
+                addons={item.addons}
                 index={index}
                 itemId={item.id}
                 image={item.image}
@@ -201,9 +202,8 @@ export default AddToCart = ({ route, navigation }) => {
 
                 </View>
             </SafeAreaView>
+
             <Text style={Styles.cartTitle}>Cart Item</Text>
-
-
 
             <ScrollView style={Styles.flexContainer} contentInsetAdjustmentBehavior='automatic' showsVerticalScrollIndicator={false}>
                 <FlatList
@@ -281,7 +281,7 @@ export default AddToCart = ({ route, navigation }) => {
 const Styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
-        backgroundColor: colors.white
+        backgroundColor: '#eee'
 
     },
     flexContainer: {

@@ -7,8 +7,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {_ADDTO_CART, _UPDATE_CART} from './Redux/Actions/CartAction';
 import {useDispatch, useSelector } from "react-redux";
-
-
+import { SwipeListView } from 'react-native-swipe-list-view';
 
 
 export default ProductCard = (props) => {
@@ -18,6 +17,7 @@ export default ProductCard = (props) => {
         image,
         title,
         price,
+        addons,
         minusQty,
         qty,
         item,
@@ -50,7 +50,7 @@ export default ProductCard = (props) => {
 
     }
 
-    const homeAddQty = (itemIndex) => {
+    const homeAddQty = async (itemIndex) => {
         setQtyPlus(qtyPlus + 1)
         addHome(qtyPlus + 1)
         // AsyncStorage.getItem('@cartItem').then((val) => {
@@ -61,13 +61,13 @@ export default ProductCard = (props) => {
         // })
         let cartData = myCart;
         cartData[index].quantity = cartData[index].quantity + 1
-        dispatch(_UPDATE_CART(cartData))
+        await dispatch(_UPDATE_CART(cartData))
 
         
 
     }
 
-    const homeRemoveQty = (itemIndex) => {
+    const homeRemoveQty = async (itemIndex) => {
         setQtyPlus(qtyPlus - 1)
         addHome(qtyPlus - 1)
         // AsyncStorage.getItem('@cartItem').then((val) => {
@@ -77,28 +77,33 @@ export default ProductCard = (props) => {
 
         // })
         let cartData = myCart;
-        cartData[index].quantity = cartData[index].quantity - 1
-        dispatch(_UPDATE_CART(cartData))
+        cartData[index].quantity = cartData[index].quantity*1 - 1
+        await dispatch(_UPDATE_CART(cartData))
     }
 
-    const adding = (price,itemIndex) => {
+    const adding = async (price,itemIndex) => {
         setQtyPlus(qtyPlus + 1)
         from != 'home' ? addQuantity(price, qtyPlus + 1) : null
-        AsyncStorage.getItem('@cartItem').then((val) => {
-            let data = JSON.parse(val)
-                data[itemIndex].quantity = data[itemIndex].quantity + 1
-                _UPDATE_CART(data)
-        })
-
+        // AsyncStorage.getItem('@cartItem').then((val) => {
+        //     let data = JSON.parse(val)
+        //         data[itemIndex].quantity = data[itemIndex].quantity + 1
+        //         _UPDATE_CART(data)
+        // })
+        let cartData = myCart;
+        cartData[index].quantity = cartData[index].quantity + 1
+        await dispatch(_UPDATE_CART(cartData))
     }
-    const minus = (price,itemIndex) => {
+    const minus = async (price,itemIndex) => {
         setQtyPlus(qtyPlus - 1)
         from != 'home' ? addQuantity(price, qtyPlus - 1) : null
-        AsyncStorage.getItem('@cartItem').then((val) => {
-            let data = JSON.parse(val)
-                data[itemIndex].quantity = data[itemIndex].quantity - 1
-                _UPDATE_CART(data)
-        })
+        // AsyncStorage.getItem('@cartItem').then((val) => {
+        //     let data = JSON.parse(val)
+        //         data[itemIndex].quantity = data[itemIndex].quantity - 1
+        //         _UPDATE_CART(data)
+        // })
+        let cartData = myCart;
+        cartData[index].quantity = cartData[index].quantity - 1
+        await dispatch(_UPDATE_CART(cartData))
     }
     const itemDel = (index) => {
         deleteItem(index)
@@ -168,8 +173,14 @@ export default ProductCard = (props) => {
                     </TouchableOpacity>
                 </View>
             ) : (
-                <View style={Styles.container}>
-
+                <TouchableOpacity 
+                onLongPress={() => {
+                    itemDel(index)
+                }}
+                    delayLongPress={1000}
+                    activeOpacity={0.8}
+                    style={Styles.container}>
+                        
                     <TouchableOpacity style={Styles.imageView} key={itemId} onPress={() => navigation()}>
                         <Image style={Styles.image} source={image} />
                     </TouchableOpacity>
@@ -177,6 +188,11 @@ export default ProductCard = (props) => {
                     <View style={Styles.textView}>
 
                         <Text style={Styles.title}>{title}</Text>
+                        {addons && addons.map((item,index)=>{
+                            return <Text style={Styles.addon}>{`(${index +1}) ${item.name}`}</Text>
+                               
+                            
+                        })}
                         <Text style={Styles.price}>Rs.{Math.round(price) * qtyPlus}</Text>
 
                         <View style={Styles.quantityController}>
@@ -196,7 +212,7 @@ export default ProductCard = (props) => {
 
                     </View>
 
-                </View>
+                </TouchableOpacity>
             )}
         </View>
 
@@ -248,24 +264,39 @@ const Styles = StyleSheet.create({
         flexDirection: 'row',
         // justifyContent:'space-between',
         backgroundColor: '#fff',
-        // marginHorizontal:25,
+        marginHorizontal:25,
+        paddingVertical:10,
         // marginTop:20,
         // borderRadius:20,
-        paddingHorizontal: 20,
-        borderBottomWidth: 0.5,
+        paddingHorizontal: 10,
+        // borderBottomWidth: 0.5,
         borderBottomColor: 'gray',
+        borderRadius:10,
+        shadowOffset:{
+            width:0,
+            height:5
+        },
+        elevation:4,
+        marginBottom:10,
 
 
     },
     imageView: {
         justifyContent: 'center',
+        alignItems:'center',
         width: 80,
         height: 70,
+        borderColor:'grey',
+        borderWidth:0.3,
+        // backgroundColor:'red',
+        borderRadius:10,
+        
+        
 
     },
     image: {
-        width: 80,
-        height: 80,
+        width: 70,
+        height: 70,
         resizeMode: 'contain'
     },
     textView: {
@@ -277,8 +308,17 @@ const Styles = StyleSheet.create({
     },
     title: {
         fontSize: 12,
-        fontWeight: '400'
+        fontWeight: '600'
 
+    },
+    addon: {
+        fontSize: 10,
+        color: Colors.textLight,
+        fontWeight: '400',
+        width:'60%',
+        // position:'absolute',
+        // right:22,
+        // top:26
     },
     price: {
         fontSize: 10,

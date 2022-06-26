@@ -12,7 +12,6 @@ import {
     TextInput,
     Dimensions
 } from 'react-native';
-
 import colors from '../assets/colors/colors';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -22,7 +21,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
 import BANNER_IMAGE from '../assets/images/banner1.png'
 import ProductCart from './productCart';
-import {useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { _GET_CART } from './Redux/Actions/CartAction';
+import Banners from '../assets/images/headerBanners'
 
 Feather.loadFont();
 MaterialCommunityIcons.loadFont();
@@ -35,10 +36,10 @@ export default Home = ({ navigation, route, props }) => {
     const [catSelected, setCatSelected] = useState(null)
     const [quantity, setQuantity] = useState(1)
     const [popularData, setPopularData] = useState(popular)
-    // const dispatch = useDispatch();
-    const  myCart = useSelector(state => state.cart.cartData)
+    const dispatch = useDispatch();
+    const myCart = useSelector(state => state.cart.cartData)
 
-   
+
 
 
     function drawerOpening() {
@@ -48,15 +49,15 @@ export default Home = ({ navigation, route, props }) => {
     function categorySelection(cat) {
         setCatSelected(cat.id)
         let data = [];
-        popular.map((item)=>{
+        popular.map((item) => {
             if (item.category == cat.title) {
                 data.push(item)
 
             }
-        
+
         })
         setPopularData(data)
-        
+
     }
 
     // function counterFunc (){
@@ -65,11 +66,11 @@ export default Home = ({ navigation, route, props }) => {
     //             const COUNTER = JSON.parse(val);
     //             let count = Object.keys(COUNTER).length;
     //             setCounterState(count)
-                
-                
+
+
     //         }
     //         else{
-                
+
     //             console.log('null');
     //         }
     //     })
@@ -82,10 +83,9 @@ export default Home = ({ navigation, route, props }) => {
 
     }
 
-
-
     useEffect(() => {
         setCatSelected(1)
+        dispatch(_GET_CART)
         // counterFunc();
 
     }, [isFocused])
@@ -162,65 +162,90 @@ export default Home = ({ navigation, route, props }) => {
         );
 
     }
+    const renderBanner = ({ item }) => {
+        return (
+            <View style={[
+                {
+                    marginHorizontal:16,
+                    marginLeft:item.id == 1 ? 30 : 0,
+                    
+                }
+            ]}>
+                {/* <Text>{item.id}</Text> */}
+                     <Image source={item.image}
+                    style={{ height:'100%', width:300, borderRadius: 10 }}
+                    resizeMode='contain'
+                />
+            </View>
+        )
+    }
 
 
     return (
 
         <View style={styles.container}>
-             {/* header */}
-             <SafeAreaView style={styles.navBar}>
-                    <TouchableOpacity onPress={() => drawerOpening()}>
-                        {/* <Image style={styles.dp} source={require('../assets/images/profile.jpg')} /> */}
-                        <Feather style={styles.ic_menu} name='menu' size={26} color={colors.textDark} />
-                    </TouchableOpacity>
+            {/* header */}
+            <SafeAreaView style={styles.navBar}>
+                <TouchableOpacity onPress={() => drawerOpening()}>
+                    {/* <Image style={styles.dp} source={require('../assets/images/profile.jpg')} /> */}
+                    <Feather style={styles.ic_menu} name='menu' size={26} color={colors.textDark} />
+                </TouchableOpacity>
 
 
-                    <TouchableOpacity style={styles.rightHeader} onPress={() => navigation.navigate('AddToCart')}>
-                        {myCart.length > 0 ? (
-                            <View style={{ position: 'absolute', top: -8, right: -8, backgroundColor: colors.background, width: 20, height: 20, borderRadius: 20, alignItems: 'center', justifyContent: 'center' }}>
-                                <Text style={{ color: colors.textDark, fontWeight: '600' }}>
-                                    {myCart.length}
-                                </Text>
-                            </View>
-                        ) : (
-                            <View></View>
-                        )}
-                        <MaterialCommunityIcons name='shopping' size={22} color={colors.white} />
-                    </TouchableOpacity>
-                </SafeAreaView>
-            <ScrollView 
-                stickyHeaderIndices={[0,1,2]}
+                <TouchableOpacity style={styles.rightHeader} onPress={() => navigation.navigate('AddToCart')}>
+                    {myCart.length > 0 ? (
+                        <View style={{ position: 'absolute', top: -8, right: -8, backgroundColor: colors.background, width: 20, height: 20, borderRadius: 20, alignItems: 'center', justifyContent: 'center' }}>
+                            <Text style={{ color: colors.textDark, fontWeight: '600' }}>
+                                {myCart.length}
+                            </Text>
+                        </View>
+                    ) : (
+                        <View></View>
+                    )}
+                    <MaterialCommunityIcons name='shopping' size={22} color={colors.white} />
+                </TouchableOpacity>
+            </SafeAreaView>
+            <ScrollView
+                stickyHeaderIndices={[0, 1]}
                 scrollEnabled={true}
                 contentInsetAdjustmentBehavior='automatic' showsVerticalScrollIndicator={false}>
-               
+
 
                 {/* Banner */}
                 <View style={styles.bannerWrapper}>
-                    <View style={{ paddingHorizontal: 30 }} >
-                        <Image source={BANNER_IMAGE}
+
+                    <FlatList
+                        data={Banners}
+                        renderItem={renderBanner}
+                        keyExtractor={item => item.id}
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                        contentInsetAdjustmentBehavior='automatic'
+                    />
+                    {/* <Image source={BANNER_IMAGE}
                             style={{ height: '100%', width: '100%', borderRadius: 10 }}
                             resizeMode="cover"
-                        />
-                    </View>
+                        /> */}
+
                 </View>
 
                 {/* search */}
                 <View style={styles.searchWrapper} >
                     <View style={styles.searchBox} >
-                    <TouchableOpacity>
-                        <Feather name="search" size={20} color={colors.textDark} />
-                    </TouchableOpacity>
-                    <View style={styles.searchTextWrapper}>
-                        <TextInput
-                            onFocus={() => navigation.navigate('Search')}
-                            autoCapitalize="words"
-                            placeholder={'Explore your food'}
+                        <TouchableOpacity>
+                            <Feather name="search" size={20} color={colors.textDark} />
+                        </TouchableOpacity>
+                        <View style={styles.searchTextWrapper}>
+                            <TextInput
+                                onFocus={() => navigation.navigate('Search')}
+                                autoCapitalize="words"
+                                placeholder={'Explore your food'}
 
 
-                            style={styles.searchText}></TextInput>
+                                style={styles.searchText}></TextInput>
+                        </View>
                     </View>
-                    </View>
-                    
+
                 </View>
 
                 {/* category */}
@@ -255,7 +280,7 @@ export default Home = ({ navigation, route, props }) => {
                 </View>
                 {/* Menu Item */}
                 <View style={{
-                    flex: 1, marginTop: 20, marginHorizontal: 10,paddingBottom:100
+                    flex: 1, marginTop: 20, marginHorizontal: 10, paddingBottom: 100
                 }}>
 
                     {popularData.map((item, index) => (
@@ -285,7 +310,7 @@ export default Home = ({ navigation, route, props }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor:'#f2f2f2'
+        backgroundColor: '#f2f2f2'
     },
 
     navBar: {
@@ -294,7 +319,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 30,
         marginTop: 40,
         alignItems: 'center',
-        marginBottom:20,
+        marginBottom: 20,
     },
     rightHeader: {
         height: 40,
@@ -313,7 +338,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     bannerWrapper: {
-        marginTop: 30,
+        marginTop: 20,
         width: '100%',
         height: 150,
 
@@ -333,14 +358,14 @@ const styles = StyleSheet.create({
     },
     searchWrapper: {
         marginTop: 10,
-        backgroundColor:'#f2f2f2',
-        
+        backgroundColor: '#f2f2f2',
+
 
     },
-    searchBox:{
+    searchBox: {
         flexDirection: 'row',
-        marginTop:20,
-        marginBottom:20,
+        marginTop: 20,
+        marginBottom: 20,
         paddingHorizontal: 20,
         alignItems: 'center',
         backgroundColor: '#d7d7d7f5',
@@ -363,8 +388,8 @@ const styles = StyleSheet.create({
     },
     categoryWrapper: {
         marginTop: 20,
-        backgroundColor:'#f2f2f2',
-        
+        backgroundColor: '#f2f2f2',
+
     },
     categoryText: {
         paddingLeft: 30,
@@ -451,7 +476,7 @@ const styles = StyleSheet.create({
         // elevation: 10,
         // marginBottom: 10,
         width: 300,
-        
+
 
 
     },
