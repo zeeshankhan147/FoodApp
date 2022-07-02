@@ -8,7 +8,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import ProductCart from './productCart';
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 import {useDispatch, useSelector } from "react-redux";
-import { _REMOVE_CART } from './Redux/Actions/CartAction';
+import { removeAllCart, removeCart } from './Redux/Actions/CartAction';
 
 
 
@@ -19,7 +19,6 @@ export default AddToCart = ({ route, navigation }) => {
     let DiscountPercent = 50;
     let TaxPercent = 20;
     let deliveryFee = 50;
-    const [cartData, setCartData] = useState([]);
     // const [quantity, setQuantity] = useState(1)
     const [updateTotalAmount, setUpdateTotalAmount] = useState(0)
     const [discountTotalAmount, setDiscountTotalAmount] = useState(0)
@@ -31,30 +30,27 @@ export default AddToCart = ({ route, navigation }) => {
     const  myCart = useSelector(state => state.cart.cartData)
 
 
-    // const clearCartItem = () =>{
-    //     Alert.alert(
-    //         "Clear All",
-    //         "Do you want to clear all item from cart ?",
-    //         [
-    //             {
-    //                 text: "Cancel",
-    //                 onPress: () => console.log("Cancel Pressed"),
-    //                 style: "cancel",
-    //             },
-    //             {
-    //                 text: "OK",
-    //                 onPress: () => clear()
-    //             },
-    //         ],
-    //         { cancelable: false }
-    //     )
+    const clearCartItem = () =>{
+        Alert.alert(
+            "Clear All",
+            "Do you want to clear all item from cart ?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel",
+                },
+                {
+                    text: "OK",
+                    onPress: () => dispatch(removeAllCart())
+                },
+            ],
+            { cancelable: false }
+        )
 
 
-    // }
-    // const clear = () =>{
-    //     setCartData([])
-    //     AsyncStorage.setItem('@cartItem', JSON.stringify([]))
-    // }
+    }
+ 
 
     const deleteItem = (index) => {
 
@@ -80,10 +76,9 @@ export default AddToCart = ({ route, navigation }) => {
     }
 
     const del = (index) => {
-        let data = [...cartData]
+        let data = [...myCart]
         data.splice(index,1)
-        setCartData(data)
-        dispatch(_REMOVE_CART(data))
+        dispatch(removeCart(data))
 
     }
 
@@ -120,9 +115,9 @@ export default AddToCart = ({ route, navigation }) => {
         let taxTotal = 0;
         let grandTotal = 0;
         item.map((i) => {
-            subTotal += i.price;
-            discountTotal += (i.price * DiscountPercent / 100);
-            taxTotal += (i.price * TaxPercent / 100);
+            subTotal += i.price * i.quantity;
+            discountTotal += ((i.price * DiscountPercent / 100)* i.quantity);
+            taxTotal += ((i.price * TaxPercent / 100)* i.quantity);
 
         })
         grandTotal = discountTotal + taxTotal;
@@ -136,21 +131,7 @@ export default AddToCart = ({ route, navigation }) => {
 
 
     useEffect(() => {
-        setCartData(myCart)
-
-        AsyncStorage.getItem('@cartItem').then((value) => {
-            const data = JSON.parse(value)
-            if (data != null) {
-                // console.log('milgya_data ', data);
-                setCartData(data)
-                updateAmount(data)
-
-            }
-            else {
-                console.log('something else');
-            }
-        })
-
+      
         // Will Unmount //
         return () => {
 
@@ -193,11 +174,14 @@ export default AddToCart = ({ route, navigation }) => {
                             <Feather name='chevron-left' size={12} color={colors.textDark} />
                         </View>
                     </TouchableOpacity>
-                    {/* <TouchableOpacity onPress={() =>  clearCartItem()}>
-                        <View style={Styles.rightHeader}>
-                            <Feather name='trash' size={16} color={colors.textDark} />
-                        </View>
-                    </TouchableOpacity> */}
+                    
+                   {myCart.length > 0 ?(
+                     <TouchableOpacity onPress={() =>  clearCartItem()}>
+                     <View style={Styles.rightHeader}>
+                         <Feather name='trash' size={16} color={colors.textDark} />
+                     </View>
+                 </TouchableOpacity>
+                   ):(null)}
 
 
                 </View>
@@ -207,7 +191,7 @@ export default AddToCart = ({ route, navigation }) => {
 
             <ScrollView style={Styles.flexContainer} contentInsetAdjustmentBehavior='automatic' showsVerticalScrollIndicator={false}>
                 <FlatList
-                    data={cartData}
+                    data={myCart}
                     renderItem={renderComponentItem}
                     keyExtractor={item => item.id}
                     ListEmptyComponent={
@@ -241,7 +225,7 @@ export default AddToCart = ({ route, navigation }) => {
 
 
 
-            {cartData.length > 0 ? (
+            {myCart.length > 0 ? (
                 <View style={Styles.modal}>
 
                     <View style={{ paddingHorizontal: 30, marginTop: 30, marginBottom: 90, justifyContent: 'center', flexDirection: 'row' }}>

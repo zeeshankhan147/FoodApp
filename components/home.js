@@ -22,7 +22,7 @@ import { useIsFocused } from '@react-navigation/native';
 import BANNER_IMAGE from '../assets/images/banner1.png'
 import ProductCart from './productCart';
 import { useDispatch, useSelector } from "react-redux";
-import { _GET_CART } from './Redux/Actions/CartAction';
+import { getCart } from './Redux/Actions/CartAction';
 import Banners from '../assets/images/headerBanners'
 
 Feather.loadFont();
@@ -38,8 +38,6 @@ export default Home = ({ navigation, route, props }) => {
     const [popularData, setPopularData] = useState(popular)
     const dispatch = useDispatch();
     const myCart = useSelector(state => state.cart.cartData)
-
-
 
 
     function drawerOpening() {
@@ -60,21 +58,6 @@ export default Home = ({ navigation, route, props }) => {
 
     }
 
-    // function counterFunc (){
-    //     AsyncStorage.getItem('@cartItem').then((val)=>{
-    //         if (val != null) {
-    //             const COUNTER = JSON.parse(val);
-    //             let count = Object.keys(COUNTER).length;
-    //             setCounterState(count)
-
-
-    //         }
-    //         else{
-
-    //             console.log('null');
-    //         }
-    //     })
-    // }
     const plusMinus = (qty) => {
         setQuantity(qty)
     }
@@ -85,8 +68,7 @@ export default Home = ({ navigation, route, props }) => {
 
     useEffect(() => {
         setCatSelected(1)
-        dispatch(_GET_CART)
-        // counterFunc();
+        dispatch(getCart())
 
     }, [isFocused])
 

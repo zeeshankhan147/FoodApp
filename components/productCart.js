@@ -5,7 +5,7 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 import colors from "../assets/colors/colors";
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {_ADDTO_CART, _UPDATE_CART} from './Redux/Actions/CartAction';
+import {addToCartAction, updateCart} from './Redux/Actions/CartAction';
 import {useDispatch, useSelector } from "react-redux";
 import { SwipeListView } from 'react-native-swipe-list-view';
 
@@ -38,72 +38,54 @@ export default ProductCard = (props) => {
 
     const AddCart = (item) =>{
         let data = {
-            cart: item,
             id: item.id,
             title: item.title,
             price: item.price,
             image: item.image,
             quantity: qtyPlus
         }
-        dispatch(_ADDTO_CART(data)) 
+        dispatch(addToCartAction(data)) 
         setQuick(true)
 
     }
 
-    const homeAddQty = async (itemIndex) => {
+    const homeAddQty =  (itemIndex) => {
         setQtyPlus(qtyPlus + 1)
         addHome(qtyPlus + 1)
-        // AsyncStorage.getItem('@cartItem').then((val) => {
-        //    let data = JSON.parse(val)
-        //     data[itemIndex].quantity = data[itemIndex].quantity + 1
-        //     _UPDATE_CART(data,itemIndex)
 
-        // })
-        let cartData = myCart;
-        cartData[index].quantity = cartData[index].quantity + 1
-        await dispatch(_UPDATE_CART(cartData))
-
-        
+        let data = myCart;
+        console.warn(data.length);
+        data[index].quantity = data[index].quantity + 1
+         dispatch(updateCart(data))
 
     }
 
-    const homeRemoveQty = async (itemIndex) => {
+    const homeRemoveQty =  (itemIndex) => {
         setQtyPlus(qtyPlus - 1)
         addHome(qtyPlus - 1)
-        // AsyncStorage.getItem('@cartItem').then((val) => {
-        //     let data = JSON.parse(val)
-        //     data[itemIndex].quantity = data[itemIndex].quantity - 1
-        //     _UPDATE_CART(data,itemIndex)
 
-        // })
-        let cartData = myCart;
-        cartData[index].quantity = cartData[index].quantity*1 - 1
-        await dispatch(_UPDATE_CART(cartData))
+        let data = myCart;
+        data[index].quantity = data[index].quantity - 1
+         dispatch(updateCart(data))
     }
 
     const adding = async (price,itemIndex) => {
+        alert('add')
         setQtyPlus(qtyPlus + 1)
         from != 'home' ? addQuantity(price, qtyPlus + 1) : null
-        // AsyncStorage.getItem('@cartItem').then((val) => {
-        //     let data = JSON.parse(val)
-        //         data[itemIndex].quantity = data[itemIndex].quantity + 1
-        //         _UPDATE_CART(data)
-        // })
-        let cartData = myCart;
-        cartData[index].quantity = cartData[index].quantity + 1
-        await dispatch(_UPDATE_CART(cartData))
+    
+        let data = myCart;
+        data[index].quantity = data[index].quantity + 1
+        dispatch(updateCart(data))
     }
     const minus = async (price,itemIndex) => {
+        alert('minu')
         setQtyPlus(qtyPlus - 1)
         from != 'home' ? addQuantity(price, qtyPlus - 1) : null
-        // AsyncStorage.getItem('@cartItem').then((val) => {
-        //     let data = JSON.parse(val)
-        //         data[itemIndex].quantity = data[itemIndex].quantity - 1
-        //         _UPDATE_CART(data)
-        // })
-        let cartData = myCart;
-        cartData[index].quantity = cartData[index].quantity - 1
-        await dispatch(_UPDATE_CART(cartData))
+     
+        let data = myCart;
+        data[index].quantity = data[index].quantity - 1
+        dispatch(updateCart(data))
     }
     const itemDel = (index) => {
         deleteItem(index)
@@ -138,7 +120,7 @@ export default ProductCard = (props) => {
 
                                 }}>
 
-                                <TouchableOpacity onPress={() => { qtyPlus > 1 ? homeRemoveQty(index) : itemDel(index) }}
+                                <TouchableOpacity onPress={() =>  qtyPlus > 1 ? homeRemoveQty(index) : itemDel(index) }
                                     style={{ backgroundColor: colors.background, paddingVertical: 3, paddingHorizontal: 3, borderRadius: 4 }}>
                                     <MaterialCommunityIcons name="minus" size={17} color={colors.white}
                                     />

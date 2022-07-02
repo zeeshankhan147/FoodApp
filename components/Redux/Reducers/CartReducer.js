@@ -1,4 +1,4 @@
-import {ADD_TO_CART,UPDATE_CART,GET_CART, REMOVE_CART} from "../Actions/types"
+import {ADD_TO_CART,UPDATE_CART,GET_CART, REMOVE_CART, REMOVE_ALL_CART} from "../Actions/types"
 
 
 const INIT_STATE ={
@@ -31,6 +31,12 @@ export default function cartReducer(state = INIT_STATE, action) {
         return{
           ...state,
           cartData:action.data
+        }
+      }
+      case REMOVE_ALL_CART:{
+        return{
+          ...state,
+          cartData:[]
         }
       }
 

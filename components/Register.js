@@ -77,10 +77,9 @@ export default function Register({ navigation }) {
                     </Text>
                     <View style={{ height: '100%' }}>
                         <TextInput
-                            style={{ paddingHorizontal: 20, borderColor: colors.primary, borderWidth: 1, borderRadius: 20, width: 300, marginTop: 30 }}
+                            style={{ paddingHorizontal: 20, borderColor: colors.primary, borderWidth: 1, borderRadius: 20, width: 300, marginTop: 30, }}
                             placeholder={'First Name'}
                             onChangeText={(FN) => setFirsName(FN)}
-
 
 
                         >

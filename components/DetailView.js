@@ -5,7 +5,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
-import {_ADDTO_CART} from './Redux/Actions/CartAction';
+import {addToCartAction} from './Redux/Actions/CartAction';
 import {useDispatch, useSelector } from "react-redux";
 
 const DetailView = ({ route, navigation }) => {
@@ -18,24 +18,7 @@ const DetailView = ({ route, navigation }) => {
     const dispatch = useDispatch();
     const  myCart = useSelector(state => state.cart.cartData)
 
-    
-    // function counterFunc (){
-    //     AsyncStorage.getItem('@cartItem').then((val)=>{
-    //         if (val != null) {
-    //             const COUNTER = JSON.parse(val);
-    //             let count = Object.keys(COUNTER).length;
-    //             setCounter(count)
-                
-                
-    //         }
-    //         else{
-    //             console.log('null');
-    //         }
-    //     })
-    // }
-    
     useEffect(()=>{
-        // counterFunc();
         return()=>{
             setAddons([])
         }
@@ -88,7 +71,6 @@ const DetailView = ({ route, navigation }) => {
     }
     const AddCart = (item) =>{
         let data = {
-            cart: item,
             addons:addons,
             id: item.id,
             title: item.title,
@@ -96,7 +78,7 @@ const DetailView = ({ route, navigation }) => {
             image: item.image,
             quantity: qtyPlus
         }
-        dispatch(_ADDTO_CART(data))
+        dispatch(addToCartAction(data))
 
     }
     const addAddon = (item) =>{

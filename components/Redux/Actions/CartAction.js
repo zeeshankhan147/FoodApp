@@ -1,9 +1,9 @@
 
 import axios from "axios"
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ADD_TO_CART, GET_CART, REMOVE_CART, UPDATE_CART,} from "./types"
+import { ADD_TO_CART, GET_CART, REMOVE_ALL_CART, REMOVE_CART, UPDATE_CART,} from "./types"
 
-export const _ADDTO_CART = (item) => {
+export const addToCartAction = (item) => {
     const datarray = [];
         datarray.push(item);
    
@@ -46,7 +46,7 @@ export const _ADDTO_CART = (item) => {
             })
         }
 }
-export const _UPDATE_CART = (item) => {
+export const updateCart = (item) => {
     AsyncStorage.setItem('@cartItem',JSON.stringify(item))
     return (dispatch) => {
         dispatch({
@@ -55,26 +55,38 @@ export const _UPDATE_CART = (item) => {
         })
     }
 }
-export const _GET_CART = () =>{
-    AsyncStorage.getItem('@cartItem').then((res)=>{
-        let data = JSON.parse(res)
-        // console.warn('+++++++ ',data,' ++++++');
-        return (dispatch) => {
-            dispatch({
-                type: GET_CART,
-                data: data?data:[],
+export const getCart = () =>{
+    return (dispatch) => {
+        AsyncStorage.getItem(`@cartItem`)
+            .then((res) => {
+                let data = JSON.parse(res)
+                dispatch({
+                    type: GET_CART,
+                    data: data ? data : [],
+                })
+
             })
-        }
-    }).catch((err)=>{
-        console.log('Some Error Occured -->>> ',err);
-    })
+            .catch((err) => {
+                console.log(err)
+            })
+
+    }
 }
-export const _REMOVE_CART = (cart) =>{
+export const removeCart = (cart) =>{
     AsyncStorage.setItem('@cartItem', JSON.stringify(cart))
     return (dispatch) => {
         dispatch({
             type: REMOVE_CART,
             data: cart,
+        })
+    }
+}
+export const removeAllCart = () =>{
+    AsyncStorage.removeItem('@cartItem')
+    return (dispatch) => {
+        dispatch({
+            type: REMOVE_ALL_CART,
+            data: [],
         })
     }
 }

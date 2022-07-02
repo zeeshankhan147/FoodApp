@@ -4,7 +4,7 @@
 
 
 
-// export const _ADDTO_CART = (item) => {
+// export const addToCartAction = (item) => {
 //     const datarray = [];
 //         datarray.push(item);
    
@@ -41,7 +41,7 @@
 
 //         })
 // }
-// export const _UPDATE_CART = (item,itemIndex) => {
+// export const updateCart = (item,itemIndex) => {
 //     alert(item[itemIndex].quantity)
 //     AsyncStorage.setItem('@cartItem',JSON.stringify(item))
 // }
