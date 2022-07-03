@@ -10,7 +10,8 @@ import {
     ScrollView,
     ToastAndroid,
     TextInput,
-    Dimensions
+    Dimensions,
+    Alert
 } from 'react-native';
 import colors from '../assets/colors/colors';
 import Feather from 'react-native-vector-icons/Feather';
@@ -22,7 +23,7 @@ import { useIsFocused } from '@react-navigation/native';
 import BANNER_IMAGE from '../assets/images/banner1.png'
 import ProductCart from './productCart';
 import { useDispatch, useSelector } from "react-redux";
-import { getCart } from './Redux/Actions/CartAction';
+import { getCart, removeCart } from './Redux/Actions/CartAction';
 import Banners from '../assets/images/headerBanners'
 
 Feather.loadFont();
@@ -62,7 +63,16 @@ export default Home = ({ navigation, route, props }) => {
         setQuantity(qty)
     }
 
-    const itemDel = (index) => {
+
+    const deleteItem = (index,itemId) => {
+        let data = [...myCart]
+        Object.values(data).map((checkId, ind) => {
+            if (checkId.id == itemId) {
+                data.splice(ind, 1)
+                dispatch(removeCart(data))
+            }
+        })
+
 
     }
 
@@ -148,14 +158,14 @@ export default Home = ({ navigation, route, props }) => {
         return (
             <View style={[
                 {
-                    marginHorizontal:16,
-                    marginLeft:item.id == 1 ? 30 : 0,
-                    
+                    marginHorizontal: 16,
+                    marginLeft: item.id == 1 ? 30 : 0,
+
                 }
             ]}>
                 {/* <Text>{item.id}</Text> */}
-                     <Image source={item.image}
-                    style={{ height:'100%', width:300, borderRadius: 10 }}
+                <Image source={item.image}
+                    style={{ height: '100%', width: 300, borderRadius: 10 }}
                     resizeMode='contain'
                 />
             </View>
@@ -278,7 +288,7 @@ export default Home = ({ navigation, route, props }) => {
                             navigation={navigation}
                             addHome={plusMinus}
                             removeHome={plusMinus}
-                            deleteItem={itemDel}
+                            deleteItem={deleteItem}
                         />
                     ))}
                 </View>

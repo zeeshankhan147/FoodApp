@@ -3,7 +3,7 @@ import { Text, View, Image, TouchableOpacity, StyleSheet, FlatList, Alert, SafeA
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import colors from "../assets/colors/colors";
-import Feather from 'react-native-vector-icons/Feather';
+import Feather from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ProductCart from './productCart';
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
@@ -70,9 +70,6 @@ export default AddToCart = ({ route, navigation }) => {
             ],
             { cancelable: false }
         )
-
-
-
     }
 
     const del = (index) => {
@@ -178,7 +175,7 @@ export default AddToCart = ({ route, navigation }) => {
                    {myCart.length > 0 ?(
                      <TouchableOpacity onPress={() =>  clearCartItem()}>
                      <View style={Styles.rightHeader}>
-                         <Feather name='trash' size={16} color={colors.textDark} />
+                         <Feather name='trash' size={16} color={colors.price} />
                      </View>
                  </TouchableOpacity>
                    ):(null)}

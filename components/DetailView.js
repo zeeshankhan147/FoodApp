@@ -5,7 +5,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
-import {addToCartAction} from './Redux/Actions/CartAction';
+import {addToCartAction, addToCartAction2} from './Redux/Actions/CartAction';
 import {useDispatch, useSelector } from "react-redux";
 
 const DetailView = ({ route, navigation }) => {
@@ -26,7 +26,7 @@ const DetailView = ({ route, navigation }) => {
     },[isFocused])
 
 
-    // ADD TO CART FUNCTION //
+    // OLD ADD TO CART FUNCTION //
     const add_to_cart = async (item) => {
         const datarray = [];
         datarray.push(item);
@@ -78,8 +78,8 @@ const DetailView = ({ route, navigation }) => {
             image: item.image,
             quantity: qtyPlus
         }
-        dispatch(addToCartAction(data))
-
+        dispatch(addToCartAction2(data))
+        
     }
     const addAddon = (item) =>{
         let addonsArray = [];

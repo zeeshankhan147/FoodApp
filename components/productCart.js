@@ -5,8 +5,8 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 import colors from "../assets/colors/colors";
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {addToCartAction, updateCart} from './Redux/Actions/CartAction';
-import {useDispatch, useSelector } from "react-redux";
+import { addToCartAction, addToCartAction2, removeCart, updateCart } from './Redux/Actions/CartAction';
+import { useDispatch, useSelector } from "react-redux";
 import { SwipeListView } from 'react-native-swipe-list-view';
 
 
@@ -34,68 +34,70 @@ export default ProductCard = (props) => {
     const [qtyPlus, setQtyPlus] = useState(qty)
     const [quick, setQuick] = useState(false)
     const dispatch = useDispatch();
-    const  myCart = useSelector(state => state.cart.cartData)
+    const myCart = useSelector(state => state.cart.cartData)
 
-    const AddCart = (item) =>{
+    const AddCart = (item) => {
         let data = {
+            // index:item.index,
+            addons: [],
             id: item.id,
             title: item.title,
             price: item.price,
             image: item.image,
             quantity: qtyPlus
         }
-        dispatch(addToCartAction(data)) 
+        dispatch(addToCartAction2(data))
         setQuick(true)
 
     }
 
-    const homeAddQty =  (itemIndex) => {
+    const homeAddQty = (itemIndex) => {
         setQtyPlus(qtyPlus + 1)
         addHome(qtyPlus + 1)
 
         let data = myCart;
-        console.warn(data.length);
-        data[index].quantity = data[index].quantity + 1
-         dispatch(updateCart(data))
+        Object.values(data).map((idCheck,ind) => {
+            if (idCheck.id == itemId) {
+                data[ind].quantity = data[ind].quantity + 1
+                dispatch(updateCart(data))
+            }
+        })
+
 
     }
 
-    const homeRemoveQty =  (itemIndex) => {
+    const homeRemoveQty = (itemIndex) => {
         setQtyPlus(qtyPlus - 1)
         addHome(qtyPlus - 1)
 
         let data = myCart;
-        data[index].quantity = data[index].quantity - 1
-         dispatch(updateCart(data))
+        Object.values(data).map((idCheck,ind) => {
+            if (idCheck.id == itemId) {
+                data[ind].quantity = data[ind].quantity - 1
+            }
+        })
+        dispatch(updateCart(data))
     }
 
-    const adding = async (price,itemIndex) => {
-        alert('add')
+    const adding = (price, itemIndex) => {
         setQtyPlus(qtyPlus + 1)
         from != 'home' ? addQuantity(price, qtyPlus + 1) : null
-    
+
         let data = myCart;
         data[index].quantity = data[index].quantity + 1
         dispatch(updateCart(data))
     }
-    const minus = async (price,itemIndex) => {
-        alert('minu')
+    const minus = (price, itemIndex) => {
         setQtyPlus(qtyPlus - 1)
         from != 'home' ? addQuantity(price, qtyPlus - 1) : null
-     
+
         let data = myCart;
         data[index].quantity = data[index].quantity - 1
         dispatch(updateCart(data))
     }
     const itemDel = (index) => {
-        deleteItem(index)
-        if (from == "home") {
-            AsyncStorage.getItem('@cartItem').then((val) => {
-                const data = JSON.parse(val)
-                data.splice(index, 1)
-            })
-            setQuick(false)
-        }
+        deleteItem(index,itemId)
+        setQuick(false)
 
 
     }
@@ -120,7 +122,7 @@ export default ProductCard = (props) => {
 
                                 }}>
 
-                                <TouchableOpacity onPress={() =>  qtyPlus > 1 ? homeRemoveQty(index) : itemDel(index) }
+                                <TouchableOpacity onPress={() => qtyPlus > 1 ? homeRemoveQty(index) : itemDel(index)}
                                     style={{ backgroundColor: colors.background, paddingVertical: 3, paddingHorizontal: 3, borderRadius: 4 }}>
                                     <MaterialCommunityIcons name="minus" size={17} color={colors.white}
                                     />
@@ -155,14 +157,14 @@ export default ProductCard = (props) => {
                     </TouchableOpacity>
                 </View>
             ) : (
-                <TouchableOpacity 
-                onLongPress={() => {
-                    itemDel(index)
-                }}
+                <TouchableOpacity
+                    onLongPress={() => {
+                        itemDel(index)
+                    }}
                     delayLongPress={1000}
                     activeOpacity={0.8}
                     style={Styles.container}>
-                        
+
                     <TouchableOpacity style={Styles.imageView} key={itemId} onPress={() => navigation()}>
                         <Image style={Styles.image} source={image} />
                     </TouchableOpacity>
@@ -170,15 +172,15 @@ export default ProductCard = (props) => {
                     <View style={Styles.textView}>
 
                         <Text style={Styles.title}>{title}</Text>
-                        {addons && addons.map((item,index)=>{
-                            return <Text style={Styles.addon}>{`(${index +1}) ${item.name}`}</Text>
-                               
-                            
+                        {addons && addons.map((item, index) => {
+                            return <Text style={Styles.addon}>{`(${index + 1}) ${item.name}`}</Text>
+
+
                         })}
                         <Text style={Styles.price}>Rs.{Math.round(price) * qtyPlus}</Text>
 
                         <View style={Styles.quantityController}>
-                            <TouchableOpacity style={Styles.qtyPlus} onPress={() => adding(price,index)}>
+                            <TouchableOpacity style={Styles.qtyPlus} onPress={() => adding(price, index)}>
                                 <Feather name='plus' size={12} color={colors.secondary} />
                             </TouchableOpacity>
                             <Text style={Styles.count} >{qtyPlus}</Text>
@@ -187,7 +189,7 @@ export default ProductCard = (props) => {
                                 backgroundColor: qtyPlus > 1 ? colors.white : colors.textLight,
                                 borderColor: qtyPlus > 1 ? colors.primary : colors.textLight
 
-                            }]} key={index} onPress={() => { qtyPlus > 1 ? minus(price,index) : itemDel(index) }}>
+                            }]} key={index} onPress={() => { qtyPlus > 1 ? minus(price, index) : itemDel(index) }}>
                                 <Feather name={qtyPlus > 1 ? 'minus' : 'trash'} size={12} color={qtyPlus > 1 ? colors.primary : colors.white} />
                             </TouchableOpacity>
                         </View>
@@ -246,34 +248,34 @@ const Styles = StyleSheet.create({
         flexDirection: 'row',
         // justifyContent:'space-between',
         backgroundColor: '#fff',
-        marginHorizontal:25,
-        paddingVertical:10,
+        marginHorizontal: 25,
+        paddingVertical: 10,
         // marginTop:20,
         // borderRadius:20,
         paddingHorizontal: 10,
         // borderBottomWidth: 0.5,
         borderBottomColor: 'gray',
-        borderRadius:10,
-        shadowOffset:{
-            width:0,
-            height:5
+        borderRadius: 10,
+        shadowOffset: {
+            width: 0,
+            height: 5
         },
-        elevation:4,
-        marginBottom:10,
+        elevation: 4,
+        marginBottom: 10,
 
 
     },
     imageView: {
         justifyContent: 'center',
-        alignItems:'center',
+        alignItems: 'center',
         width: 80,
         height: 70,
-        borderColor:'grey',
-        borderWidth:0.3,
+        borderColor: 'grey',
+        borderWidth: 0.3,
         // backgroundColor:'red',
-        borderRadius:10,
-        
-        
+        borderRadius: 10,
+
+
 
     },
     image: {
@@ -297,7 +299,7 @@ const Styles = StyleSheet.create({
         fontSize: 10,
         color: Colors.textLight,
         fontWeight: '400',
-        width:'60%',
+        width: '60%',
         // position:'absolute',
         // right:22,
         // top:26
