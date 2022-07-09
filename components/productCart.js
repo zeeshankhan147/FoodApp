@@ -5,7 +5,7 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 import colors from "../assets/colors/colors";
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { addToCartAction, addToCartAction2, removeCart, updateCart } from './Redux/Actions/CartAction';
+import { addToCartAction, removeCart, updateCart } from './Redux/Actions/CartAction';
 import { useDispatch, useSelector } from "react-redux";
 import { SwipeListView } from 'react-native-swipe-list-view';
 
@@ -22,81 +22,30 @@ export default ProductCard = (props) => {
         qty,
         item,
         navigation,
-        lenght,
-        addQuantity,
-        removeQuantity,
         updateAmount,
         deleteItem,
         from,
-        addHome,
-        removeHome,
     } = props;
     const [qtyPlus, setQtyPlus] = useState(qty)
-    const [quick, setQuick] = useState(false)
     const dispatch = useDispatch();
     const myCart = useSelector(state => state.cart.cartData)
 
-    const AddCart = (item) => {
-        let data = {
-            // index:item.index,
-            addons: [],
-            id: item.id,
-            title: item.title,
-            price: item.price,
-            image: item.image,
-            quantity: qtyPlus
-        }
-        dispatch(addToCartAction2(data))
-        setQuick(true)
 
-    }
-
-    const homeAddQty = (itemIndex) => {
-        setQtyPlus(qtyPlus + 1)
-        addHome(qtyPlus + 1)
-
-        let data = myCart;
-        Object.values(data).map((idCheck,ind) => {
-            if (idCheck.id == itemId) {
-                data[ind].quantity = data[ind].quantity + 1
-                dispatch(updateCart(data))
-            }
-        })
-
-
-    }
-
-    const homeRemoveQty = (itemIndex) => {
-        setQtyPlus(qtyPlus - 1)
-        addHome(qtyPlus - 1)
-
-        let data = myCart;
-        Object.values(data).map((idCheck,ind) => {
-            if (idCheck.id == itemId) {
-                data[ind].quantity = data[ind].quantity - 1
-            }
-        })
-        dispatch(updateCart(data))
-    }
-
-    const adding = (price, itemIndex) => {
-        setQtyPlus(qtyPlus + 1)
-        from != 'home' ? addQuantity(price, qtyPlus + 1) : null
-
+    const adding = () => {
         let data = myCart;
         data[index].quantity = data[index].quantity + 1
         dispatch(updateCart(data))
+        setQtyPlus(qtyPlus +1)
+       
     }
-    const minus = (price, itemIndex) => {
-        setQtyPlus(qtyPlus - 1)
-        from != 'home' ? addQuantity(price, qtyPlus - 1) : null
-
+    const minus = () => {
         let data = myCart;
         data[index].quantity = data[index].quantity - 1
         dispatch(updateCart(data))
+        setQtyPlus(qtyPlus -1)
     }
-    const itemDel = (index) => {
-        deleteItem(index,itemId)
+    const itemDel = () => {
+        deleteItem(index, itemId)
         setQuick(false)
 
 
@@ -107,97 +56,48 @@ export default ProductCard = (props) => {
     return (
 
         <View>
-            {from == "home" ? (
-                <View style={{ marginBottom: 10, flexDirection: 'row', borderBottomWidth: 0.5, borderBottomColor: colors.textLight, paddingBottom: 8 }}>
-                    <View style={{ width: 100, alignItems: 'center' }}>
-                        {/* <Text>Category here</Text> */}
-                        <Image source={item.image}
-                            style={{ width: 80, height: 80, borderRadius: 10, backgroundColor: 'white' }}
-                        />
-                        {quick == true ? (
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    borderRadius: 4, alignItems: 'center', justifyContent: 'center', marginTop: 8,
 
-                                }}>
+            <TouchableOpacity
+                onLongPress={() => {
+                    itemDel(index)
+                }}
+                delayLongPress={1000}
+                activeOpacity={0.8}
+                style={Styles.container}>
 
-                                <TouchableOpacity onPress={() => qtyPlus > 1 ? homeRemoveQty(index) : itemDel(index)}
-                                    style={{ backgroundColor: colors.background, paddingVertical: 3, paddingHorizontal: 3, borderRadius: 4 }}>
-                                    <MaterialCommunityIcons name="minus" size={17} color={colors.white}
-                                    />
-                                </TouchableOpacity>
-
-                                <Text style={{ marginHorizontal: 15, color: colors.textLight }}>{qtyPlus}</Text>
-
-                                <TouchableOpacity onPress={() => homeAddQty(index)}
-                                    style={{ backgroundColor: colors.background, paddingVertical: 3, paddingHorizontal: 3, borderRadius: 4 }}>
-                                    <MaterialCommunityIcons name="plus" size={17} color={colors.white}
-                                    />
-                                </TouchableOpacity>
-
-                            </View>
-                        ) : (
-                            <TouchableOpacity onPress={() => AddCart(item)}
-                                style={{
-                                    flexDirection: 'row', backgroundColor: colors.background, paddingHorizontal: 15,
-                                    borderRadius: 4, alignItems: 'center', justifyContent: 'center', marginTop: 8, paddingVertical: 3
-
-                                }}>
-                                <MaterialCommunityIcons name="cart" size={17} color={colors.white} />
-                                <Text style={{ marginLeft: 3, color: colors.white }}>ADD</Text>
-                            </TouchableOpacity>
-                        )}
-                    </View>
-                    <TouchableOpacity onPress={() => navigation.navigate('DetailView', { item: item })} style={{ width: 300, }}>
-                        <Text style={{ fontFamily: 'Montserrat-Bold', fontSize: 16 }}>{item.title}</Text>
-                        <Text style={{ fontFamily: 'Montserrat-Regular', fontSize: 12, marginTop: 6 }}>{item.description}</Text>
-                        <Text style={{ fontFamily: 'Montserrat-Bold', marginTop: 6 }}>Rs. {item.price}</Text>
-
-                    </TouchableOpacity>
-                </View>
-            ) : (
-                <TouchableOpacity
-                    onLongPress={() => {
-                        itemDel(index)
-                    }}
-                    delayLongPress={1000}
-                    activeOpacity={0.8}
-                    style={Styles.container}>
-
-                    <TouchableOpacity style={Styles.imageView} key={itemId} onPress={() => navigation()}>
-                        <Image style={Styles.image} source={image} />
-                    </TouchableOpacity>
-
-                    <View style={Styles.textView}>
-
-                        <Text style={Styles.title}>{title}</Text>
-                        {addons && addons.map((item, index) => {
-                            return <Text style={Styles.addon}>{`(${index + 1}) ${item.name}`}</Text>
-
-
-                        })}
-                        <Text style={Styles.price}>Rs.{Math.round(price) * qtyPlus}</Text>
-
-                        <View style={Styles.quantityController}>
-                            <TouchableOpacity style={Styles.qtyPlus} onPress={() => adding(price, index)}>
-                                <Feather name='plus' size={12} color={colors.secondary} />
-                            </TouchableOpacity>
-                            <Text style={Styles.count} >{qtyPlus}</Text>
-                            <TouchableOpacity style={[Styles.qtyMinus,
-                            {
-                                backgroundColor: qtyPlus > 1 ? colors.white : colors.textLight,
-                                borderColor: qtyPlus > 1 ? colors.primary : colors.textLight
-
-                            }]} key={index} onPress={() => { qtyPlus > 1 ? minus(price, index) : itemDel(index) }}>
-                                <Feather name={qtyPlus > 1 ? 'minus' : 'trash'} size={12} color={qtyPlus > 1 ? colors.primary : colors.white} />
-                            </TouchableOpacity>
-                        </View>
-
-                    </View>
-
+                <TouchableOpacity style={Styles.imageView} key={itemId} onPress={() => navigation()}>
+                    <Image style={Styles.image} source={image} />
                 </TouchableOpacity>
-            )}
+
+                <View style={Styles.textView}>
+
+                    <Text style={Styles.title}>{title}</Text>
+                    {addons && addons.map((item, index) => {
+                        return <Text style={Styles.addon}>{`(${index + 1}) ${item.name}`}</Text>
+
+
+                    })}
+                    <Text style={Styles.price}>Rs.{Math.round(price) * qtyPlus}</Text>
+
+                    <View style={Styles.quantityController}>
+                        <TouchableOpacity style={Styles.qtyPlus} onPress={() => adding()}>
+                            <Feather name='plus' size={12} color={colors.secondary} />
+                        </TouchableOpacity>
+                        <Text style={Styles.count} >{qtyPlus}</Text>
+                        <TouchableOpacity style={[Styles.qtyMinus,
+                        {
+                            backgroundColor: qtyPlus > 1 ? colors.white : colors.textLight,
+                            borderColor: qtyPlus > 1 ? colors.primary : colors.textLight
+
+                        }]} key={index} onPress={() => { qtyPlus > 1 ? minus() : itemDel() }}>
+                            <Feather name={qtyPlus > 1 ? 'minus' : 'trash'} size={12} color={qtyPlus > 1 ? colors.primary : colors.white} />
+                        </TouchableOpacity>
+                    </View>
+
+                </View>
+
+            </TouchableOpacity>
+
         </View>
 
 

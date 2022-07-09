@@ -25,6 +25,7 @@ import ProductCart from './productCart';
 import { useDispatch, useSelector } from "react-redux";
 import { getCart, removeCart } from './Redux/Actions/CartAction';
 import Banners from '../assets/images/headerBanners'
+import HomeProduct from './HomeProduct';
 
 Feather.loadFont();
 MaterialCommunityIcons.loadFont();
@@ -64,7 +65,7 @@ export default Home = ({ navigation, route, props }) => {
     }
 
 
-    const deleteItem = (index,itemId) => {
+    const deleteItem = (itemId) => {
         let data = [...myCart]
         Object.values(data).map((checkId, ind) => {
             if (checkId.id == itemId) {
@@ -276,7 +277,7 @@ export default Home = ({ navigation, route, props }) => {
                 }}>
 
                     {popularData.map((item, index) => (
-                        <ProductCart
+                        <HomeProduct
                             from={'home'}
                             item={item}
                             index={index}

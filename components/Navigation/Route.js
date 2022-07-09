@@ -16,6 +16,7 @@ import MyDrawer from './MyDrawer';
 import SignUp from '../signUp';
 import Home from '../home';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import HomeProduct from '../HomeProduct';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -38,7 +39,7 @@ function Route() {
       <Drawer.Screen name="AddToCart" component={AddToCart} />
       <Drawer.Screen name="Register" component={Register} />
       <Drawer.Screen name="Search" component={Search} />
-      {/* <Drawer.Screen name="SignUp" component={SignUp} /> */}
+      <Drawer.Screen name="HomeProduct" component={HomeProduct} />
       <Drawer.Screen name="ProductCart" component={ProductCart} />
     </Drawer.Navigator>
     </NavigationContainer>
