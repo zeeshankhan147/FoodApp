@@ -42,9 +42,6 @@ export default ProductCard = (props) => {
     }
     const itemDel = () => {
         deleteItem(index, itemId)
-        setQuick(false)
-
-
     }
 
 

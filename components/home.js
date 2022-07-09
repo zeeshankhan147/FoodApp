@@ -33,7 +33,6 @@ const BannerWidth = Dimensions.get("window").width;
 const BannerHeight = (BannerWidth / 7) * 2;
 
 export default Home = ({ navigation, route, props }) => {
-    const [counter, setCounterState] = useState(0)
     const isFocused = useIsFocused();
     const [catSelected, setCatSelected] = useState(null)
     const [quantity, setQuantity] = useState(1)
@@ -81,28 +80,6 @@ export default Home = ({ navigation, route, props }) => {
             quantity: quantity
         }
         dispatch(addToCartAction(data))
-    }
-    const addQuantity = (itemId,qty) => {
-        let data = myCart;
-        Object.values(data).map((idCheck,ind) => {
-            if (idCheck.id == itemId) {
-                data[ind].quantity = data[ind].quantity + 1
-                dispatch(updateCart(data))
-                setQuantity(qty)
-                
-            }
-        })
-    }
-    const removeQuantity = (itemId,qty) => {
-        let data = myCart;
-        Object.values(data).map((idCheck,ind) => {
-            if (idCheck.id == itemId) {
-                data[ind].quantity = data[ind].quantity - 1
-                dispatch(updateCart(data))
-                setQuantity(qty)
-                
-            }
-        })
     }
 
     useEffect(() => {
@@ -315,8 +292,6 @@ export default Home = ({ navigation, route, props }) => {
                             price={item.price}
                             qty={quantity}
                             navigation={navigation}
-                            addQuantity={addQuantity}
-                            removeQuantity={removeQuantity}
                             deleteItem={deleteItem}
                             cartBtn={AddtoCart}
                         />

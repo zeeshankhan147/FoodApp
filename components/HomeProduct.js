@@ -7,6 +7,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { addToCartAction, removeCart, updateCart } from './Redux/Actions/CartAction';
 import { useDispatch, useSelector } from "react-redux";
+import { useIsFocused } from '@react-navigation/native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 
 
@@ -24,39 +25,55 @@ export default HomeProduct = (props) => {
         navigation,
         deleteItem,
         from,
-        addQuantity,
-        removeQuantity,
         cartBtn,
     } = props;
     const [qtyPlus, setQtyPlus] = useState(qty)
-    const [quick, setQuick] = useState(false)
     const dispatch = useDispatch();
     const myCart = useSelector(state => state.cart.cartData)
+    const isFocused = useIsFocused();
+
+    useEffect(()=>{
+        Object.values(myCart).map((i,ind)=>{
+            if(i.id == itemId){
+                setQtyPlus(myCart[ind].quantity)
+            }
+        })
+    },[isFocused])
 
     const AddCart = (item) => {
         cartBtn(item)
-        setQuick(true)
     }
 
     const addQty = () => {
-        setQtyPlus(qtyPlus +1)
-        addQuantity(itemId,qtyPlus +1)
+        let data = myCart;
+        Object.values(data).map((idCheck,ind) => {
+            if (idCheck.id == itemId) {
+                data[ind].quantity = data[ind].quantity + 1
+                dispatch(updateCart(data))
+                setQtyPlus(data[ind].quantity)
+                
+            }
+        })
 
     }
 
     const removeQty = () => {
-        setQtyPlus(qtyPlus -1)
-        removeQuantity(itemId,qtyPlus -1) 
+        let data = myCart;
+        Object.values(data).map((idCheck,ind) => {
+            if (idCheck.id == itemId) {
+                data[ind].quantity = data[ind].quantity - 1
+                dispatch(updateCart(data))
+                setQtyPlus(data[ind].quantity)
+                
+            }
+        })
     }
 
 
     const itemDelete = () => {
         deleteItem(itemId)
-        setQuick(false)
 
     }
-
-
 
     return (
 
@@ -68,7 +85,7 @@ export default HomeProduct = (props) => {
                         <Image source={item.image}
                             style={{ width: 80, height: 80, borderRadius: 10, backgroundColor: 'white' }}
                         />
-                        {quick == true ? (
+                        {myCart.hasOwnProperty(itemId) ? (
                             <View
                                 style={{
                                     flexDirection: 'row',
