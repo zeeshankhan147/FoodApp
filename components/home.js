@@ -23,7 +23,7 @@ import { useIsFocused } from '@react-navigation/native';
 import BANNER_IMAGE from '../assets/images/banner1.png'
 import ProductCart from './productCart';
 import { useDispatch, useSelector } from "react-redux";
-import { getCart, removeCart } from './Redux/Actions/CartAction';
+import { addToCartAction, getCart, removeCart, updateCart } from './Redux/Actions/CartAction';
 import Banners from '../assets/images/headerBanners'
 import HomeProduct from './HomeProduct';
 
@@ -60,11 +60,6 @@ export default Home = ({ navigation, route, props }) => {
 
     }
 
-    const plusMinus = (qty) => {
-        setQuantity(qty)
-    }
-
-
     const deleteItem = (itemId) => {
         let data = [...myCart]
         Object.values(data).map((checkId, ind) => {
@@ -75,6 +70,39 @@ export default Home = ({ navigation, route, props }) => {
         })
 
 
+    }
+    const AddtoCart = (item) => {
+        let data = {
+            addons: [],
+            id: item.id,
+            title: item.title,
+            price: item.price,
+            image: item.image,
+            quantity: quantity
+        }
+        dispatch(addToCartAction(data))
+    }
+    const addQuantity = (itemId,qty) => {
+        let data = myCart;
+        Object.values(data).map((idCheck,ind) => {
+            if (idCheck.id == itemId) {
+                data[ind].quantity = data[ind].quantity + 1
+                dispatch(updateCart(data))
+                setQuantity(qty)
+                
+            }
+        })
+    }
+    const removeQuantity = (itemId,qty) => {
+        let data = myCart;
+        Object.values(data).map((idCheck,ind) => {
+            if (idCheck.id == itemId) {
+                data[ind].quantity = data[ind].quantity - 1
+                dispatch(updateCart(data))
+                setQuantity(qty)
+                
+            }
+        })
     }
 
     useEffect(() => {
@@ -287,9 +315,10 @@ export default Home = ({ navigation, route, props }) => {
                             price={item.price}
                             qty={quantity}
                             navigation={navigation}
-                            addHome={plusMinus}
-                            removeHome={plusMinus}
+                            addQuantity={addQuantity}
+                            removeQuantity={removeQuantity}
                             deleteItem={deleteItem}
+                            cartBtn={AddtoCart}
                         />
                     ))}
                 </View>

@@ -8,7 +8,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import ProductCart from './productCart';
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 import {useDispatch, useSelector } from "react-redux";
-import { removeAllCart, removeCart } from './Redux/Actions/CartAction';
+import { removeAllCart, removeCart, updateCart } from './Redux/Actions/CartAction';
 
 
 
@@ -81,7 +81,11 @@ export default AddToCart = ({ route, navigation }) => {
 
 
 
-    const addQuantity = (price) => {
+    const addQuantity = (price,index) => {
+        let data = myCart;
+        data[index].quantity = data[index].quantity + 1
+        dispatch(updateCart(data))
+
         setUpdateTotalAmount(Math.round(updateTotalAmount + price))
         setDiscountTotalAmount(Math.round((updateTotalAmount + price) * DiscountPercent / 100))
         setTaxTotalAmount(Math.round((updateTotalAmount + price) * TaxPercent / 100))
@@ -94,7 +98,11 @@ export default AddToCart = ({ route, navigation }) => {
 
 
     }
-    const removeQuantity = (price) => {
+    const removeQuantity = (price,index)  => {
+        let data = myCart;
+        data[index].quantity = data[index].quantity - 1
+        dispatch(updateCart(data))
+
         setUpdateTotalAmount(Math.round(updateTotalAmount - price))
         setDiscountTotalAmount(Math.round((updateTotalAmount - price) * DiscountPercent / 100))
         setTaxTotalAmount(Math.round((updateTotalAmount - price) * TaxPercent / 100))

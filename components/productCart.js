@@ -12,37 +12,33 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 
 export default ProductCard = (props) => {
     const {
+        item,
+        addons ,
         index,
         itemId,
-        image,
+        image ,
         title,
         price,
-        addons,
-        minusQty,
-        qty,
-        item,
+        qty ,
         navigation,
-        updateAmount,
+        addQuantity ,
+        removeQuantity,
         deleteItem,
-        from,
+        // updateAmount,
     } = props;
-    const [qtyPlus, setQtyPlus] = useState(qty)
+    const [qtyPlus, setQtyPlus] = useState(1)
     const dispatch = useDispatch();
     const myCart = useSelector(state => state.cart.cartData)
 
 
     const adding = () => {
-        let data = myCart;
-        data[index].quantity = data[index].quantity + 1
-        dispatch(updateCart(data))
-        setQtyPlus(qtyPlus +1)
-       
+        setQtyPlus(qtyPlus + 1)
+        addQuantity(price,index)
+
     }
     const minus = () => {
-        let data = myCart;
-        data[index].quantity = data[index].quantity - 1
-        dispatch(updateCart(data))
-        setQtyPlus(qtyPlus -1)
+        setQtyPlus(qtyPlus - 1)
+        removeQuantity(price,index)
     }
     const itemDel = () => {
         deleteItem(index, itemId)
@@ -77,20 +73,20 @@ export default ProductCard = (props) => {
 
 
                     })}
-                    <Text style={Styles.price}>Rs.{Math.round(price) * qtyPlus}</Text>
+                    <Text style={Styles.price}>Rs.{Math.round(price) * qty}</Text>
 
                     <View style={Styles.quantityController}>
-                        <TouchableOpacity style={Styles.qtyPlus} onPress={() => adding()}>
+                        <TouchableOpacity style={Styles.qtyPlus} onPress={adding}>
                             <Feather name='plus' size={12} color={colors.secondary} />
                         </TouchableOpacity>
-                        <Text style={Styles.count} >{qtyPlus}</Text>
+                        <Text style={Styles.count} >{qty}</Text>
                         <TouchableOpacity style={[Styles.qtyMinus,
                         {
-                            backgroundColor: qtyPlus > 1 ? colors.white : colors.textLight,
-                            borderColor: qtyPlus > 1 ? colors.primary : colors.textLight
+                            backgroundColor: qty > 1 ? colors.white : colors.textLight,
+                            borderColor: qty > 1 ? colors.primary : colors.textLight
 
-                        }]} key={index} onPress={() => { qtyPlus > 1 ? minus() : itemDel() }}>
-                            <Feather name={qtyPlus > 1 ? 'minus' : 'trash'} size={12} color={qtyPlus > 1 ? colors.primary : colors.white} />
+                        }]} key={index} onPress={() => { qty > 1 ? minus() : itemDel() }}>
+                            <Feather name={qty > 1 ? 'minus' : 'trash'} size={12} color={qty > 1 ? colors.primary : colors.white} />
                         </TouchableOpacity>
                     </View>
 

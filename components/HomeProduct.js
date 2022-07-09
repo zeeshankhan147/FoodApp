@@ -24,8 +24,9 @@ export default HomeProduct = (props) => {
         navigation,
         deleteItem,
         from,
-        addHome,
-        removeHome,
+        addQuantity,
+        removeQuantity,
+        cartBtn,
     } = props;
     const [qtyPlus, setQtyPlus] = useState(qty)
     const [quick, setQuick] = useState(false)
@@ -33,45 +34,19 @@ export default HomeProduct = (props) => {
     const myCart = useSelector(state => state.cart.cartData)
 
     const AddCart = (item) => {
-        let data = {
-            addons: [],
-            id: item.id,
-            title: item.title,
-            price: item.price,
-            image: item.image,
-            quantity: qtyPlus
-        }
-        dispatch(addToCartAction(data))
+        cartBtn(item)
         setQuick(true)
-
     }
 
     const addQty = () => {
-        let data = myCart;
-        Object.values(data).map((idCheck,ind) => {
-            if (idCheck.id == itemId) {
-                data[ind].quantity = data[ind].quantity + 1
-                dispatch(updateCart(data))
-                addHome(data[ind].quantity)
-                setQtyPlus(data[ind].quantity)
-                
-            }
-        })
-
+        setQtyPlus(qtyPlus +1)
+        addQuantity(itemId,qtyPlus +1)
 
     }
 
     const removeQty = () => {
-        let data = myCart;
-        Object.values(data).map((idCheck,ind) => {
-            if (idCheck.id == itemId) {
-                data[ind].quantity = data[ind].quantity - 1
-                dispatch(updateCart(data))
-                addHome(data[ind].quantity)
-                setQtyPlus(data[ind].quantity)
-            }
-        })
-        
+        setQtyPlus(qtyPlus -1)
+        removeQuantity(itemId,qtyPlus -1) 
     }
 
 
@@ -101,7 +76,7 @@ export default HomeProduct = (props) => {
 
                                 }}>
 
-                                <TouchableOpacity onPress={() => qty > 1 ? removeQty(index) : itemDelete(index)}
+                                <TouchableOpacity onPress={() => qtyPlus > 1 ? removeQty() : itemDelete()}
                                     style={{ backgroundColor: colors.background, paddingVertical: 3, paddingHorizontal: 3, borderRadius: 4 }}>
                                     <MaterialCommunityIcons name="minus" size={17} color={colors.white}
                                     />
@@ -109,7 +84,7 @@ export default HomeProduct = (props) => {
 
                                 <Text style={{ marginHorizontal: 15, color: colors.textLight }}>{qtyPlus}</Text>
 
-                                <TouchableOpacity onPress={() => addQty(index)}
+                                <TouchableOpacity onPress={() => addQty()}
                                     style={{ backgroundColor: colors.background, paddingVertical: 3, paddingHorizontal: 3, borderRadius: 4 }}>
                                     <MaterialCommunityIcons name="plus" size={17} color={colors.white}
                                     />
