@@ -35,6 +35,7 @@ export default HomeProduct = (props) => {
     useEffect(()=>{
         Object.values(myCart).map((i,ind)=>{
             if(i.id == itemId){
+                alert(myCart[ind].quantity)
                 setQtyPlus(myCart[ind].quantity)
             }
         })
