@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, ToastAndroid } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, ToastAndroid, Alert } from 'react-native'
 import React from 'react'
 import Home from '../home';
 import SignUp from '../signUp';
@@ -14,6 +14,8 @@ import colors from '../../assets/colors/colors';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from '../Redux/Actions/AuthAction';
 
 
 Feather.loadFont();
@@ -23,11 +25,26 @@ const Drawer = createDrawerNavigator();
 
 function MyDrawer(props) {
     const { navigation } = props;
-    function clear() {
-        AsyncStorage.removeItem('@cartItem')
-        ToastAndroid.show("Clear Cart", ToastAndroid.SHORT);
+    const dispatch = useDispatch();
+    const myUser = useSelector(state => state.auth.user)
 
-
+    const logout = () =>{
+        Alert.alert(
+            "Logout",
+            "Are you sure logout user ?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel",
+                },
+                {
+                    text: "OK",
+                    onPress: () => dispatch(logoutUser())
+                },
+            ],
+            { cancelable: false }
+        )
     }
     return (
         <DrawerContentScrollView {...props}
@@ -47,12 +64,15 @@ function MyDrawer(props) {
                 padding: 20,
                 marginTop: 10
             }}>
-                <Image source={require('../../assets/images/profile.jpg')} style={{ width: 70, height: 70, borderRadius: 70, borderColor: colors.primary, borderWidth: 3 }} />
+                {!myUser?
+                    <Image source={require('../../assets/images/user2.png')} style={{ width: 70, height: 70, borderRadius: 70, borderColor: colors.primary, borderWidth: 3 }}/> :
+                    <Image source={{uri:myUser.photo}} style={{ width: 70, height: 70, borderRadius: 70, borderColor: colors.primary, borderWidth: 3 }}/>
+                }
 
                 <View style={{ marginLeft: 12, }}>
-                    <Text style={{ color: colors.primary, fontFamily: 'Montserrat-Bold', fontSize: 16, }}>Zeeshan Khan</Text>
-                    <Text style={{ color: colors.textDark, fontFamily: 'Montserrat-regular', fontSize: 10 }}>mdzeeshankhan147@gmail.com</Text>
-                    <Text style={{ color: colors.textDark, fontFamily: 'Montserrat-Bold', fontSize: 10 }}>+92-3368153445</Text>
+                    <Text style={{ color: colors.primary, fontFamily: 'Montserrat-Bold', fontSize: 16, }}>{myUser ? myUser.name : "Please Login"}</Text>
+                    <Text style={{ color: colors.textDark, fontFamily: 'Montserrat-regular', fontSize: 10 }}>{myUser ? myUser.email : "----"}</Text>
+                    {/* <Text style={{ color: colors.textDark, fontFamily: 'Montserrat-Bold', fontSize: 10 }}>{myUser ? myUser.email : "----"}</Text> */}
                 </View>
             </View>
             <View style={{ paddingLeft: 20, marginTop: 20 }}>
@@ -77,8 +97,8 @@ function MyDrawer(props) {
 
                 />
                 <DrawerItem
-                    label="SETTING"
-                    onPress={() => navigation.navigate('Search')}
+                    label="LOGOUT"
+                    onPress={() => logout()}
                     labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10 }}
                     icon={() => <MaterialCommunityIcons name="login" size={22} />}
 

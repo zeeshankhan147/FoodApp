@@ -79,6 +79,7 @@ const DetailView = ({ route, navigation }) => {
             quantity: qtyPlus
         }
         dispatch(addToCartAction(data))
+        navigation.navigate('Home')
         
     }
     const addAddon = (item) =>{

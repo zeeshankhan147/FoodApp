@@ -26,6 +26,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCartAction, getCart, removeCart, updateCart } from './Redux/Actions/CartAction';
 import Banners from '../assets/images/headerBanners'
 import HomeProduct from './HomeProduct';
+import { getUser } from './Redux/Actions/AuthAction';
 
 Feather.loadFont();
 MaterialCommunityIcons.loadFont();
@@ -83,6 +84,7 @@ export default Home = ({ navigation, route, props }) => {
     }
 
     useEffect(() => {
+        dispatch(getUser())
         setCatSelected(1)
         dispatch(getCart())
 
@@ -285,6 +287,7 @@ export default Home = ({ navigation, route, props }) => {
                         <HomeProduct
                             from={'home'}
                             item={item}
+                            hiddenBtn={myCart.hasOwnProperty(item.id)?true:false}
                             index={index}
                             itemId={item.id}
                             image={item.image}
@@ -313,8 +316,8 @@ const styles = StyleSheet.create({
     navBar: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingHorizontal: 30,
-        marginTop: 40,
+        marginTop: 60,
+        marginHorizontal:30,
         alignItems: 'center',
         marginBottom: 20,
     },
@@ -355,7 +358,7 @@ const styles = StyleSheet.create({
     },
     searchWrapper: {
         marginTop: 10,
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#f2f2f1',
 
 
     },
@@ -368,6 +371,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#d7d7d7f5',
         marginHorizontal: 30,
         borderRadius: 8,
+        paddingVertical:12,
     },
     searchTextWrapper: {
         marginLeft: 14,

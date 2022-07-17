@@ -77,7 +77,7 @@ export default function Register({ navigation }) {
                     </Text>
                     <View style={{ height: '100%' }}>
                         <TextInput
-                            style={{ paddingHorizontal: 20, borderColor: colors.primary, borderWidth: 1, borderRadius: 20, width: 300, marginTop: 30, }}
+                            style={{ paddingHorizontal: 20,paddingVertical:10, borderColor: colors.primary, borderWidth: 1, borderRadius: 10, width: 300, marginTop: 30, }}
                             placeholder={'First Name'}
                             onChangeText={(FN) => setFirsName(FN)}
 
@@ -86,7 +86,7 @@ export default function Register({ navigation }) {
                         </TextInput>
                         <TextInput
 
-                            style={{ paddingHorizontal: 20, borderColor: colors.primary, borderWidth: 1, borderRadius: 20, width: 300, marginTop: 20 }}
+                            style={{ paddingHorizontal: 20,paddingVertical:10, borderColor: colors.primary, borderWidth: 1, borderRadius: 10, width: 300, marginTop: 20 }}
                             placeholder={'Last Name'}
                             onChangeText={(LN) => setLastName(LN)}
                             autoCorrect={false}
@@ -96,7 +96,7 @@ export default function Register({ navigation }) {
                         </TextInput>
                         <TextInput
 
-                            style={{ paddingHorizontal: 20, borderColor: colors.primary, borderWidth: 1, borderRadius: 20, width: 300, marginTop: 20 }}
+                            style={{ paddingHorizontal: 20,paddingVertical:10, borderColor: colors.primary, borderWidth: 1, borderRadius: 10, width: 300, marginTop: 20 }}
                             placeholder={'Email Address'}
                             onChangeText={(EM) => setEmail(EM)}
                             autoCorrect={false}
@@ -106,7 +106,7 @@ export default function Register({ navigation }) {
                         </TextInput>
                         <TextInput
 
-                            style={{ paddingHorizontal: 20, borderColor: colors.primary, borderWidth: 1, borderRadius: 20, width: 300, marginTop: 20 }}
+                            style={{ paddingHorizontal: 20,paddingVertical:10, borderColor: colors.primary, borderWidth: 1, borderRadius: 10, width: 300, marginTop: 20 }}
                             placeholder={'Phone Number EX: 333-111-888'}
                             onChangeText={(NUM) => setNumber(NUM)}
                             keyboardType='number-pad'
@@ -117,7 +117,7 @@ export default function Register({ navigation }) {
                         </TextInput>
                         <TextInput
 
-                            style={{ paddingHorizontal: 20, borderColor: colors.primary, borderWidth: 1, borderRadius: 20, width: 300, marginTop: 20 }}
+                            style={{ paddingHorizontal: 20,paddingVertical:10, borderColor: colors.primary, borderWidth: 1, borderRadius: 10, width: 300, marginTop: 20 }}
                             placeholder={'Create New Password'}
                             onChangeText={(PASS) => setPassword(PASS)}
                             secureTextEntry
@@ -126,7 +126,7 @@ export default function Register({ navigation }) {
 
                         >
                         </TextInput>
-                        <TouchableOpacity style={{ width: 300, height: 50, backgroundColor: '#ff4e4e', borderRadius: 20, alignItems: 'center', justifyContent: 'center', marginTop: 20 }}
+                        <TouchableOpacity style={{ width: 300, height: 50, backgroundColor: '#ff4e4e', borderRadius: 10, alignItems: 'center', justifyContent: 'center', marginTop: 20 }}
                             onPress={() => register()}
                         >
                             <Text style={{ fontSize: 15, color: '#fff', fontFamily: 'Montserrat-Bold' }}>Register</Text>

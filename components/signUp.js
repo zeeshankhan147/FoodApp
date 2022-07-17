@@ -8,7 +8,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { Link } from '@react-navigation/native';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
-
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from './Redux/Actions/AuthAction';
 
 
 
@@ -17,10 +18,9 @@ export default function signUp({ navigation }) {
     const [password, setPassword] = useState();
     const [userData, setUserData] = useState()
     const [loading, setLoading] = useState(false)
+    const dispatch = useDispatch();
 
     useEffect(() => {
-
-
         GoogleSignin.configure();
     }, [])
 
@@ -35,14 +35,13 @@ export default function signUp({ navigation }) {
             await GoogleSignin.hasPlayServices();
 
             const userInfo = await GoogleSignin.signIn();
-            console.log('userrr', userInfo);
+            console.log('userrr', userInfo.user);
             if (userInfo) {
-                AsyncStorage.setItem('@userInfo', JSON.stringify(userInfo.user))
+                dispatch(setUser(userInfo.user))
+                setLoading(false)
+                
             }
-            else {
-                null
-            }
-            setLoading(false)
+            
 
         }
         catch (error) {
@@ -103,7 +102,7 @@ export default function signUp({ navigation }) {
                         </Text>
                         <View style={{ height: 200 }}>
                             <TextInput
-                                style={{ paddingHorizontal: 20, borderColor: colors.primary, borderWidth: 1, borderRadius: 20, width: 300, marginTop: 40 }}
+                                style={{ paddingHorizontal: 20,paddingVertical:10, borderColor: colors.primary, borderWidth: 1, borderRadius: 10, width: 300, marginTop: 40 }}
                                 placeholder={'Email Address'}
                                 onChangeText={(em) => setEmail(em)}
                                 keyboardType="email-address"
@@ -113,7 +112,7 @@ export default function signUp({ navigation }) {
                             </TextInput>
                             <TextInput
 
-                                style={{ paddingHorizontal: 20, borderColor: colors.primary, borderWidth: 1, borderRadius: 20, width: 300, marginTop: 20 }}
+                                style={{ paddingHorizontal: 20,paddingVertical:10, borderColor: colors.primary, borderWidth: 1, borderRadius: 10, width: 300, marginTop: 20 }}
                                 placeholder={'Password'}
                                 onChangeText={(pass) => setPassword(pass)}
                                 secureTextEntry
@@ -122,7 +121,7 @@ export default function signUp({ navigation }) {
 
                             >
                             </TextInput>
-                            <TouchableOpacity style={{ width: 300, height: 50, backgroundColor: '#ff4e4e', borderRadius: 20, alignItems: 'center', justifyContent: 'center', marginTop: 20 }}
+                            <TouchableOpacity style={{ width: 300, height: 50, backgroundColor: '#ff4e4e', borderRadius: 10, alignItems: 'center', justifyContent: 'center', marginTop: 20 }}
                                 onPress={() => login()}
                             >
                                 <Text style={{ fontSize: 15, color: '#fff', fontFamily: 'Montserrat-Bold' }}>Login</Text>

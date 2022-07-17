@@ -26,8 +26,10 @@ export default HomeProduct = (props) => {
         deleteItem,
         from,
         cartBtn,
+        hiddenBtn
     } = props;
     const [qtyPlus, setQtyPlus] = useState(qty)
+    const [quick, setQuick] = useState(false)
     const dispatch = useDispatch();
     const myCart = useSelector(state => state.cart.cartData)
     const isFocused = useIsFocused();
@@ -35,14 +37,18 @@ export default HomeProduct = (props) => {
     useEffect(()=>{
         Object.values(myCart).map((i,ind)=>{
             if(i.id == itemId){
-                alert(myCart[ind].quantity)
                 setQtyPlus(myCart[ind].quantity)
+                setQuick(true)
             }
+           
         })
+       
     },[isFocused])
 
     const AddCart = (item) => {
         cartBtn(item)
+        setQuick(true)
+        
     }
 
     const addQty = () => {
@@ -73,6 +79,7 @@ export default HomeProduct = (props) => {
 
     const itemDelete = () => {
         deleteItem(itemId)
+        setQuick(false)
 
     }
 
@@ -86,7 +93,7 @@ export default HomeProduct = (props) => {
                         <Image source={item.image}
                             style={{ width: 80, height: 80, borderRadius: 10, backgroundColor: 'white' }}
                         />
-                        {myCart.hasOwnProperty(itemId) ? (
+                        {quick ? (
                             <View
                                 style={{
                                     flexDirection: 'row',

@@ -214,7 +214,7 @@ export default AddToCart = ({ route, navigation }) => {
                                     //   textAlign: "center",
                                     fontSize: 20,
                                     color: "#c5c5c5",
-                                    fontFamily: "Poppins-Regular",
+                                    fontFamily: "Montserrat-Regular",
                                 }}
                             >
                                 Your cart is empty
