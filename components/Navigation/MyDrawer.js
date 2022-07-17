@@ -40,11 +40,19 @@ function MyDrawer(props) {
                 },
                 {
                     text: "OK",
-                    onPress: () => dispatch(logoutUser())
+                    onPress: () => {
+                        dispatch(logoutUser())
+                        navigation.closeDrawer()
+                    }
                 },
             ],
             { cancelable: false }
         )
+    }
+    const loginBtn = () =>{
+        if (!myUser) {
+            navigation.navigate('SignUp')
+        }
     }
     return (
         <DrawerContentScrollView {...props}
@@ -54,25 +62,23 @@ function MyDrawer(props) {
 
             {/* <DrawerItemList {...props} /> */}
 
-            {/* <TouchableOpacity style={{position:'absolute',right:7,top:7,backgroundColor:'#000',borderRadius:10}} onPress={()=> navigation.closeDrawer()}>
-                    <MaterialCommunityIcons name="close" size={20} color={'white'}/>
-                </TouchableOpacity> */}
-                
             <View style={{
                 flexDirection: 'row',
                 alignItems: 'center',
                 padding: 20,
                 marginTop: 10
             }}>
-                {!myUser?
-                    <Image source={require('../../assets/images/user2.png')} style={{ width: 70, height: 70, borderRadius: 70, borderColor: colors.primary, borderWidth: 3 }}/> :
-                    <Image source={{uri:myUser.photo}} style={{ width: 70, height: 70, borderRadius: 70, borderColor: colors.primary, borderWidth: 3 }}/>
+                <TouchableOpacity onPress={loginBtn}>
+                {myUser ?
+                    <Image source={{uri:myUser.photo}} style={{ width: 70, height: 70, borderRadius: 70, borderColor: colors.primary, borderWidth: 3 }}/> :
+                    <Image source={require('../../assets/images/user2.png')} style={{ width: 70, height: 70, borderRadius: 70, borderColor: colors.primary, borderWidth: 3 }}/> 
                 }
+                    </TouchableOpacity>
 
-                <View style={{ marginLeft: 12, }}>
-                    <Text style={{ color: colors.primary, fontFamily: 'Montserrat-Bold', fontSize: 16, }}>{myUser ? myUser.name : "Please Login"}</Text>
-                    <Text style={{ color: colors.textDark, fontFamily: 'Montserrat-regular', fontSize: 10 }}>{myUser ? myUser.email : "----"}</Text>
-                    {/* <Text style={{ color: colors.textDark, fontFamily: 'Montserrat-Bold', fontSize: 10 }}>{myUser ? myUser.email : "----"}</Text> */}
+                <View style={{ marginLeft: 12,marginRight:70 }}>
+                    <Text style={{ color: colors.primary, fontFamily: 'Montserrat-Bold', fontSize: 16, }}>{myUser && myUser !== null ? myUser.name : "Please Login"}</Text>
+                    <Text style={{ color: colors.textDark, fontFamily: 'Montserrat-regular', fontSize: 10 }}>{myUser && myUser !== null ? myUser.email : ""}</Text>
+                    <Text style={{ color: colors.textDark, fontFamily: 'Montserrat-Bold', fontSize: 10 }}>{myUser ? myUser.id : ""}</Text>
                 </View>
             </View>
             <View style={{ paddingLeft: 20, marginTop: 20 }}>
@@ -101,8 +107,6 @@ function MyDrawer(props) {
                     onPress={() => logout()}
                     labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10 }}
                     icon={() => <MaterialCommunityIcons name="login" size={22} />}
-
-
 
                 />
 

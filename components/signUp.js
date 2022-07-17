@@ -39,6 +39,7 @@ export default function signUp({ navigation }) {
             if (userInfo) {
                 dispatch(setUser(userInfo.user))
                 setLoading(false)
+                navigation.navigate('Home')
                 
             }
             

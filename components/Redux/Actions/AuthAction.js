@@ -33,7 +33,7 @@ export const logoutUser = () => {
         AsyncStorage.removeItem('@userInfo')
         dispatch({
             type: SET_USER,
-            data: []
+            data: null
         })
         
 
