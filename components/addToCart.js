@@ -79,47 +79,24 @@ export default AddToCart = ({ route, navigation }) => {
 
     }
 
-
-
     const addQuantity = (price,index) => {
         let data = myCart;
         data[index].quantity = data[index].quantity + 1
         dispatch(updateCart(data))
-
-        setUpdateTotalAmount(Math.round(updateTotalAmount + price))
-        setDiscountTotalAmount(Math.round((updateTotalAmount + price) * DiscountPercent / 100))
-        setTaxTotalAmount(Math.round((updateTotalAmount + price) * TaxPercent / 100))
-        setTotalAmount(Math.round(((updateTotalAmount + price) * DiscountPercent / 100)
-            + ((updateTotalAmount + price) * TaxPercent / 100)
-            + deliveryFee));
-
-
-
-
-
     }
+
     const removeQuantity = (price,index)  => {
         let data = myCart;
         data[index].quantity = data[index].quantity - 1
         dispatch(updateCart(data))
-
-        setUpdateTotalAmount(Math.round(updateTotalAmount - price))
-        setDiscountTotalAmount(Math.round((updateTotalAmount - price) * DiscountPercent / 100))
-        setTaxTotalAmount(Math.round((updateTotalAmount - price) * TaxPercent / 100))
-        setTotalAmount(Math.round(((updateTotalAmount - price) * DiscountPercent / 100)
-            + ((updateTotalAmount - price) * TaxPercent / 100)
-            + deliveryFee));
-
-
-
     }
 
-    function updateAmount(item) {
+    function updateAmount() {
         let subTotal = 0;
         let discountTotal = 0;
         let taxTotal = 0;
         let grandTotal = 0;
-        item.map((i) => {
+        myCart.map((i) => {
             subTotal += i.price * i.quantity;
             discountTotal += ((i.price * DiscountPercent / 100)* i.quantity);
             taxTotal += ((i.price * TaxPercent / 100)* i.quantity);
@@ -136,7 +113,7 @@ export default AddToCart = ({ route, navigation }) => {
 
 
     useEffect(() => {
-      
+        updateAmount()
         // Will Unmount //
         return () => {
 
@@ -160,7 +137,7 @@ export default AddToCart = ({ route, navigation }) => {
                 addQuantity={addQuantity}
                 removeQuantity={removeQuantity}
                 deleteItem={deleteItem}
-            // updateAmount={updateAmount}
+                updateAmount={updateAmount}
 
             />
         );

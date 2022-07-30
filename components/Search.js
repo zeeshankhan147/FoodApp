@@ -31,11 +31,11 @@ export default function Search({ navigation }) {
 
 
     useEffect(() => {
-
+        setText('nnn')
 
     }, [])
 
-    function searching(value) {
+    const searching = (value) =>{
         value.length == 0 ? setFind(false) : setFind(true)
         setText(value)
         let searchArr = [];
@@ -48,12 +48,13 @@ export default function Search({ navigation }) {
 
     }
 
+
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <View style={{ paddingBottom: 20 }}>
                 <View style={styles.searchWrapper}>
 
-                    <TouchableOpacity onPress={()=> navigation.goBack()} style={{paddingRight:15,borderRightColor:colors.textLight,borderRightWidth:1}}>  
+                    <TouchableOpacity onPress={()=>navigation.goBack()} style={{ paddingRight: 15, borderRightColor: colors.textLight, borderRightWidth: 1 }}>
                         <Feather name="chevron-left" size={20} color={colors.textDark} />
                     </TouchableOpacity>
                     <View style={styles.searchTextWrapper}>
@@ -63,8 +64,7 @@ export default function Search({ navigation }) {
                             onChangeText={(value) => searching(value)}
                             textValue={text}
                             autoFocus={true}
-
-                            style={styles.searchText}></TextInput>
+                            style={styles.searchText}/>
                     </View>
                 </View>
             </View>
@@ -117,7 +117,7 @@ export default function Search({ navigation }) {
 
 
 
-        </View>
+        </SafeAreaView>
     )
 }
 
@@ -125,7 +125,7 @@ export default function Search({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        
+
     },
     searchWrapper: {
         flexDirection: 'row',
@@ -135,6 +135,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#d7d7d7f5',
         marginHorizontal: 30,
         borderRadius: 8,
+        paddingVertical: 12
 
     },
     searchTextWrapper: {

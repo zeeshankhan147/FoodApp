@@ -24,9 +24,9 @@ export default ProductCard = (props) => {
         addQuantity ,
         removeQuantity,
         deleteItem,
-        // updateAmount,
+        updateAmount,
     } = props;
-    const [qtyPlus, setQtyPlus] = useState(1)
+    const [qtyPlus, setQtyPlus] = useState(qty)
     const dispatch = useDispatch();
     const myCart = useSelector(state => state.cart.cartData)
 
@@ -34,11 +34,13 @@ export default ProductCard = (props) => {
     const adding = () => {
         setQtyPlus(qtyPlus + 1)
         addQuantity(price,index)
+        updateAmount()
 
     }
     const minus = () => {
         setQtyPlus(qtyPlus - 1)
         removeQuantity(price,index)
+        updateAmount()
     }
     const itemDel = () => {
         deleteItem(index, itemId)

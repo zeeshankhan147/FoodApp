@@ -16,17 +16,6 @@ PODS:
     - React-Core (= 0.67.2)
     - React-jsi (= 0.67.2)
     - ReactCommon/turbomodule/core (= 0.67.2)
-  - Firebase/CoreOnly (8.14.0):
-    - FirebaseCore (= 8.14.0)
-  - FirebaseCore (8.14.0):
-    - FirebaseCoreDiagnostics (~> 8.0)
-    - GoogleUtilities/Environment (~> 7.7)
-    - GoogleUtilities/Logger (~> 7.7)
-  - FirebaseCoreDiagnostics (8.15.0):
-    - GoogleDataTransport (~> 9.1)
-    - GoogleUtilities/Environment (~> 7.7)
-    - GoogleUtilities/Logger (~> 7.7)
-    - nanopb (~> 2.30908.0)
   - Flipper (0.99.0):
     - Flipper-Folly (~> 2.6)
     - Flipper-RSocket (~> 1.4)
@@ -89,30 +78,16 @@ PODS:
     - FlipperKit/FlipperKitNetworkPlugin
   - fmt (6.2.1)
   - glog (0.3.5)
-  - GoogleDataTransport (9.1.2):
-    - GoogleUtilities/Environment (~> 7.2)
-    - nanopb (~> 2.30908.0)
-    - PromisesObjC (< 3.0, >= 1.2)
   - GoogleSignIn (6.1.0):
     - AppAuth (~> 1.4)
     - GTMAppAuth (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - GoogleUtilities/Environment (7.7.0):
-    - PromisesObjC (< 3.0, >= 1.2)
-  - GoogleUtilities/Logger (7.7.0):
-    - GoogleUtilities/Environment
-  - GTMAppAuth (1.2.3):
+  - GTMAppAuth (1.3.0):
     - AppAuth/Core (~> 1.4)
     - GTMSessionFetcher/Core (~> 1.5)
-  - GTMSessionFetcher/Core (1.7.1)
+  - GTMSessionFetcher/Core (1.7.2)
   - libevent (2.1.12)
-  - nanopb (2.30908.0):
-    - nanopb/decode (= 2.30908.0)
-    - nanopb/encode (= 2.30908.0)
-  - nanopb/decode (2.30908.0)
-  - nanopb/encode (2.30908.0)
   - OpenSSL-Universal (1.1.180)
-  - PromisesObjC (2.1.0)
   - RCT-Folly (2021.06.28.00-v2):
     - boost
     - DoubleConversion
@@ -380,9 +355,6 @@ PODS:
     - React-perflogger (= 0.67.2)
   - RNCAsyncStorage (1.15.17):
     - React-Core
-  - RNFBApp (14.7.0):
-    - Firebase/CoreOnly (= 8.14.0)
-    - React-Core
   - RNGestureHandler (2.4.2):
     - React-Core
   - RNGoogleSignin (7.2.2):
@@ -480,7 +452,6 @@ DEPENDENCIES:
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
-  - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -492,9 +463,6 @@ SPEC REPOS:
   trunk:
     - AppAuth
     - CocoaAsyncSocket
-    - Firebase
-    - FirebaseCore
-    - FirebaseCoreDiagnostics
     - Flipper
     - Flipper-Boost-iOSX
     - Flipper-DoubleConversion
@@ -505,15 +473,11 @@ SPEC REPOS:
     - Flipper-RSocket
     - FlipperKit
     - fmt
-    - GoogleDataTransport
     - GoogleSignIn
-    - GoogleUtilities
     - GTMAppAuth
     - GTMSessionFetcher
     - libevent
-    - nanopb
     - OpenSSL-Universal
-    - PromisesObjC
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -579,8 +543,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
-  RNFBApp:
-    :path: "../node_modules/@react-native-firebase/app"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNGoogleSignin:
@@ -601,9 +563,6 @@ SPEC CHECKSUMS:
   DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
   FBLazyVector: 244195e30d63d7f564c55da4410b9a24e8fbceaa
   FBReactNativeSpec: c94002c1d93da3658f4d5119c6994d19961e3d52
-  Firebase: 7e8fe528c161b9271d365217a74c16aaf834578e
-  FirebaseCore: b84a44ee7ba999e0f9f76d198a9c7f60a797b848
-  FirebaseCoreDiagnostics: 92e07a649aeb66352b319d43bdd2ee3942af84cb
   Flipper: 30e8eeeed6abdc98edaf32af0cda2f198be4b733
   Flipper-Boost-iOSX: fd1e2b8cbef7e662a122412d7ac5f5bea715403c
   Flipper-DoubleConversion: 57ffbe81ef95306cc9e69c4aa3aeeeeb58a6a28c
@@ -615,15 +574,11 @@ SPEC CHECKSUMS:
   FlipperKit: d8d346844eca5d9120c17d441a2f38596e8ed2b9
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 85ecdd10ee8d8ec362ef519a6a45ff9aa27b2e85
-  GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940
   GoogleSignIn: c90b5bec45e780f54c6a8e1e3c182a86e3dda69d
-  GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
-  GTMAppAuth: 987526d41b07efb1bedda5e936fe0cb718a03113
-  GTMSessionFetcher: 4577a4cc914a5a07c40a8a0ad0acc22080418c2d
+  GTMAppAuth: 4d8f864896f3646f0c33baf38a28362f4c601e15
+  GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
-  PromisesObjC: 99b6f43f9e1044bd87a95a60beff28c2c44ddb72
   RCT-Folly: 803a9cfd78114b2ec0f140cfa6fa2a6bafb2d685
   RCTRequired: cd47794163052d2b8318c891a7a14fcfaccc75ab
   RCTTypeSafety: 393bb40b3e357b224cde53d3fec26813c52428b1
@@ -650,7 +605,6 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 2450b43df7ffe8e805a0b3dcb2abd4282f1f1836
   ReactCommon: d98c6c96b567f9b3a15f9fd4cc302c1eda8e3cf2
   RNCAsyncStorage: 6bd5a7ba3dde1c3facba418aa273f449bdc5437a
-  RNFBApp: 097a31d372b3db15b41c7a1a5c429433b0609e12
   RNGestureHandler: 61628a2c859172551aa2100d3e73d1e57878392f
   RNGoogleSignin: d7f8368b82d94f1dec964785d496387ca7f19092
   RNReanimated: 46cdb89ca59ab7181334f4ed05a70e82ddb36751
@@ -659,6 +613,6 @@ SPEC CHECKSUMS:
   Yoga: 9b6696970c3289e8dea34b3eda93f23e61fb8121
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 02e547484a60bb7c9661362f9dad5f7d49dd4ecd
+PODFILE CHECKSUM: 6d42293f022910c2a3f20bf85564fe4a6af425cd
 
 COCOAPODS: 1.11.3

@@ -83,6 +83,10 @@ export default Home = ({ navigation, route, props }) => {
         dispatch(addToCartAction(data))
     }
 
+    const navigate = (screen) =>{
+        navigation.navigate(screen)
+    }
+
     useEffect(() => {
         dispatch(getUser())
         setCatSelected(1)
@@ -235,15 +239,9 @@ export default Home = ({ navigation, route, props }) => {
                         <TouchableOpacity>
                             <Feather name="search" size={20} color={colors.textDark} />
                         </TouchableOpacity>
-                        <View style={styles.searchTextWrapper}>
-                            <TextInput
-                                onFocus={() => navigation.navigate('Search')}
-                                autoCapitalize="words"
-                                placeholder={'Explore your food'}
-
-
-                                style={styles.searchText}></TextInput>
-                        </View>
+                        <TouchableOpacity style={styles.searchTextWrapper} onPress={()=>navigation.navigate('Search')}>
+                            <Text style={styles.searchText}>Explore your food</Text>
+                        </TouchableOpacity>
                     </View>
 
                 </View>
