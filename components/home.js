@@ -27,6 +27,7 @@ import { addToCartAction, getCart, removeCart, updateCart } from './Redux/Action
 import Banners from '../assets/images/headerBanners'
 import HomeProduct from './HomeProduct';
 import { getUser } from './Redux/Actions/AuthAction';
+import { getProduct } from './Redux/Actions/ProductAction';
 
 Feather.loadFont();
 MaterialCommunityIcons.loadFont();
@@ -40,6 +41,7 @@ export default Home = ({ navigation, route, props }) => {
     const [popularData, setPopularData] = useState(popular)
     const dispatch = useDispatch();
     const myCart = useSelector(state => state.cart.cartData)
+    const menu = useSelector(state => state.menu.product)
 
 
     function drawerOpening() {
@@ -91,6 +93,7 @@ export default Home = ({ navigation, route, props }) => {
         dispatch(getUser())
         setCatSelected(1)
         dispatch(getCart())
+        // dispatch(getProduct())     
 
     }, [isFocused])
 
@@ -298,6 +301,7 @@ export default Home = ({ navigation, route, props }) => {
                         />
                     ))}
                 </View>
+               
             </ScrollView>
 
         </View>

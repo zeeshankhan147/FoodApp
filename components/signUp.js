@@ -56,6 +56,7 @@ export default function signUp({ navigation }) {
                     );
                 })
                 .catch(error => {
+                    alert(error)
                     if (error.code === 'auth/wrong-password') {
                         setLoader(false)
                         Alert.alert('Wrong password!', 'Please enter the correct password!')
@@ -126,14 +127,14 @@ export default function signUp({ navigation }) {
         }
     };
 
-    const facebookSignUp = async () => {
+    const facebookSignUp =  () => {
         setFacebookLoader(true)
         setTimeout(() => {
             alert('not ampliment')
             setFacebookLoader(false)
         }, 3000);
     }
-    const appleSignUp = async () => {
+    const appleSignUp =  () => {
         setAppleLoader(true)
         setTimeout(() => {
             alert('not ampliment')
@@ -166,12 +167,11 @@ export default function signUp({ navigation }) {
                     </Text>
                     <View style={{ height: 200 }}>
                         <TextInput
-                            style={{ paddingHorizontal: 20, paddingVertical: 10, borderColor: colors.primary, borderWidth: 1, borderRadius: 10, width: 300, marginTop: 40 }}
+                            style={{ paddingHorizontal: 20, paddingVertical: 10, borderColor: colors.primary, borderWidth: 1, borderRadius: 10, width: 300, marginTop: 40}}
                             placeholder={'Email Address'}
                             onChangeText={(em) => setEmail(em)}
                             keyboardType="email-address"
-
-
+                            importantForAutofill="noExcludeDescendants"
                         >
                         </TextInput>
                         <TextInput
@@ -200,7 +200,6 @@ export default function signUp({ navigation }) {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    {/* <Text style={{ marginTop: 100, fontFamily: 'Montserrat-Bold' }}>Or Sign up Other Option</Text> */}
                     <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '50%', marginTop: 100 }}>
                         <TouchableOpacity style={{ width: 55, height: 50, backgroundColor: '#ff4e4e', borderRadius: 10, alignItems: 'center', justifyContent: 'center' }}
                             onPress={googleSignUp}

@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, ToastAndroid, Alert } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Home from '../home';
 import SignUp from '../signUp';
 import {
@@ -28,6 +28,9 @@ function MyDrawer(props) {
     const dispatch = useDispatch();
     const myUser = useSelector(state => state.auth.user)
 
+    useEffect(() => {
+    }, [])
+
     const logout = () => {
         Alert.alert(
             "Logout",
@@ -54,6 +57,7 @@ function MyDrawer(props) {
             navigation.navigate('SignUp')
         }
     }
+
     return (
         <DrawerContentScrollView {...props}
             style={{
@@ -63,22 +67,23 @@ function MyDrawer(props) {
             {/* <DrawerItemList {...props} /> */}
 
             <View style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                padding: 20,
-                marginTop: 10
+                flexDirection: 'column',
+                padding: 30,
+                marginTop: -5,
+                backgroundColor: colors.primary,
+                borderBottomLeftRadius: 40,
             }}>
                 <TouchableOpacity onPress={loginBtn}>
-                    {myUser && myUser != null ?
-                        <Image source={{ uri: myUser.photo }} style={{ width: 70, height: 70, borderRadius: 70, borderColor: colors.primary, borderWidth: 3 }} /> :
-                        <Image source={require('../../assets/images/user2.png')} style={{ width: 70, height: 70, borderRadius: 70, borderColor: colors.primary, borderWidth: 3 }} />
+                    {myUser && myUser.photo !== null ?
+                        <Image source={{ uri: myUser.photo }} style={{ width: 70, height: 70, borderRadius: 70, borderColor: colors.background, borderWidth: 3 }} /> :
+                        <Image source={require('../../assets/images/user2.png')} style={{ width: 70, height: 70, borderRadius: 70, borderColor: colors.background, borderWidth: 3 }} />
                     }
                 </TouchableOpacity>
 
-                <View style={{ marginLeft: 12, marginRight: 70 }}>
-                    <Text style={{ color: colors.primary, fontFamily: 'Montserrat-Bold', fontSize: 16, }}>{myUser && myUser !== null ? myUser.name : "Please Login"}</Text>
-                    <Text style={{ color: colors.textDark, fontFamily: 'Montserrat-regular', fontSize: 10 }}>{myUser && myUser !== null ? myUser.email : ""}</Text>
-                    <Text style={{ color: colors.textDark, fontFamily: 'Montserrat-Bold', fontSize: 10 }}>{myUser ? myUser.id : ""}</Text>
+                <View style={{ marginLeft: 5, marginRight: 70, marginTop: 10 }}>
+                    <Text style={{ color: colors.background, fontFamily: 'Montserrat-Bold', fontSize: 18, }}>{myUser && myUser.name ? myUser.name : "Please Login"}</Text>
+                    <Text style={{ color: colors.white, fontFamily: 'Montserrat-regular', fontSize: 10 }}>{myUser && myUser.email ? myUser.email : ""}</Text>
+                    <Text style={{ color: colors.white, fontFamily: 'Montserrat-Bold', fontSize: 10 }}>{myUser ? myUser.id : ""}</Text>
                 </View>
             </View>
             <View style={{ paddingLeft: 20, marginTop: 20 }}>
@@ -112,7 +117,7 @@ function MyDrawer(props) {
                     /> : null
                 }
 
-                {myUser ? <View style={{ width: '70%', height: 0.5, backgroundColor: colors.textDark, marginTop: 20, }} /> : null}
+                {/* {myUser ? <View style={{ width: '60%', height: 0.5, backgroundColor: colors.textDark, marginTop: 20, }} /> : null} */}
 
                 {myUser ?
                     <DrawerItem
