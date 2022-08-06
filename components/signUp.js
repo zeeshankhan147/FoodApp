@@ -10,6 +10,7 @@ import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-si
 import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from './Redux/Actions/AuthAction';
+import auth from '@react-native-firebase/auth';
 
 
 
@@ -17,43 +18,94 @@ export default function signUp({ navigation }) {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [userData, setUserData] = useState()
-    const [loading, setLoading] = useState(false)
+    const [loader, setLoader] = useState(false)
+    const [googleLoader, setGoogleLoader] = useState(false)
+    const [facebookLoader, setFacebookLoader] = useState(false)
+    const [appleLoader, setAppleLoader] = useState(false)
     const dispatch = useDispatch();
 
     useEffect(() => {
         GoogleSignin.configure();
     }, [])
 
-    const login = () => {
-        alert('login')
-    }
+    const login = async () => {
+        if (email && password) {
+            setLoader(true)
+            auth()
+                .signInWithEmailAndPassword(email, password)
+                .then((user) => {
+                    console.log('User account created & signed in!');
+                    let userDetails = {
+                        email: user.user.email,
+                        familyName: null,
+                        givenName: null,
+                        id: user.user.uid,
+                        name: null,
+                        photo: null
+                    }
+                    dispatch(setUser(userDetails))
+                    setLoader(false)
+                    Alert.alert(
+                        "Successfully Login",
+                        ``,
+                        [
+                            { text: "Ok", onPress: () => { console.log('Login Success!'); }, style: "cancel" },
 
+                        ],
+                        { cancelable: false }
+                    );
+                })
+                .catch(error => {
+                    if (error.code === 'auth/wrong-password') {
+                        setLoader(false)
+                        Alert.alert('Wrong password!', 'Please enter the correct password!')
+                    }
+                    if (error.code === 'auth/user-not-found') {
+                        Alert.alert('Invalid Email!', 'Please enter the valid email!')
+                        setLoader(false)
+                    }
+                    if (error.code === 'auth/too-many-requests') {
+                        Alert.alert('Request Failed', 'Please try again later!')
+                    }
+                    if (error.code === 'auth/invalid-email') {
+                        Alert.alert('Invalid Email!', 'Please try again later!')
+                    }
+                    setLoader(false)
+                    // console.error(error);
+
+                });
+        } else {
+            setLoader(false)
+            Alert.alert('Login Error', 'Please enter the correct email address & password!')
+
+        }
+    }
+    
 
     const googleSignUp = async () => {
-        setLoading(true)
+        setGoogleLoader(true)
         try {
             await GoogleSignin.hasPlayServices();
 
             const userInfo = await GoogleSignin.signIn();
-            console.log('userrr', userInfo.user);
+            // console.log('userrr', userInfo.user);
             if (userInfo) {
                 dispatch(setUser(userInfo.user))
-                setLoading(false)
-                navigation.navigate('Home')
-                
+                setTimeout(() => {
+                    navigation.navigate('Home')
+                    setGoogleLoader(false)
+                }, 3000);
             }
-            
-
         }
         catch (error) {
             if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-                setLoading(false)
+                setGoogleLoader(false)
 
                 // user cancelled the login flow
                 console.log(error);
 
             } else if (error.code === statusCodes.IN_PROGRESS) {
-                setLoading(true)
+                setGoogleLoader(true)
 
                 // operation (e.g. sign in) is in progress already
                 console.log(error);
@@ -61,18 +113,33 @@ export default function signUp({ navigation }) {
             } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
                 // play services not available or outdated
                 console.log('PLAY_SERVICES_NOT_AVAILABLE --->>', error);
-                setLoading(false)
+                setGoogleLoader(false)
 
 
 
             } else {
                 // some other error happened
-                console.log(error);
-                setLoading(false)
+                // console.log(error);
+                setGoogleLoader(false)
 
             }
         }
     };
+
+    const facebookSignUp = async () => {
+        setFacebookLoader(true)
+        setTimeout(() => {
+            alert('not ampliment')
+            setFacebookLoader(false)
+        }, 3000);
+    }
+    const appleSignUp = async () => {
+        setAppleLoader(true)
+        setTimeout(() => {
+            alert('not ampliment')
+            setAppleLoader(false)
+        }, 3000);
+    }
 
 
 
@@ -92,72 +159,71 @@ export default function signUp({ navigation }) {
 
                     </View>
                 </SafeAreaView>
-                {loading ? (
-                    <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: '50%', width: '100%', }}>
-                        <ActivityIndicator size="large" color={colors.primary} />
-                    </View>
-                ) : (
-                    <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: '30%', width: '100%', }}>
-                        <Text style={{ fontSize: 25, fontWeight: '600', color: colors.secondary, fontFamily: 'Montserrat-Bold' }}>
-                            PLEASE LOGIN!
-                        </Text>
-                        <View style={{ height: 200 }}>
-                            <TextInput
-                                style={{ paddingHorizontal: 20,paddingVertical:10, borderColor: colors.primary, borderWidth: 1, borderRadius: 10, width: 300, marginTop: 40 }}
-                                placeholder={'Email Address'}
-                                onChangeText={(em) => setEmail(em)}
-                                keyboardType="email-address"
+
+                <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: '30%', width: '100%', }}>
+                    <Text style={{ fontSize: 25, fontWeight: '600', color: colors.secondary, fontFamily: 'Montserrat-Bold' }}>
+                        PLEASE LOGIN!
+                    </Text>
+                    <View style={{ height: 200 }}>
+                        <TextInput
+                            style={{ paddingHorizontal: 20, paddingVertical: 10, borderColor: colors.primary, borderWidth: 1, borderRadius: 10, width: 300, marginTop: 40 }}
+                            placeholder={'Email Address'}
+                            onChangeText={(em) => setEmail(em)}
+                            keyboardType="email-address"
 
 
-                            >
-                            </TextInput>
-                            <TextInput
+                        >
+                        </TextInput>
+                        <TextInput
 
-                                style={{ paddingHorizontal: 20,paddingVertical:10, borderColor: colors.primary, borderWidth: 1, borderRadius: 10, width: 300, marginTop: 20 }}
-                                placeholder={'Password'}
-                                onChangeText={(pass) => setPassword(pass)}
-                                secureTextEntry
-                                autoCorrect={false}
+                            style={{ paddingHorizontal: 20, paddingVertical: 10, borderColor: colors.primary, borderWidth: 1, borderRadius: 10, width: 300, marginTop: 20 }}
+                            placeholder={'Password'}
+                            onChangeText={(pass) => setPassword(pass)}
+                            secureTextEntry
+                            autoCorrect={false}
 
 
-                            >
-                            </TextInput>
-                            <TouchableOpacity style={{ width: 300, height: 50, backgroundColor: '#ff4e4e', borderRadius: 10, alignItems: 'center', justifyContent: 'center', marginTop: 20 }}
-                                onPress={() => login()}
-                            >
-                                <Text style={{ fontSize: 15, color: '#fff', fontFamily: 'Montserrat-Bold' }}>Login</Text>
-                            </TouchableOpacity>
+                        >
+                        </TextInput>
+                        <TouchableOpacity style={{ width: 300, height: 50, backgroundColor: '#ff4e4e', borderRadius: 10, alignItems: 'center', justifyContent: 'center', marginTop: 20 }}
+                            onPress={() => login()}
+                        >
+                            {loader ? <ActivityIndicator size="small" color={colors.background} /> :
+                                <Text style={{ fontSize: 15, color: '#fff', fontFamily: 'Montserrat-Bold' }}>Login</Text>}
+                        </TouchableOpacity>
 
-                            <View style={{ flexDirection: 'row', alignSelf: 'center', justifyContent: 'center', marginTop: 20, }}>
-                                <Text style={{ marginRight: 5, fontSize: 12, fontFamily: 'Montserrat-SemiBold' }}>Do you not have your account!</Text>
-                                <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-                                    <Text style={{ fontSize: 12, color: '#1a73e8', fontFamily: 'Montserrat-SemiBold', }}>Register</Text>
+                        <View style={{ flexDirection: 'row', alignSelf: 'center', justifyContent: 'center', marginTop: 20, }}>
+                            <Text style={{ marginRight: 5, fontSize: 12, fontFamily: 'Montserrat-SemiBold' }}>Do you not have your account!</Text>
+                            <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+                                <Text style={{ fontSize: 12, color: '#1a73e8', fontFamily: 'Montserrat-SemiBold', }}>Register</Text>
 
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                        {/* <Text style={{ marginTop: 100, fontFamily: 'Montserrat-Bold' }}>Or Sign up Other Option</Text> */}
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '50%', marginTop: 100 }}>
-                            <TouchableOpacity style={{ width: 55, height: 50, backgroundColor: '#ff4e4e', borderRadius: 10, alignItems: 'center', justifyContent: 'center' }}
-                                onPress={googleSignUp}
-                            >
-                                <MaterialCommunityIcons name='google' size={22} color={colors.white} />
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{ width: 55, height: 50, backgroundColor: '#1a73e8', borderRadius: 10, alignItems: 'center', justifyContent: 'center' }}>
-                                <MaterialCommunityIcons name='facebook' size={22} color={colors.white} />
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{ width: 55, height: 50, backgroundColor: '#000', borderRadius: 10, alignItems: 'center', justifyContent: 'center' }}>
-                                <MaterialCommunityIcons name='apple' size={22} color={colors.white} />
                             </TouchableOpacity>
                         </View>
-
-
+                    </View>
+                    {/* <Text style={{ marginTop: 100, fontFamily: 'Montserrat-Bold' }}>Or Sign up Other Option</Text> */}
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '50%', marginTop: 100 }}>
+                        <TouchableOpacity style={{ width: 55, height: 50, backgroundColor: '#ff4e4e', borderRadius: 10, alignItems: 'center', justifyContent: 'center' }}
+                            onPress={googleSignUp}
+                        >
+                            {googleLoader ? <ActivityIndicator size="small" color={colors.background} /> :
+                                <MaterialCommunityIcons name='google' size={22} color={colors.white} />}
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{ width: 55, height: 50, backgroundColor: '#1a73e8', borderRadius: 10, alignItems: 'center', justifyContent: 'center' }}
+                            onPress={facebookSignUp}
+                        >
+                            {facebookLoader ? <ActivityIndicator size="small" color={colors.background} /> :
+                                <MaterialCommunityIcons name='facebook' size={22} color={colors.white} />}
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{ width: 55, height: 50, backgroundColor: '#000', borderRadius: 10, alignItems: 'center', justifyContent: 'center' }}
+                            onPress={appleSignUp}
+                        >
+                            {appleLoader ? <ActivityIndicator size="small" color={colors.background} /> :
+                                <MaterialCommunityIcons name='apple' size={22} color={colors.white} />}
+                        </TouchableOpacity>
                     </View>
 
 
-                )}
-
-
+                </View>
 
 
                 <TouchableOpacity style={{ alignItems: 'center', marginTop: 30 }}

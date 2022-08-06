@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1042497418554",
+    "firebase_url": "https://myfoodapp-5e57e-default-rtdb.firebaseio.com",
     "project_id": "myfoodapp-5e57e",
     "storage_bucket": "myfoodapp-5e57e.appspot.com"
   },
@@ -37,6 +38,13 @@
             {
               "client_id": "1042497418554-5m5bcnsor1u8sp4t1cbs1f6md8q7bj2t.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1042497418554-ch7jd5as955begiu5kvgkusa6b2mb4en.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.foodApp"
+              }
             }
           ]
         }

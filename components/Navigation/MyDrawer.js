@@ -28,7 +28,7 @@ function MyDrawer(props) {
     const dispatch = useDispatch();
     const myUser = useSelector(state => state.auth.user)
 
-    const logout = () =>{
+    const logout = () => {
         Alert.alert(
             "Logout",
             "Are you sure logout user ?",
@@ -49,7 +49,7 @@ function MyDrawer(props) {
             { cancelable: false }
         )
     }
-    const loginBtn = () =>{
+    const loginBtn = () => {
         if (!myUser) {
             navigation.navigate('SignUp')
         }
@@ -69,13 +69,13 @@ function MyDrawer(props) {
                 marginTop: 10
             }}>
                 <TouchableOpacity onPress={loginBtn}>
-                {myUser ?
-                    <Image source={{uri:myUser.photo}} style={{ width: 70, height: 70, borderRadius: 70, borderColor: colors.primary, borderWidth: 3 }}/> :
-                    <Image source={require('../../assets/images/user2.png')} style={{ width: 70, height: 70, borderRadius: 70, borderColor: colors.primary, borderWidth: 3 }}/> 
-                }
-                    </TouchableOpacity>
+                    {myUser && myUser != null ?
+                        <Image source={{ uri: myUser.photo }} style={{ width: 70, height: 70, borderRadius: 70, borderColor: colors.primary, borderWidth: 3 }} /> :
+                        <Image source={require('../../assets/images/user2.png')} style={{ width: 70, height: 70, borderRadius: 70, borderColor: colors.primary, borderWidth: 3 }} />
+                    }
+                </TouchableOpacity>
 
-                <View style={{ marginLeft: 12,marginRight:70 }}>
+                <View style={{ marginLeft: 12, marginRight: 70 }}>
                     <Text style={{ color: colors.primary, fontFamily: 'Montserrat-Bold', fontSize: 16, }}>{myUser && myUser !== null ? myUser.name : "Please Login"}</Text>
                     <Text style={{ color: colors.textDark, fontFamily: 'Montserrat-regular', fontSize: 10 }}>{myUser && myUser !== null ? myUser.email : ""}</Text>
                     <Text style={{ color: colors.textDark, fontFamily: 'Montserrat-Bold', fontSize: 10 }}>{myUser ? myUser.id : ""}</Text>
@@ -96,19 +96,33 @@ function MyDrawer(props) {
 
                 />
                 <DrawerItem
-                    label="REGISTER"
-                    onPress={() => navigation.navigate('Register')}
+                    label={myUser ? 'SETTING' : "REGISTER"}
+                    onPress={myUser ? () => navigation.navigate('MyOrders') : () => navigation.navigate('Register')}
                     labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10 }}
                     icon={() => <MaterialCommunityIcons name="account" size={22} />}
 
                 />
-                <DrawerItem
-                    label="LOGOUT"
-                    onPress={() => logout()}
-                    labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10 }}
-                    icon={() => <MaterialCommunityIcons name="login" size={22} />}
+                {!myUser ?
+                    <DrawerItem
+                        label={'SIGN UP'}
+                        onPress={() => navigation.navigate('SignUp')}
+                        labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10 }}
+                        icon={() => <MaterialCommunityIcons name="login" size={22} />}
 
-                />
+                    /> : null
+                }
+
+                {myUser ? <View style={{ width: '70%', height: 0.5, backgroundColor: colors.textDark, marginTop: 20, }} /> : null}
+
+                {myUser ?
+                    <DrawerItem
+                        label="LOGOUT"
+                        onPress={() => logout()}
+                        labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10 }}
+                        icon={() => <MaterialCommunityIcons name="logout" size={22} />}
+
+                    /> : null
+                }
 
             </View>
 

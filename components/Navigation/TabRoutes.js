@@ -7,6 +7,7 @@ import Home from './../home';
 import SignUp from './../signUp';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import colors from '../../assets/colors/colors';
+import { useDispatch, useSelector } from "react-redux";
 
 
 Feather.loadFont();
@@ -21,23 +22,12 @@ import MyDrawer from './MyDrawer';
 const Tab = createBottomTabNavigator();
 
 function TabRoutes() {
-  const [counter, setCounterState] = useState(0)
   const isFocused = useIsFocused();
+  const myUser = useSelector(state => state.auth.user)
+  const myCart = useSelector(state => state.cart.cartData)
 
-
-  function countify() {
-    AsyncStorage.getItem('@cartItem').then((ct) => {
-
-      const CNTER = JSON.parse(ct);
-      const cft = Object.keys(CNTER).length;
-      setCounterState(cft)
-
-    })
-  }
 
   useEffect(() => {
-
-    countify();
 
   }, [isFocused])
 
@@ -57,13 +47,13 @@ function TabRoutes() {
       }}
     >
 
-      <Tab.Screen name="SignUp" component={SignUp}
+      <Tab.Screen name="SignUp" component={myUser ? MyOrders : SignUp}
         // options={{ headerShown: false }}
 
         options={{
           tabBarIcon: ({ focused }) => {
             return (
-              <MaterialCommunityIcons name="account" size={25} color={focused ? colors.secondary : 'grey'} />
+              <MaterialCommunityIcons name={myUser ? 'account-cog' : 'account'} size={25} color={focused ? colors.secondary : 'grey'} />
             )
           }
         }}
@@ -92,7 +82,7 @@ function TabRoutes() {
                   color={focused ? colors.secondary : 'grey'}
 
                 />
-                {counter > 0 ? (
+                {myCart.length > 0 ? (
                   <View
                     style={{
                       justifyContent: "center",

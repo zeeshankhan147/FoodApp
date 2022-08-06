@@ -5,72 +5,92 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 import colors from "../assets/colors/colors";
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Link } from '@react-navigation/native';
-import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
-// import { auth } from '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth';
+import { setUser } from './Redux/Actions/AuthAction';
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Register({ navigation }) {
-    const [FirsName, setFirsName] = useState("")
+    const [FirstName, setFirstName] = useState("")
     const [LastName, setLastName] = useState("")
     const [Email, setEmail] = useState("")
     const [Number, setNumber] = useState("")
     const [Password, setPassword] = useState("")
+    const [loader, setLoader] = useState(false)
+    const dispatch = useDispatch();
     useEffect(() => {
     }, [])
 
     const register = () => {
-     console.log('authttt->>');
+        setLoader(true)
+        if (FirstName) {
+            if (LastName) {
+                if (Email.length >= 8) {
+                    if (Number.length == 11) {
+                        if (Password.length >= 8) {
+                            auth()
+                                .createUserWithEmailAndPassword(Email, Password)
+                                .then((user) => {
+                                    console.log('User account created & signed in!');
+                                    let userDetails = {
+                                        email: user.user.email,
+                                        familyName: LastName,
+                                        givenName: FirstName,
+                                        id: user.user.uid,
+                                        name: FirstName + " " + LastName,
+                                        photo: null
+                                    }
+                                    dispatch(setUser(userDetails))
+                                    setLoader(false)
+                                    Alert.alert(
+                                        "Successfully Registration",
+                                        ``,
+                                        [
+                                            { text: "Ok", onPress: () => { navigation.navigate('Home') }, style: "cancel" },
 
-    //  auth().createUserWithEmailAndPassword('demo@gmail.com', '9839nknjd')
-    //     .then(() => {
-    //             console.log('User account created & signed in!');
-    //         })
-    //         .catch(error => {
-    //             if (error.code === 'auth/email-already-in-use') {
-    //                 console.log('That email address is already in use!');
-    //             }
+                                        ],
+                                        { cancelable: false }
+                                    );
+                                })
+                                .catch(error => {
+                                    if (error.code === 'auth/email-already-in-use') {
+                                        alert('That email address is already in use!');
+                                        setLoader(false)
+                                    }
 
-    //             if (error.code === 'auth/invalid-email') {
-    //                 console.log('That email address is invalid!');
-    //             }
+                                    if (error.code === 'auth/invalid-email') {
+                                        console.log('That email address is invalid!');
+                                        setLoader(false)
+                                    }
 
-    //             console.error(error);
-    //         });
-        
-        // let userDetail = {}
-        // let FN = false;
-        // let LN = false;
-        // let EM = false;
-        // let NM = false;
-        // let PS = false;
+                                    console.error(error);
+                                    setLoader(false)
+                                });
+                        }
+                        else {
+                            setLoader(false)
+                            Alert.alert('Password', 'Please fill the field & create strong password 8 or more than 8 character!')
+                        }
+                    }
+                    else {
+                        setLoader(false)
+                        Alert.alert('Number Error!', 'Please fill the field!')
+                    }
+                }
+                else {
+                    setLoader(false)
+                    Alert.alert('Email Address', 'Please fill the field!')
+                }
 
-        // if (FirsName && LastName && Email && Number && Password) {
-        //     if (FirsName) {
-        //         FN = true;
-        //     }
-        //     else if (LastName) {
-        //         LN = true;
-        //     }
-        //     else if (Email.length > 6) {
-        //         EM = true;
-        //     }
-        //     else if (Number.length == 11) {
-        //         NM = true;
-        //     }
-        //     else if (Password.length >= 8) {
-        //         PS = true;
-        //     }
-
-
-        //     if (FN && LN && EM && NM && PS) {
-        //         alert('Resgister Success')
-        //     }
-
-        // }
-        // else {
-        //     Alert.alert(`Something Went Wrong!`)
-        // }
-
+            }
+            else {
+                setLoader(false)
+                Alert.alert('Last Name', 'Please fill the field!')
+            }
+        }
+        else {
+            setLoader(false)
+            Alert.alert('First Name', 'Please fill the field!')
+        }
     }
 
     return (
@@ -98,7 +118,7 @@ export default function Register({ navigation }) {
                         <TextInput
                             style={{ paddingHorizontal: 20, paddingVertical: 10, borderColor: colors.primary, borderWidth: 1, borderRadius: 10, width: 300, marginTop: 30, }}
                             placeholder={'First Name'}
-                            onChangeText={(FN) => setFirsName(FN)}
+                            onChangeText={(FN) => setFirstName(FN)}
 
 
                         >
@@ -148,7 +168,8 @@ export default function Register({ navigation }) {
                         <TouchableOpacity style={{ width: 300, height: 50, backgroundColor: '#ff4e4e', borderRadius: 10, alignItems: 'center', justifyContent: 'center', marginTop: 20 }}
                             onPress={() => register()}
                         >
-                            <Text style={{ fontSize: 15, color: '#fff', fontFamily: 'Montserrat-Bold' }}>Register</Text>
+                            {loader ? <ActivityIndicator size="small" color={colors.background} /> :
+                                <Text style={{ fontSize: 15, color: '#fff', fontFamily: 'Montserrat-Bold' }}>Register</Text>}
                         </TouchableOpacity>
                         <TouchableOpacity style={{ alignItems: 'center', marginTop: 30 }}
                             onPress={() => Linking.openURL("https://loremipsum.com")}
@@ -158,12 +179,7 @@ export default function Register({ navigation }) {
                         </TouchableOpacity>
                     </View>
 
-
-
-
                 </View>
-
-
 
             </ScrollView>
 

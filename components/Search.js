@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#d7d7d7f5',
         marginHorizontal: 30,
         borderRadius: 8,
-        paddingVertical: 12
+        paddingVertical: 5
 
     },
     searchTextWrapper: {
