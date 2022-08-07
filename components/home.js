@@ -230,7 +230,7 @@ export default Home = ({ navigation, route, props }) => {
                 {/* Banner */}
                 <View style={styles.bannerWrapper}>
 
-                    <View style={{ width: windowWidth - 50, alignSelf: 'center', justifyContent: 'center' }}>
+                    <View style={{ width: windowWidth , alignSelf: 'center', justifyContent: 'center' }}>
                         <FlatList
                             data={Banners}
                             renderItem={renderBanner}
