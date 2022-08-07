@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
     Text,
     View,
@@ -11,7 +11,9 @@ import {
     ToastAndroid,
     TextInput,
     Dimensions,
-    Alert
+    Alert,
+    Animated,
+    useWindowDimensions
 } from 'react-native';
 import colors from '../assets/colors/colors';
 import Feather from 'react-native-vector-icons/Feather';
@@ -42,6 +44,9 @@ export default Home = ({ navigation, route, props }) => {
     const dispatch = useDispatch();
     const myCart = useSelector(state => state.cart.cartData)
     const menu = useSelector(state => state.menu.product)
+    const scrollX = useRef(new Animated.Value(0)).current;
+
+    const { width: windowWidth } = useWindowDimensions();
 
 
     function drawerOpening() {
@@ -85,7 +90,7 @@ export default Home = ({ navigation, route, props }) => {
         dispatch(addToCartAction(data))
     }
 
-    const navigate = (screen) =>{
+    const navigate = (screen) => {
         navigation.navigate(screen)
     }
 
@@ -169,19 +174,22 @@ export default Home = ({ navigation, route, props }) => {
         );
 
     }
-    const renderBanner = ({ item }) => {
+    const renderBanner = ({ item, imageIndex }) => {
         return (
             <View style={[
                 {
-                    marginHorizontal: 16,
-                    marginLeft: item.id == 1 ? 30 : 0,
-
+                    // marginHorizontal: 16,
+                    // marginLeft: item.id == 1 ? 30 : 0,
+                    width: windowWidth,
+                    height: 150,
+                    // alignItems: 'center',
+                    // justifyContent: 'center'
                 }
-            ]}>
+            ]} key={imageIndex}>
                 {/* <Text>{item.id}</Text> */}
                 <Image source={item.image}
-                    style={{ height: '100%', width: 300, borderRadius: 10 }}
-                    resizeMode='contain'
+                    style={{ width: '100%', height: 150, alignSelf: 'center' }}
+                // resizeMode='contain'
                 />
             </View>
         )
@@ -213,28 +221,61 @@ export default Home = ({ navigation, route, props }) => {
                 </TouchableOpacity>
             </SafeAreaView>
             <ScrollView
-                stickyHeaderIndices={[0, 1]}
+                stickyHeaderIndices={[2]}
                 scrollEnabled={true}
-                contentInsetAdjustmentBehavior='automatic' showsVerticalScrollIndicator={false}>
+                contentInsetAdjustmentBehavior='automatic'
+                showsVerticalScrollIndicator={false}>
 
 
                 {/* Banner */}
                 <View style={styles.bannerWrapper}>
 
-                    <FlatList
-                        data={Banners}
-                        renderItem={renderBanner}
-                        keyExtractor={item => item.id}
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}
-                        contentInsetAdjustmentBehavior='automatic'
-                    />
-                    {/* <Image source={BANNER_IMAGE}
-                            style={{ height: '100%', width: '100%', borderRadius: 10 }}
-                            resizeMode="cover"
-                        /> */}
-
+                    <View style={{ width: windowWidth - 50, alignSelf: 'center', justifyContent: 'center' }}>
+                        <FlatList
+                            data={Banners}
+                            renderItem={renderBanner}
+                            keyExtractor={item => item.id}
+                            pagingEnabled
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={false}
+                            contentInsetAdjustmentBehavior='automatic'
+                            onScroll={Animated.event([
+                                {
+                                    nativeEvent: {
+                                        contentOffset: {
+                                            x: scrollX
+                                        }
+                                    }
+                                }
+                            ])}
+                            scrollEventThrottle={1}
+                        />
+                    </View>
                 </View>
+
+                {/* Dots Banner */}
+                <View style={styles.dotConatiner}>
+                    <View style={styles.indicatorContainer}>
+                        {Banners.map((item, imageIndex) => {
+                            const width = scrollX.interpolate({
+                                inputRange: [
+                                    windowWidth * (imageIndex - 1),
+                                    windowWidth * imageIndex,
+                                    windowWidth * (imageIndex + 1)
+                                ],
+                                outputRange: [8, 20, 8],
+                                extrapolate: "clamp"
+                            });
+                            return (
+                                <Animated.View
+                                    key={imageIndex}
+                                    style={[styles.normalDot, { width:width }]}
+                                />
+                            );
+                        })}
+                    </View>
+                </View>
+
 
                 {/* search */}
                 <View style={styles.searchWrapper} >
@@ -242,7 +283,7 @@ export default Home = ({ navigation, route, props }) => {
                         <TouchableOpacity>
                             <Feather name="search" size={20} color={colors.textDark} />
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.searchTextWrapper} onPress={()=>navigation.navigate('Search')}>
+                        <TouchableOpacity style={styles.searchTextWrapper} onPress={() => navigation.navigate('Search')}>
                             <Text style={styles.searchText}>Explore your food</Text>
                         </TouchableOpacity>
                     </View>
@@ -288,7 +329,7 @@ export default Home = ({ navigation, route, props }) => {
                         <HomeProduct
                             from={'home'}
                             item={item}
-                            hiddenBtn={myCart.hasOwnProperty(item.id)?true:false}
+                            hiddenBtn={myCart.hasOwnProperty(item.id) ? true : false}
                             index={index}
                             itemId={item.id}
                             image={item.image}
@@ -301,7 +342,7 @@ export default Home = ({ navigation, route, props }) => {
                         />
                     ))}
                 </View>
-               
+
             </ScrollView>
 
         </View>
@@ -319,7 +360,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginTop: 60,
-        marginHorizontal:30,
+        marginHorizontal: 30,
         alignItems: 'center',
         marginBottom: 20,
     },
@@ -359,7 +400,7 @@ const styles = StyleSheet.create({
 
     },
     searchWrapper: {
-        marginTop: 10,
+        marginTop: 2,
         backgroundColor: '#f2f2f1',
 
 
@@ -373,7 +414,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#d7d7d7f5',
         marginHorizontal: 30,
         borderRadius: 8,
-        paddingVertical:12,
+        paddingVertical: 12,
     },
     searchTextWrapper: {
         marginLeft: 14,
@@ -550,9 +591,26 @@ const styles = StyleSheet.create({
         height: 125,
         resizeMode: 'contain',
         marginTop: 20,
-
-
     },
+    dotConatiner: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        paddingTop: 20
+    },
+    normalDot: {
+        height: 8,
+        width: 8,
+        borderRadius: 4,
+        backgroundColor: colors.primary,
+        marginHorizontal: 4
+    },
+    indicatorContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center"
+    }
 
 
 });
