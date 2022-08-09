@@ -128,7 +128,7 @@ export default HomeProduct = (props) => {
                             </TouchableOpacity>
                         )}
                     </View>
-                    <TouchableOpacity onPress={() => navigation.navigate('DetailView', { item: item })} style={{ width: 300, }}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Animated', { item: item })} style={{ width: 300, }}>
                         <Text style={{ fontFamily: 'Montserrat-Bold', fontSize: 16 }}>{item.title}</Text>
                         <Text style={{ fontFamily: 'Montserrat-Regular', fontSize: 12, marginTop: 6 }}>{item.description}</Text>
                         <Text style={{ fontFamily: 'Montserrat-Bold', marginTop: 6 }}>Rs. {item.price}</Text>

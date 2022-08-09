@@ -15,6 +15,8 @@ import Search from '../Search';
 import MyDrawer from './MyDrawer';
 import SignUp from '../signUp';
 import Home from '../home';
+import AnimatedCard from '../AnimatedCard';
+
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import HomeProduct from '../HomeProduct';
 
@@ -41,6 +43,7 @@ function Route() {
       <Drawer.Screen name="Search" component={Search} />
       <Drawer.Screen name="HomeProduct" component={HomeProduct} />
       <Drawer.Screen name="ProductCart" component={ProductCart} />
+      <Drawer.Screen name="Animated" component={AnimatedCard} />
     </Drawer.Navigator>
     </NavigationContainer>
 

@@ -58,7 +58,11 @@ export default function Register({ navigation }) {
                                     }
 
                                     if (error.code === 'auth/invalid-email') {
-                                        console.log('That email address is invalid!');
+                                        Alert.alert('Invalid Email!', 'Please try again later!')
+                                        setLoader(false)
+                                    }
+                                    if (error.code === 'auth/network-request-failed') {
+                                        Alert.alert('Network Check', 'Please check your internet connection and try again later')
                                         setLoader(false)
                                     }
 

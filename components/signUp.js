@@ -56,7 +56,6 @@ export default function signUp({ navigation }) {
                     );
                 })
                 .catch(error => {
-                    alert(error)
                     if (error.code === 'auth/wrong-password') {
                         setLoader(false)
                         Alert.alert('Wrong password!', 'Please enter the correct password!')
@@ -70,6 +69,9 @@ export default function signUp({ navigation }) {
                     }
                     if (error.code === 'auth/invalid-email') {
                         Alert.alert('Invalid Email!', 'Please try again later!')
+                    }
+                    if (error.code === 'auth/network-request-failed') {
+                        Alert.alert('Network Check', 'Please check your internet connection and try again later')
                     }
                     setLoader(false)
                     // console.error(error);
