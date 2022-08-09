@@ -6,7 +6,7 @@ export default function SplashScreen() {
     // custom SplashScreen -->>>>
     return (
         <View style={styles.container}>
-            <Image source={require('../android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png')}
+            <Image source={require('../assets/images/splash_ic.png')}
                 style={styles.image}
 
             />
