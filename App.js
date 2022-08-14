@@ -13,7 +13,7 @@ function App() {
   useEffect(()=>{
     setTimeout(() => {
       setInitialRoutes(true)
-    }, 2000);
+    }, 1000);
     
   },[])
 

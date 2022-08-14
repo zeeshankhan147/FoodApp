@@ -178,18 +178,13 @@ export default Home = ({ navigation, route, props }) => {
         return (
             <View style={[
                 {
-                    // marginHorizontal: 16,
-                    // marginLeft: item.id == 1 ? 30 : 0,
-                    width: windowWidth,
+                    width: windowWidth-60,
                     height: 150,
-                    // alignItems: 'center',
-                    // justifyContent: 'center'
                 }
             ]} key={imageIndex}>
-                {/* <Text>{item.id}</Text> */}
                 <Image source={item.image}
-                    style={{ width: '100%', height: 150, alignSelf: 'center' }}
-                // resizeMode='contain'
+                    style={{ width: '100%', height: 150, alignSelf: 'center',borderRadius:8 }}
+                resizeMode='stretch'
                 />
             </View>
         )
@@ -230,7 +225,7 @@ export default Home = ({ navigation, route, props }) => {
                 {/* Banner */}
                 <View style={styles.bannerWrapper}>
 
-                    <View style={{ width: windowWidth , alignSelf: 'center', justifyContent: 'center' }}>
+                    <View style={{ width: windowWidth-60 , alignSelf: 'center', }}>
                         <FlatList
                             data={Banners}
                             renderItem={renderBanner}
@@ -384,6 +379,8 @@ const styles = StyleSheet.create({
         marginTop: 20,
         width: '100%',
         height: 150,
+        alignItems:'center',
+        justifyContent:'center'
 
     },
     subTitle: {

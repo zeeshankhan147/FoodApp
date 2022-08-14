@@ -81,7 +81,7 @@ function MyDrawer(props) {
                 </TouchableOpacity>
 
                 <View style={{ marginLeft: 5, marginRight: 70, marginTop: 10 }}>
-                    <Text style={{ color: colors.background, fontFamily: 'Montserrat-Bold', fontSize: 18, }}>{myUser && myUser.name ? myUser.name : "Please Login"}</Text>
+                    <Text style={{ color: colors.background, fontFamily: 'Montserrat-Bold', fontSize: 18, }}>{myUser ? myUser.name : "Please Login"}</Text>
                     <Text style={{ color: colors.white, fontFamily: 'Montserrat-regular', fontSize: 10 }}>{myUser && myUser.email ? myUser.email : ""}</Text>
                     <Text style={{ color: colors.white, fontFamily: 'Montserrat-Bold', fontSize: 10 }}>{myUser ? myUser.id : ""}</Text>
                 </View>
@@ -123,11 +123,11 @@ function MyDrawer(props) {
                     <DrawerItem
                         label="LOGOUT"
                         onPress={() => logout()}
-                        labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10 }}
+                        labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10}}
                         icon={() => <MaterialCommunityIcons name="logout" size={22} />}
 
                     /> : null
-                }
+                } 
 
             </View>
 

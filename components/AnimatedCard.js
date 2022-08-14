@@ -33,22 +33,29 @@ const AnimatedCard = ({ route, navigation }) => {
     const { item } = route.params;
     const [counter, setCounter] = useState(0);
     const [size, setSize] = useState('medium');
+    const [textAnim, setTextAnim] = useState(true);
+    const [iconAnim, setIconAnim] = useState(false);
     const [addons, setAddons] = useState([])
     const dispatch = useDispatch();
     const myCart = useSelector(state => state.cart.cartData)
     const { width: windowWidth } = useWindowDimensions();
 
-    // const [scale, setScale] = useState(300)
     const spinValue = new Animated.Value(0);
     const scale = new Animated.Value(1.4)
     const leafScale = new Animated.Value(1.1)
     const leafRotation = new Animated.Value(0)
+    const widthAnim = new Animated.Value(200)
+
 
 
     useEffect(() => {
 
         return () => {
             setAddons([])
+            setTextAnim(true)
+            setIconAnim(false)
+            
+            
         }
 
     }, [isFocused])
@@ -72,23 +79,45 @@ const AnimatedCard = ({ route, navigation }) => {
             Animated.spring(leafScale, { toValue: 1.1, useNativeDriver: false }).start()
             Animated.timing(leafRotation, { toValue: 3, duration: 1000, useNativeDriver: false }).start()
         }
+        setTimeout(() => {
+            setSize(size)
+        }, 600);
+
 
     }
-
+    const animationWidth = () => {
+        Animated.timing(widthAnim, { toValue: 50, duration: 500, useNativeDriver: false }).start()
+    }
+    const resetAnim = () => {
+        Animated.timing(widthAnim, { toValue: 200, duration: 200, useNativeDriver: true }).start()
+    }
 
     const AddCart = (item) => {
-        let data = {
-            addons: addons,
-            id: item.id,
-            title: item.title,
-            price: item.price,
-            image: item.image,
-            quantity: qtyPlus
-        }
-        dispatch(addToCartAction(data))
+    
+        animationWidth()
+        setTimeout(() => {
+         setTextAnim(false)
+        //  let data = {
+        //     addons: addons,
+        //     id: item.id,
+        //     title: item.title,
+        //     price: item.price,
+        //     image: item.image,
+        //     quantity: qtyPlus
+        // }
+        // dispatch(addToCartAction(data))
         setTimeout(() => {
             navigation.navigate('Home')
-        }, 1000);
+        }, 600);
+        
+
+     }, 500);
+        
+ 
+
+
+
+
 
     }
     const addAddon = (item) => {
@@ -111,9 +140,9 @@ const AnimatedCard = ({ route, navigation }) => {
 
     const renderAddons = ({ item, index }) => {
         return (
-            <View style={{ marginHorizontal: 20, marginTop: 40, }}>
+            <View style={{ marginHorizontal: 20, }}>
                 <View style={{
-                    position:'relative',bottom:0,
+                    // position:'relative',bottom:0,
                     backgroundColor: '#fff', borderColor: '#000', borderWidth: 0.5, width: 50, height: 50, alignItems: 'center', justifyContent: 'center',
                     borderRadius: 50
 
@@ -235,26 +264,61 @@ const AnimatedCard = ({ route, navigation }) => {
 
             </View>
 
-            {/* <View
+            {/*PIZZA TOPING ANIMATION VIEW */}
+            <View
                 style={{
-                    width: 800, height: 800, borderColor:'#000',borderWidth:0.5, borderRadius: 800, alignSelf: 'center',zIndex:-100,top:-100,position:'absolute'
-             
-                }}
-            >
-                <View style={{position:'absolute',bottom:20}}>
-                <FlatList
-                    data={AddOns}
-                    renderItem={renderAddons}
-                    keyExtractor={item => item.id}
-                    // pagingEnabled
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                    contentInsetAdjustmentBehavior='automatic'
+                    marginTop: 40,
+                    // width: 800, height: 800, 
+                    // borderColor:'#000',borderWidth:0.5, 
+                    // borderRadius: 800, alignSelf: 'center',
+                    // zIndex:-500,top:-100,position:'absolute',
 
-                />
+                }}>
+
+                <View
+                // style={{position:'absolute',bottom:-20}}
+                >
+                    <FlatList
+                        data={AddOns}
+                        renderItem={renderAddons}
+                        keyExtractor={item => item.id}
+                        // pagingEnabled
+                        horizontal={true}
+                        scrollEnabled
+                        showsHorizontalScrollIndicator={false}
+                        contentInsetAdjustmentBehavior='automatic'
+
+                    />
                 </View>
-                
-            </View> */}
+
+            </View>
+
+            {/* ADD TO CART BUTTON */}
+            <View
+                style={{ width: '100%', paddingVertical: 20, alignItems: 'center', justifyContent: 'center', position: 'absolute', bottom: 10 }}
+            >
+                <TouchableOpacity onPress={AddCart} style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    <Animated.View
+                        style={{
+                            backgroundColor: colors.price,
+                            width: widthAnim,
+                            paddingVertical: 10,
+                            borderRadius: 50,
+                        }}
+                    >
+                        {textAnim ?
+                            <Text style={{ color: '#fff', fontSize: 14, fontFamily: 'Montserrat-Bold', alignSelf: 'center' }}>
+                                ADD TO CART
+                            </Text> : 
+                                 <MaterialCommunityIcons name='check' size={20} color="#fff" style={{ alignSelf: 'center' }} />
+                            }
+                        
+
+                    </Animated.View>
+
+                </TouchableOpacity>
+
+            </View>
 
 
         </View>
