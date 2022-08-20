@@ -40,9 +40,6 @@ function TabRoutes() {
         tabBarActiveTintColor: colors.secondary,
         tabBarShowLabel: false,
         tabBarStyle: {
-
-
-
         }
       }}
     >

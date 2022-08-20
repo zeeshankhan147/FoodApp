@@ -138,7 +138,9 @@ export default Home = ({ navigation, route, props }) => {
     }
     const renderPopularItem = ({ item }) => {
         return (
-            <TouchableOpacity key={item.id} onPress={() => navigation.navigate('DetailView', { item: item })}>
+            <TouchableOpacity
+                activeOpacity={0.8}
+                key={item.id} onPress={() => navigation.navigate('DetailView', { item: item })}>
                 <View style={[styles.popularCardWrapper,
                 {
                     marginLeft: item.id == 1 ? 30 : 0,
@@ -178,13 +180,13 @@ export default Home = ({ navigation, route, props }) => {
         return (
             <View style={[
                 {
-                    width: windowWidth-60,
+                    width: windowWidth - 60,
                     height: 150,
                 }
             ]} key={imageIndex}>
                 <Image source={item.image}
-                    style={{ width: '100%', height: 150, alignSelf: 'center',borderRadius:8 }}
-                resizeMode='stretch'
+                    style={{ width: '100%', height: 150, alignSelf: 'center', borderRadius: 8 }}
+                    resizeMode='stretch'
                 />
             </View>
         )
@@ -225,7 +227,7 @@ export default Home = ({ navigation, route, props }) => {
                 {/* Banner */}
                 <View style={styles.bannerWrapper}>
 
-                    <View style={{ width: windowWidth-60 , alignSelf: 'center', }}>
+                    <View style={{ width: windowWidth - 60, alignSelf: 'center', }}>
                         <FlatList
                             data={Banners}
                             renderItem={renderBanner}
@@ -264,7 +266,7 @@ export default Home = ({ navigation, route, props }) => {
                             return (
                                 <Animated.View
                                     key={imageIndex}
-                                    style={[styles.normalDot, { width:width }]}
+                                    style={[styles.normalDot, { width: width }]}
                                 />
                             );
                         })}
@@ -348,7 +350,7 @@ export default Home = ({ navigation, route, props }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f2f2f2'
+        backgroundColor: '#fff'
     },
 
     navBar: {
@@ -379,8 +381,8 @@ const styles = StyleSheet.create({
         marginTop: 20,
         width: '100%',
         height: 150,
-        alignItems:'center',
-        justifyContent:'center'
+        alignItems: 'center',
+        justifyContent: 'center'
 
     },
     subTitle: {
@@ -398,7 +400,7 @@ const styles = StyleSheet.create({
     },
     searchWrapper: {
         marginTop: 2,
-        backgroundColor: '#f2f2f1',
+        backgroundColor: '#fff',
 
 
     },
@@ -408,7 +410,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         paddingHorizontal: 20,
         alignItems: 'center',
-        backgroundColor: '#d7d7d7f5',
+        backgroundColor: '#e4e4e4f5',
         marginHorizontal: 30,
         borderRadius: 8,
         paddingVertical: 12,
@@ -429,7 +431,7 @@ const styles = StyleSheet.create({
     },
     categoryWrapper: {
         marginTop: 20,
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#fff',
 
     },
     categoryText: {
@@ -502,20 +504,18 @@ const styles = StyleSheet.create({
     popularCardWrapper: {
         backgroundColor: colors.white,
         marginRight: 20,
-        // marginTop: 11,
-        // paddingLeft: 10,
         borderRadius: 10,
         flexDirection: 'row',
         overflow: 'hidden',
-        // shadowColor: colors.black,
-        // shadowOffset: {
-        //     width: 0,
-        //     height: 2,
-        // },
-        // shadowOpacity: 0.05,
-        // shadowRadius: 20,
-        // elevation: 10,
-        // marginBottom: 10,
+        shadowColor: colors.black,
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
+        shadowOpacity: 0.05,
+        shadowRadius: 10,
+        elevation: 5,
+        marginBottom: 10,
         width: 300,
 
 

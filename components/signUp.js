@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, Image, TouchableOpacity, StyleSheet, FlatList, Alert, SafeAreaView, ActivityIndicator, ScrollView, TextInput, Linking } from 'react-native';
+import { Text, View, Image, TouchableOpacity, StyleSheet, FlatList, Alert, SafeAreaView, Easing, ActivityIndicator, ScrollView, TextInput, Linking, Animated } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import colors from "../assets/colors/colors";
@@ -14,6 +14,7 @@ import auth from '@react-native-firebase/auth';
 
 
 
+
 export default function signUp({ navigation }) {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
@@ -23,10 +24,15 @@ export default function signUp({ navigation }) {
     const [facebookLoader, setFacebookLoader] = useState(false)
     const [appleLoader, setAppleLoader] = useState(false)
     const dispatch = useDispatch();
+    const heightAnim = new Animated.Value(1000)
 
     useEffect(() => {
         GoogleSignin.configure();
+
     }, [])
+    useEffect(() => {
+        Animated.timing(heightAnim, { toValue: 0, duration: 600, useNativeDriver: false }).start()
+    })
 
     const login = async () => {
         if (email && password) {
@@ -83,7 +89,7 @@ export default function signUp({ navigation }) {
 
         }
     }
-    
+
 
     const googleSignUp = async () => {
         setGoogleLoader(true)
@@ -129,14 +135,14 @@ export default function signUp({ navigation }) {
         }
     };
 
-    const facebookSignUp =  () => {
+    const facebookSignUp = () => {
         setFacebookLoader(true)
         setTimeout(() => {
             alert('not ampliment')
             setFacebookLoader(false)
         }, 3000);
     }
-    const appleSignUp =  () => {
+    const appleSignUp = () => {
         setAppleLoader(true)
         setTimeout(() => {
             alert('not ampliment')
@@ -151,7 +157,6 @@ export default function signUp({ navigation }) {
         <View style={Styles.mainContainer}>
             {/* header */}
             <ScrollView contentInsetAdjustmentBehavior='automatic' showsVerticalScrollIndicator={false}>
-
                 <SafeAreaView>
                     <View style={Styles.headerWrapper}>
                         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -162,14 +167,14 @@ export default function signUp({ navigation }) {
 
                     </View>
                 </SafeAreaView>
-
+                <Animated.View style={{ width: '100%', height: heightAnim, }} />
                 <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: '30%', width: '100%', }}>
                     <Text style={{ fontSize: 25, fontWeight: '600', color: colors.secondary, fontFamily: 'Montserrat-Bold' }}>
                         PLEASE LOGIN!
                     </Text>
                     <View style={{ height: 200 }}>
                         <TextInput
-                            style={{ paddingHorizontal: 20, paddingVertical: 10, borderColor: colors.primary, borderWidth: 1, borderRadius: 10, width: 300, marginTop: 40}}
+                            style={{ paddingHorizontal: 20, paddingVertical: 10, borderColor: colors.primary, borderWidth: 1, borderRadius: 10, width: 300, marginTop: 40 }}
                             placeholder={'Email Address'}
                             onChangeText={(em) => setEmail(em)}
                             keyboardType="email-address"

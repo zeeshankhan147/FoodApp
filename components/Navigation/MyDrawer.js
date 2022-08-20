@@ -16,6 +16,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from '../Redux/Actions/AuthAction';
+import LinearGradient from 'react-native-linear-gradient';
 
 
 Feather.loadFont();
@@ -66,7 +67,7 @@ function MyDrawer(props) {
 
             {/* <DrawerItemList {...props} /> */}
 
-            <View style={{
+            <LinearGradient colors={['#fc7a77','#f65f5c', '#ff5854']} style={{
                 flexDirection: 'column',
                 padding: 30,
                 marginTop: -5,
@@ -85,7 +86,7 @@ function MyDrawer(props) {
                     <Text style={{ color: colors.white, fontFamily: 'Montserrat-regular', fontSize: 10 }}>{myUser && myUser.email ? myUser.email : ""}</Text>
                     <Text style={{ color: colors.white, fontFamily: 'Montserrat-Bold', fontSize: 10 }}>{myUser ? myUser.id : ""}</Text>
                 </View>
-            </View>
+            </LinearGradient>
             <View style={{ paddingLeft: 20, marginTop: 20 }}>
                 <DrawerItem
                     label="HOME"

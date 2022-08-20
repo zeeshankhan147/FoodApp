@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, Image, TouchableOpacity, StyleSheet, FlatList, Alert, SafeAreaView, ActivityIndicator, ScrollView, TextInput, Linking } from 'react-native';
+import { Text, View, Image, TouchableOpacity, StyleSheet, FlatList, Alert, SafeAreaView, ActivityIndicator, ScrollView, TextInput, Linking, Animated } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import colors from "../assets/colors/colors";
@@ -17,8 +17,11 @@ export default function Register({ navigation }) {
     const [Password, setPassword] = useState("")
     const [loader, setLoader] = useState(false)
     const dispatch = useDispatch();
-    useEffect(() => {
-    }, [])
+    const heightAnim = new Animated.Value(1000)
+
+    useEffect(()=>{
+        Animated.timing(heightAnim, { toValue: 0, duration: 600, useNativeDriver: false }).start()
+    },[])
 
     const register = () => {
         setLoader(true)
@@ -113,7 +116,7 @@ export default function Register({ navigation }) {
                     </View>
                 </SafeAreaView>
 
-
+                <Animated.View style={{ width: '100%', height: heightAnim, }} />
                 <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: '30%', width: '100%', }}>
                     <Text style={{ fontSize: 20, fontWeight: '600', color: colors.secondary, fontFamily: 'Montserrat-Bold' }}>
                         CREATE A ACCOUNT

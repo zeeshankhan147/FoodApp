@@ -34,31 +34,31 @@ export default HomeProduct = (props) => {
     const myCart = useSelector(state => state.cart.cartData)
     const isFocused = useIsFocused();
 
-    useEffect(()=>{
-        Object.values(myCart).map((i,ind)=>{
-            if(i.id == itemId){
+    useEffect(() => {
+        Object.values(myCart).map((i, ind) => {
+            if (i.id == itemId) {
                 setQtyPlus(myCart[ind].quantity)
                 setQuick(true)
             }
-           
+
         })
-       
-    },[isFocused])
+
+    }, [isFocused])
 
     const AddCart = (item) => {
         cartBtn(item)
         setQuick(true)
-        
+
     }
 
     const addQty = () => {
         let data = myCart;
-        Object.values(data).map((idCheck,ind) => {
+        Object.values(data).map((idCheck, ind) => {
             if (idCheck.id == itemId) {
                 data[ind].quantity = data[ind].quantity + 1
                 dispatch(updateCart(data))
                 setQtyPlus(data[ind].quantity)
-                
+
             }
         })
 
@@ -66,12 +66,12 @@ export default HomeProduct = (props) => {
 
     const removeQty = () => {
         let data = myCart;
-        Object.values(data).map((idCheck,ind) => {
+        Object.values(data).map((idCheck, ind) => {
             if (idCheck.id == itemId) {
                 data[ind].quantity = data[ind].quantity - 1
                 dispatch(updateCart(data))
                 setQtyPlus(data[ind].quantity)
-                
+
             }
         })
     }
@@ -86,56 +86,55 @@ export default HomeProduct = (props) => {
     return (
 
         <View>
-            
-                <View style={{ marginBottom: 10, flexDirection: 'row', borderBottomWidth: 0.5, borderBottomColor: colors.textLight, paddingBottom: 8 }}>
-                    <View style={{ width: 100, alignItems: 'center' }}>
-                        {/* <Text>Category here</Text> */}
-                        <Image source={item.image}
-                            style={{ width: 80, height: 80, borderRadius: 10, backgroundColor: 'white' }}
-                        />
-                        {quick ? (
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    borderRadius: 4, alignItems: 'center', justifyContent: 'center', marginTop: 8,
+            <View style={{ marginBottom: 10, flexDirection: 'row', borderBottomWidth: 0.5, borderBottomColor: colors.textLight, paddingBottom: 8 }}>
+                <View style={{ width: 100, alignItems: 'center' }}>
+                    {/* <Text>Category here</Text> */}
+                    <Image source={item.image}
+                        style={{ width: 80, height: 80, borderRadius: 10, backgroundColor: 'white' }}
+                    />
+                    {quick ? (
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                borderRadius: 4, alignItems: 'center', justifyContent: 'center', marginTop: 8,
 
-                                }}>
+                            }}>
 
-                                <TouchableOpacity onPress={() => qtyPlus > 1 ? removeQty() : itemDelete()}
-                                    style={{ backgroundColor: colors.background, paddingVertical: 3, paddingHorizontal: 3, borderRadius: 4 }}>
-                                    <MaterialCommunityIcons name="minus" size={17} color={colors.white}
-                                    />
-                                </TouchableOpacity>
-
-                                <Text style={{ marginHorizontal: 15, color: colors.textLight }}>{qtyPlus}</Text>
-
-                                <TouchableOpacity onPress={() => addQty()}
-                                    style={{ backgroundColor: colors.background, paddingVertical: 3, paddingHorizontal: 3, borderRadius: 4 }}>
-                                    <MaterialCommunityIcons name="plus" size={17} color={colors.white}
-                                    />
-                                </TouchableOpacity>
-
-                            </View>
-                        ) : (
-                            <TouchableOpacity onPress={() => AddCart(item)}
-                                style={{
-                                    flexDirection: 'row', backgroundColor: colors.background, paddingHorizontal: 15,
-                                    borderRadius: 4, alignItems: 'center', justifyContent: 'center', marginTop: 8, paddingVertical: 3
-
-                                }}>
-                                <MaterialCommunityIcons name="cart" size={17} color={colors.white} />
-                                <Text style={{ marginLeft: 3, color: colors.white }}>ADD</Text>
+                            <TouchableOpacity onPress={() => qtyPlus > 1 ? removeQty() : itemDelete()}
+                                style={{ backgroundColor: colors.background, paddingVertical: 3, paddingHorizontal: 3, borderRadius: 4 }}>
+                                <MaterialCommunityIcons name="minus" size={17} color={colors.white}
+                                />
                             </TouchableOpacity>
-                        )}
-                    </View>
-                    <TouchableOpacity onPress={() => navigation.navigate('Animated', { item: item })} style={{ width: 300, }}>
-                        <Text style={{ fontFamily: 'Montserrat-Bold', fontSize: 16 }}>{item.title}</Text>
-                        <Text style={{ fontFamily: 'Montserrat-Regular', fontSize: 12, marginTop: 6 }}>{item.description}</Text>
-                        <Text style={{ fontFamily: 'Montserrat-Bold', marginTop: 6 }}>Rs. {item.price}</Text>
 
-                    </TouchableOpacity>
+                            <Text style={{ marginHorizontal: 15, color: colors.textLight }}>{qtyPlus}</Text>
+
+                            <TouchableOpacity onPress={() => addQty()}
+                                style={{ backgroundColor: colors.background, paddingVertical: 3, paddingHorizontal: 3, borderRadius: 4 }}>
+                                <MaterialCommunityIcons name="plus" size={17} color={colors.white}
+                                />
+                            </TouchableOpacity>
+
+                        </View>
+                    ) : (
+                        <TouchableOpacity onPress={() => AddCart(item)}
+                            style={{
+                                flexDirection: 'row', backgroundColor: colors.background, paddingHorizontal: 15,
+                                borderRadius: 4, alignItems: 'center', justifyContent: 'center', marginTop: 8, paddingVertical: 3
+
+                            }}>
+                            <MaterialCommunityIcons name="cart" size={17} color={colors.white} />
+                            <Text style={{ marginLeft: 3, color: colors.white }}>ADD</Text>
+                        </TouchableOpacity>
+                    )}
                 </View>
-            
+                <TouchableOpacity onPress={() => navigation.navigate('Animated', { item: item })} style={{ width: 300, }}>
+                    <Text style={{ fontFamily: 'Montserrat-Bold', fontSize: 16 }}>{item.title}</Text>
+                    <Text style={{ fontFamily: 'Montserrat-Regular', fontSize: 12, marginTop: 6 }}>{item.description}</Text>
+                    <Text style={{ fontFamily: 'Montserrat-Bold', marginTop: 6 }}>Rs. {item.price}</Text>
+
+                </TouchableOpacity>
+            </View>
+
         </View>
 
 

@@ -34,6 +34,22 @@ const addons = [
         name:'Ham',
         image: require('../images/ham.png'),
     },
+    {
+        id:'8',
+        name:'Garlic',
+        image: require('../images/garlic.png'),
+    },
+    {
+        id:'9',
+        name:'Ham',
+        image: require('../images/ham.png'),
+    },
+    {
+        id:'10',
+        name:'Garlic',
+        image: require('../images/garlic.png'),
+    },
+    
 ]
 
 export default addons;
