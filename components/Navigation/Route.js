@@ -31,7 +31,7 @@ function Route() {
     <NavigationContainer>
       <Drawer.Navigator
       drawerContent={(props) => <MyDrawer {...props} />}
-      screenOptions={{headerShown:false}}
+      screenOptions={{headerShown:false,drawerType:'slide'}}
       >
       
       {/* <Drawer.Screen name="MyDrawer" component={MyDrawer} /> */}

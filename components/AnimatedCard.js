@@ -47,8 +47,8 @@ const AnimatedCard = ({ route, navigation }) => {
     const leafRotation = new Animated.Value(0)
     const widthAnim = new Animated.Value(200)
 
-
-
+    console.disableYellowBox = true;
+    
     useEffect(() => {
         return () => {
             setAddons([])
