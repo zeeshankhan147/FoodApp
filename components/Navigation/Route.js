@@ -19,6 +19,7 @@ import AnimatedCard from '../AnimatedCard';
 
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import HomeProduct from '../HomeProduct';
+import Checkout from '../Checkout';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -44,6 +45,7 @@ function Route() {
       <Drawer.Screen name="HomeProduct" component={HomeProduct} />
       <Drawer.Screen name="ProductCart" component={ProductCart} />
       <Drawer.Screen name="Animated" component={AnimatedCard} />
+      <Drawer.Screen name="Checkout" component={Checkout} />
     </Drawer.Navigator>
     </NavigationContainer>
 

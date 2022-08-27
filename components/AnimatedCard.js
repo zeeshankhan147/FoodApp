@@ -28,81 +28,90 @@ import AddOns from '../assets/data/add-ons';
 
 
 const AnimatedCard = ({ route, navigation }) => {
+    
+    const { item } = route.params;
     const isFocused = useIsFocused();
     const [qtyPlus, setQtyPlus] = useState(1)
-
-    const { item } = route.params;
     const [counter, setCounter] = useState(0);
     const [size, setSize] = useState('medium');
     const [textAnim, setTextAnim] = useState(true);
     const [iconAnim, setIconAnim] = useState(false);
     const [addons, setAddons] = useState([])
+    const [toppingAdd, setToppingAdd] = useState()
     const dispatch = useDispatch();
     const myCart = useSelector(state => state.cart.cartData)
     const { width: windowWidth } = useWindowDimensions();
 
     const spinValue = new Animated.Value(0);
     const scale = new Animated.Value(1.4)
-    const leafScale = new Animated.Value(1.1)
-    const leafRotation = new Animated.Value(0)
+    const woodSpin = new Animated.Value(0)
+    const woodScale = new Animated.Value(1)
+    const opacityAnim = new Animated.Value(0)
+    const toppingScale = new Animated.Value(1)
     const widthAnim = new Animated.Value(200)
 
+    const woodSpiner = woodSpin.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['0deg', '45deg']
+    })
+
     console.disableYellowBox = true;
-    
+
     useEffect(() => {
         return () => {
             setAddons([])
             setTextAnim(true)
             setIconAnim(false)
+            setQtyPlus(1)
         }
 
     }, [isFocused])
 
+    useEffect(() => {
+        if (toppingAdd) {
+            Animated.timing(toppingScale, { toValue: 0.5, useNativeDriver: false, duration: 1000 }).start()
+            Animated.timing(opacityAnim, { toValue: 1, useNativeDriver: false, duration: 1000 }).start()
+
+        } else if (!toppingAdd) {
+            Animated.timing(toppingScale, { toValue: 1, useNativeDriver: false, duration: 1000 }).start()
+            Animated.timing(opacityAnim, { toValue: 0, useNativeDriver: false, duration: 1000 }).start()
+        }
+    },[toppingAdd])
+
     const sizeChanger = (size) => {
         if (size == 'small') {
-            Animated.spring(spinValue, { toValue: 1, duration: 1000, easing: Easing.bounce, useNativeDriver: false }).start()
+            Animated.spring(spinValue, { toValue: 1, duration: 1000, easing: Easing.bounce, useNativeDriver: false }).start(() => setSize(size))
             Animated.spring(scale, { toValue: 1.1, useNativeDriver: false, duration: 1000 }).start()
-            Animated.timing(leafScale, { toValue: 0.9, useNativeDriver: false, easing: null, }).start()
-            Animated.timing(leafRotation, { toValue: 1, duration: 1000, useNativeDriver: false }).start()
+            Animated.timing(woodSpin, { toValue: 1, useNativeDriver: false, duration: 2000 }).start()
+            Animated.timing(woodScale, { toValue: 0.75, useNativeDriver: false, duration: 1000 }).start()
         }
         else if (size == 'medium') {
-            Animated.spring(spinValue, { toValue: 2, duration: 1000, easing: Easing.bounce, useNativeDriver: false }).start()
+            Animated.spring(spinValue, { toValue: 2, duration: 1000, easing: Easing.bounce, useNativeDriver: false }).start(() => setSize(size))
             Animated.spring(scale, { toValue: 1.3, useNativeDriver: false, duration: 1000 }).start()
-            Animated.spring(leafScale, { toValue: 1, useNativeDriver: false }).start()
-            Animated.timing(leafRotation, { toValue: 2, duration: 1000, useNativeDriver: false }).start()
+            Animated.timing(woodSpin, { toValue: 2, useNativeDriver: false, duration: 2000 }).start()
+            Animated.timing(woodScale, { toValue: 0.9, useNativeDriver: false, duration: 1000 }).start()
         }
         else {
-            Animated.spring(spinValue, { toValue: 3, duration: 1000, easing: Easing.bounce, useNativeDriver: false }).start()
+            Animated.spring(spinValue, { toValue: 3, duration: 1000, easing: Easing.bounce, useNativeDriver: false }).start(() => setSize(size))
             Animated.spring(scale, { toValue: 1.5, useNativeDriver: false, duration: 1000 }).start()
-            Animated.spring(leafScale, { toValue: 1.1, useNativeDriver: false }).start()
-            Animated.timing(leafRotation, { toValue: 3, duration: 1000, useNativeDriver: false }).start()
+            Animated.timing(woodSpin, { toValue: 3, useNativeDriver: false, duration: 2000 }).start()
+            Animated.timing(woodScale, { toValue: 1, useNativeDriver: false, duration: 1000 }).start()
         }
-        // setTimeout(() => {
-        //     setSize(size)
-        // }, 600);
-
 
     }
-    const animationWidth = () => {
-        Animated.timing(widthAnim, { toValue: 50, duration: 500, useNativeDriver: false }).start()
+
+    const plus = () =>{
+        setQtyPlus(qtyPlus +1)
     }
-    const resetAnim = () => {
-        Animated.timing(widthAnim, { toValue: 200, duration: 200, useNativeDriver: true }).start()
+    const minus = () =>{
+        setQtyPlus(qtyPlus -1)
     }
-
-    const AddCart = (item) => {
-
-        // animationWidth()
-        // setTimeout(() => {
-        //     setTextAnim(false)
-
-
-        // }, 500);
+    const AddCart = () => {
         let data = {
             addons: addons,
             id: item.id,
             title: item.title,
-            price: item.price,
+            price: Math.round(item.price * qtyPlus),
             image: item.image,
             quantity: qtyPlus
         }
@@ -112,7 +121,9 @@ const AnimatedCard = ({ route, navigation }) => {
         }, 600);
 
     }
+
     const addAddon = (item) => {
+        setToppingAdd(item.topping)
         let addonsArray = [];
         addonsArray.push(item)
         if (addons) {
@@ -128,15 +139,16 @@ const AnimatedCard = ({ route, navigation }) => {
         let index = tempAddons.map(function (item) { return item.id; }).indexOf(id.id);
         tempAddons.splice(index, 1)
         setAddons(tempAddons)
+        setToppingAdd()
     }
 
     const renderAddons = ({ item, index }) => {
         return (
-            <TouchableOpacity key={index} activeOpacity={0.4} onPress={() => addons.includes(item) ? removeAddons(item, index) : addAddon(item)}
+            <TouchableOpacity key={index} activeOpacity={0.4} onPress={() => addons.some((val) => val.id === item.id) ? removeAddons(item) : addAddon(item)}
                 style={{ marginHorizontal: 20, padding: 10 }}>
                 <View style={[
                     {
-                        backgroundColor: addons.includes(item) ? colors.primary : '#fff',
+                        backgroundColor: addons.some((val) => val.id === item.id) ? colors.primary : '#fff',
                         opacity: addons.includes(item) ? 0.5 : 1,
                         width: 60, height: 60, alignItems: 'center', justifyContent: 'center',
                         borderRadius: 60,
@@ -148,7 +160,8 @@ const AnimatedCard = ({ route, navigation }) => {
                         style={[
                             {
                                 width: 40, height: 40, borderRadius: 40,
-                                backgroundColor: addons.includes(item) ? colors.primary : '#fff',
+                                backgroundColor: addons.some((val) => val.id === item.id) ? colors.primary : '#fff',
+                                opacity: addons.some((val) => val.id === item.id) ? 0.4 : 1
                             }
                         ]}
                         source={item.image} />
@@ -157,7 +170,7 @@ const AnimatedCard = ({ route, navigation }) => {
         )
     }
 
-    const renderProduct = ({ item, index }) => {
+    const renderFlavors = ({ item, index }) => {
 
         const spin = spinValue.interpolate({
             inputRange: [0, 1,],
@@ -190,40 +203,14 @@ const AnimatedCard = ({ route, navigation }) => {
     return (
 
         <View style={styles.container}>
-            {/* <View style={{ width: 800, height: 800, backgroundColor: 'orange', borderRadius: 800, top: -400, alignSelf: 'center', zIndex: -100, position: 'absolute' }} /> */}
-
-
-            {/* <View style={{ width: 300, height: 300, borderColor: '#fff', borderWidth: 1, borderRadius: 300, alignSelf: 'center', position: 'absolute', marginTop: 76 }} /> */}
-
-            {/* <View style={{ width: 30, height: 30, borderRadius: 30, backgroundColor: '#fff', position: 'absolute', alignItems: 'center', justifyContent: 'center', top: 200, left: 50 }}>
-                <MaterialCommunityIcons name='plus' size={22} />
-            </View>
-            <View style={{ width: 30, height: 30, borderRadius: 30, backgroundColor: '#fff', position: 'absolute', alignItems: 'center', justifyContent: 'center', top: 200, right: 50 }}>
-                <MaterialCommunityIcons name='minus' size={22} />
-            </View> */}
-
 
             <View style={{ position: 'absolute', width: '100%', top: 76 }}>
-                <Image
-                    style={{ width: 300, height: 300, alignSelf: 'center' }}
+                <Animated.Image
+                    style={{ width: 300, height: 300, alignSelf: 'center', transform: [{ rotate: woodSpiner }, { scale: woodScale }] }}
                     source={require('../assets/images/wooden.png')} />
             </View>
 
-            {/* <Animated.Image
-
-                style={{
-                    width: '100%', height: 400, position: 'absolute', alignSelf: 'center', zIndex: -100,
-                    transform: [
-                        {
-                            rotate: leafRotation.interpolate({
-                                inputRange: [0, 1],
-                                outputRange: ['60deg', '0deg']
-                            })
-                        }, { scale: leafScale }
-                    ]
-                }}
-                source={require('../assets/images/leaf.png')}
-            /> */}
+            <Animated.Image source={toppingAdd} style={{ top: -20, width: 500, height: 500, position: 'absolute', alignSelf: 'center', zIndex: 1000, opacity: opacityAnim, transform: [{ scale: toppingScale }] }} />
 
             <View style={{
                 width: windowWidth, height: 400,
@@ -231,7 +218,7 @@ const AnimatedCard = ({ route, navigation }) => {
             }}>
                 <FlatList
                     data={item.flavor}
-                    renderItem={renderProduct}
+                    renderItem={renderFlavors}
                     keyExtractor={item => item.id}
                     pagingEnabled
                     horizontal={true}
@@ -273,15 +260,15 @@ const AnimatedCard = ({ route, navigation }) => {
                     flexDirection: 'row', alignItems: 'baseline', borderColor: '#000', borderWidth: 0.5,
                     paddingHorizontal: 10, paddingVertical: 3, borderRadius: 5
                 }}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={qtyPlus > 1 ? minus : null}>
                         <MaterialCommunityIcons name='minus' size={20} style={{ paddingRight: 10, borderRightColor: '#000', borderRightWidth: 0.4, marginRight: 15 }} />
                     </TouchableOpacity>
 
                     {/* <Text style={{ fontSize: 20, fontWeight: '800' }}>Price </Text> */}
                     <Animated.View>
-                        <Text style={{ fontWeight: '500', fontSize: 20, }}>{`Rs 580`}</Text>
+                        <Text style={{ fontWeight: '500', fontSize: 20, }}>{`Rs ${Math.round(item.price * qtyPlus)}`}</Text>
                     </Animated.View>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={plus}>
                         <MaterialCommunityIcons name='plus' size={20} style={{ paddingLeft: 10, borderLeftColor: '#000', borderLeftWidth: 0.4, marginLeft: 15 }} />
                     </TouchableOpacity>
                 </View>

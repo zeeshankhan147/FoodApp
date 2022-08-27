@@ -7,7 +7,7 @@ import Feather from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ProductCart from './productCart';
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
-import {useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { removeAllCart, removeCart, updateCart } from './Redux/Actions/CartAction';
 
 
@@ -27,10 +27,11 @@ export default AddToCart = ({ route, navigation }) => {
     const isFocused = useIsFocused();
     const [quantity, setQuantity] = useState(1)
     const dispatch = useDispatch();
-    const  myCart = useSelector(state => state.cart.cartData)
+    const myCart = useSelector(state => state.cart.cartData)
+    const myUser = useSelector(state => state.auth.user)
 
 
-    const clearCartItem = () =>{
+    const clearCartItem = () => {
         Alert.alert(
             "Clear All",
             "Do you want to clear all item from cart ?",
@@ -50,7 +51,7 @@ export default AddToCart = ({ route, navigation }) => {
 
 
     }
- 
+
 
     const deleteItem = (index) => {
 
@@ -74,18 +75,19 @@ export default AddToCart = ({ route, navigation }) => {
 
     const del = (index) => {
         let data = [...myCart]
-        data.splice(index,1)
+        data.splice(index, 1)
         dispatch(removeCart(data))
+        updateAmount()
 
     }
 
-    const addQuantity = (price,index) => {
+    const addQuantity = (price, index) => {
         let data = myCart;
         data[index].quantity = data[index].quantity + 1
         dispatch(updateCart(data))
     }
 
-    const removeQuantity = (price,index)  => {
+    const removeQuantity = (price, index) => {
         let data = myCart;
         data[index].quantity = data[index].quantity - 1
         dispatch(updateCart(data))
@@ -98,8 +100,8 @@ export default AddToCart = ({ route, navigation }) => {
         let grandTotal = 0;
         myCart.map((i) => {
             subTotal += i.price * i.quantity;
-            discountTotal += ((i.price * DiscountPercent / 100)* i.quantity);
-            taxTotal += ((i.price * TaxPercent / 100)* i.quantity);
+            discountTotal += ((i.price * DiscountPercent / 100) * i.quantity);
+            taxTotal += ((i.price * TaxPercent / 100) * i.quantity);
 
         })
         grandTotal = discountTotal + taxTotal;
@@ -119,7 +121,7 @@ export default AddToCart = ({ route, navigation }) => {
 
         }
 
-    }, [isFocused])
+    })
 
 
     const renderComponentItem = ({ item, index }) => {
@@ -147,7 +149,6 @@ export default AddToCart = ({ route, navigation }) => {
 
     return (
 
-
         <View style={Styles.mainContainer}>
             <SafeAreaView>
                 <View style={Styles.headerWrapper}>
@@ -156,14 +157,14 @@ export default AddToCart = ({ route, navigation }) => {
                             <Feather name='chevron-left' size={12} color={colors.textDark} />
                         </View>
                     </TouchableOpacity>
-                    
-                   {myCart.length > 0 ?(
-                     <TouchableOpacity onPress={() =>  clearCartItem()}>
-                     <View style={Styles.rightHeader}>
-                         <Feather name='trash' size={16} color={colors.price} />
-                     </View>
-                 </TouchableOpacity>
-                   ):(null)}
+
+                    {myCart.length > 0 ? (
+                        <TouchableOpacity onPress={() => clearCartItem()}>
+                            <View style={Styles.rightHeader}>
+                                <Feather name='trash' size={16} color={colors.price} />
+                            </View>
+                        </TouchableOpacity>
+                    ) : (null)}
 
 
                 </View>
@@ -183,17 +184,14 @@ export default AddToCart = ({ route, navigation }) => {
                                 width: "100%",
                                 alignItems: "center",
                                 justifyContent: "center",
-                                // backgroundColor:'red'
                             }}
                         >
                             <Text
                                 style={{
-                                    //   textAlign: "center",
                                     fontSize: 20,
                                     color: "#c5c5c5",
                                     fontFamily: "Montserrat-Regular",
-                                }}
-                            >
+                                }}>
                                 Your cart is empty
                             </Text>
                         </View>
@@ -201,7 +199,20 @@ export default AddToCart = ({ route, navigation }) => {
 
 
                 />
-                <View style={{ height: 200 }} />
+                {myCart.length > 0 ? <View style={{ height: 0.2, backgroundColor: colors.textLight, width: '90%', alignSelf: 'center' }} /> : null}
+                {myCart.length > 0 ? (
+                    <View style={{ paddingHorizontal: 30, marginTop: 30, marginBottom: 90, justifyContent: 'center', flexDirection: 'row' }}>
+                        <View style={{ alignItems: 'flex-start', width: '50%', }}>
+                            <Text style={{ color: colors.textLight, fontSize: 18, fontFamily: 'Montserrat-SemiBold' }}>{`Total`}</Text>
+
+                        </View>
+                        <View style={{ alignItems: 'flex-end', width: '50%' }}>
+                            <Text style={{ color: colors.textDark, fontWeight: '600', fontFamily: 'Montserrat-Bold', fontSize: 18 }}>{`${currency} ${Math.floor(updateTotalAmount)}.00`}</Text>
+                        </View>
+                    </View>
+                ) : (
+                    <View></View>
+                )}
             </ScrollView>
 
 
@@ -210,28 +221,11 @@ export default AddToCart = ({ route, navigation }) => {
             {myCart.length > 0 ? (
                 <View style={Styles.modal}>
 
-                    <View style={{ paddingHorizontal: 30, marginTop: 30, marginBottom: 90, justifyContent: 'center', flexDirection: 'row' }}>
-                        <View style={{ alignItems: 'flex-start', width: '50%' }}>
-                            <Text style={{ color: 'white', }}>Sub Total</Text>
-                            <Text style={{ color: 'white', }}>{`Discount(${DiscountPercent}%)`}</Text>
-                            <Text style={{ color: 'white', }}>{`Tax(${TaxPercent}%)`}</Text>
-                            <Text style={{ color: 'white', }}>Delivery Fee</Text>
-                            <Text style={{ color: 'white', }}>{`Total Amount`}</Text>
-
-                        </View>
-                        <View style={{ alignItems: 'flex-end', width: '50%' }}>
-                            <Text style={{ color: 'white', }}>{`${currency} ${Math.floor(updateTotalAmount)}`}</Text>
-                            <Text style={{ color: 'white', }}>{`${currency} ${discountTotalAmount}`}</Text>
-                            <Text style={{ color: 'white', }}>{`${currency} ${taxTotalAmount}`}</Text>
-                            <Text style={{ color: 'white', }}>{`${currency} ${deliveryFee}`}</Text>
-                            <Text style={{ color: 'white', }}>{`${currency} ${Math.floor(totalAmount)}`}</Text>
-                        </View>
-                    </View>
-                    <TouchableOpacity onPress={() => navigation.navigate('SignUp')} style={{ paddingHorizontal: 110, alignSelf: 'center', height: 50, backgroundColor: colors.background, alignItems: 'center', justifyContent: 'center', borderRadius: 15, position: 'absolute', bottom: 20 }}>
-                        <Text style={{ color: colors.textDark, fontWeight: 'bold', fontSize: 15 }}>
-                            {`Place Order ${currency} - (${totalAmount})`}
+                    <TouchableOpacity onPress={() => navigation.navigate(myUser ? 'Checkout' : 'SignUp')} style={{ flexDirection: 'row', width: '90%', height: 70, backgroundColor: colors.primary, borderRadius: 15, }}>
+                        <Text style={{ width: '90%', justifyContent: 'flex-start', alignSelf: 'center', paddingLeft: 30, color: colors.white, fontWeight: 'bold', fontSize: 18 }}>
+                            Address
                         </Text>
-                        {/* <Feather style={{alignSelf:'flex-end'}} name='chevron-right' size={20} color={colors.secondary} /> */}
+                        <Feather style={{ width: '10%', justifyContent: 'flex-end', alignSelf: 'center', }} name='chevron-right' size={20} color={colors.white} />
 
                     </TouchableOpacity>
                 </View>
@@ -247,7 +241,7 @@ export default AddToCart = ({ route, navigation }) => {
 const Styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
-        backgroundColor: '#eee'
+        backgroundColor: '#fff'
 
     },
     flexContainer: {
@@ -361,13 +355,17 @@ const Styles = StyleSheet.create({
         marginRight: 10,
     },
     modal: {
-        flex: 1,
+        // flex: 1,
+        paddingTop: 20,
+        paddingBottom: 20,
         width: '100%',
-        backgroundColor: colors.secondary,
+        backgroundColor: '#fff',
         position: 'absolute',
         bottom: 0,
-        borderTopRightRadius: 30,
-        borderTopLeftRadius: 30,
+        alignItems: 'center',
+        justifyContent: 'center',
+        // borderTopRightRadius: 30,
+        // borderTopLeftRadius: 30,
         // shadowColor: colors.black,
         // shadowOffset: {
         //     width: 0,

@@ -28,11 +28,10 @@ export default function signUp({ navigation }) {
 
     useEffect(() => {
         GoogleSignin.configure();
-
     }, [])
     useEffect(() => {
         Animated.timing(heightAnim, { toValue: 0, duration: 600, useNativeDriver: false }).start()
-    })
+    },[])
 
     const login = async () => {
         if (email && password) {

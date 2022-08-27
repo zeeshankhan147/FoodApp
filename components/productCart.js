@@ -142,7 +142,7 @@ const Styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         // justifyContent:'space-between',
-        backgroundColor: '#fff',
+        // backgroundColor: '#fff',
         marginHorizontal: 25,
         paddingVertical: 10,
         // marginTop:20,
@@ -150,12 +150,12 @@ const Styles = StyleSheet.create({
         paddingHorizontal: 10,
         // borderBottomWidth: 0.5,
         borderBottomColor: 'gray',
-        borderRadius: 10,
-        shadowOffset: {
-            width: 0,
-            height: 5
-        },
-        elevation: 4,
+        // borderRadius: 10,
+        // shadowOffset: {
+        //     width: 0,
+        //     height: 5
+        // },
+        // elevation: 4,
         marginBottom: 10,
 
 

@@ -19,9 +19,9 @@ export default function Register({ navigation }) {
     const dispatch = useDispatch();
     const heightAnim = new Animated.Value(1000)
 
-    useEffect(()=>{
+    useEffect(() => {
         Animated.timing(heightAnim, { toValue: 0, duration: 600, useNativeDriver: false }).start()
-    },[])
+    }, [])
 
     const register = () => {
         setLoader(true)
