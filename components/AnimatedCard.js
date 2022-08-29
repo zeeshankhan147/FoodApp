@@ -23,12 +23,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
 import { addToCartAction } from './Redux/Actions/CartAction';
 import { useDispatch, useSelector } from "react-redux";
-import Data from '../assets/images/pizza';
-import AddOns from '../assets/data/add-ons';
-
 
 const AnimatedCard = ({ route, navigation }) => {
-    
+
     const { item } = route.params;
     const isFocused = useIsFocused();
     const [qtyPlus, setQtyPlus] = useState(1)
@@ -55,7 +52,7 @@ const AnimatedCard = ({ route, navigation }) => {
         outputRange: ['0deg', '45deg']
     })
 
-    console.disableYellowBox = true;
+    // console.disableYellowBox = true;
 
     useEffect(() => {
         return () => {
@@ -76,7 +73,10 @@ const AnimatedCard = ({ route, navigation }) => {
             Animated.timing(toppingScale, { toValue: 1, useNativeDriver: false, duration: 1000 }).start()
             Animated.timing(opacityAnim, { toValue: 0, useNativeDriver: false, duration: 1000 }).start()
         }
-    },[toppingAdd])
+        else {
+            null
+        }
+    }, [toppingAdd])
 
     const sizeChanger = (size) => {
         if (size == 'small') {
@@ -100,11 +100,11 @@ const AnimatedCard = ({ route, navigation }) => {
 
     }
 
-    const plus = () =>{
-        setQtyPlus(qtyPlus +1)
+    const plus = () => {
+        setQtyPlus(qtyPlus + 1)
     }
-    const minus = () =>{
-        setQtyPlus(qtyPlus -1)
+    const minus = () => {
+        setQtyPlus(qtyPlus - 1)
     }
     const AddCart = () => {
         let data = {
@@ -188,6 +188,12 @@ const AnimatedCard = ({ route, navigation }) => {
                         color: colors.primary
                     }}>{item.title}</Text>
                 </View>
+                {addons.map((item,index)=>{
+                    console.warn(item);
+                    return(
+                        <Animated.Image source={item.topping} style={{ top: -20, width: 500, height: 500, position: 'absolute', alignSelf: 'center', zIndex: 1000, opacity: opacityAnim, transform: [{ scale: toppingScale }] }} />
+                    )
+                })}
 
                 <Animated.Image
                     key={index}
@@ -209,8 +215,6 @@ const AnimatedCard = ({ route, navigation }) => {
                     style={{ width: 300, height: 300, alignSelf: 'center', transform: [{ rotate: woodSpiner }, { scale: woodScale }] }}
                     source={require('../assets/images/wooden.png')} />
             </View>
-
-            <Animated.Image source={toppingAdd} style={{ top: -20, width: 500, height: 500, position: 'absolute', alignSelf: 'center', zIndex: 1000, opacity: opacityAnim, transform: [{ scale: toppingScale }] }} />
 
             <View style={{
                 width: windowWidth, height: 400,
