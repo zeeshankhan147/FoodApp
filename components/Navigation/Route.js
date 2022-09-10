@@ -12,14 +12,11 @@ import MyOrders from '../MyOrders';
 import AddToCart from '../addToCart';
 import Register from '../Register';
 import Search from '../Search';
-import MyDrawer from './MyDrawer';
-import SignUp from '../signUp';
-import Home from '../home';
 import AnimatedCard from '../AnimatedCard';
-
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import HomeProduct from '../HomeProduct';
 import Checkout from '../Checkout';
+
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -30,23 +27,22 @@ function Route() {
 
 
     <NavigationContainer>
-      <Drawer.Navigator
-      drawerContent={(props) => <MyDrawer {...props} />}
-      screenOptions={{headerShown:false,drawerType:'slide'}}
-      >
+      <Stack.Navigator
+      screenOptions={{headerShown:false}}
+      initialRouteName='Tab'>
       
-      {/* <Drawer.Screen name="MyDrawer" component={MyDrawer} /> */}
-      <Drawer.Screen name="Tab" component={TabRoutes} />
-      {/* <Drawer.Screen name="MyOrders" component={MyOrders} /> */}
-      <Drawer.Screen name="DetailView" component={DetailView} />
-      <Drawer.Screen name="AddToCart" component={AddToCart} />
-      <Drawer.Screen name="Register" component={Register} />
-      <Drawer.Screen name="Search" component={Search} />
-      <Drawer.Screen name="HomeProduct" component={HomeProduct} />
-      <Drawer.Screen name="ProductCart" component={ProductCart} />
-      <Drawer.Screen name="Animated" component={AnimatedCard} />
-      <Drawer.Screen name="Checkout" component={Checkout} />
-    </Drawer.Navigator>
+      <Stack.Screen name="Tab" component={TabRoutes} />
+      <Drawer.Screen name="MyOrders" component={MyOrders} />
+      <Stack.Screen name="DetailView" component={DetailView} />
+      <Stack.Screen name="AddToCart" component={AddToCart} />
+      <Stack.Screen name="Register" component={Register} />
+      <Stack.Screen name="Search" component={Search} />
+      <Stack.Screen name="HomeProduct" component={HomeProduct} />
+      <Stack.Screen name="ProductCart" component={ProductCart} />
+      <Stack.Screen name="Animated" component={AnimatedCard} />
+      <Stack.Screen name="Checkout" component={Checkout} />
+
+    </Stack.Navigator>
     </NavigationContainer>
 
   );

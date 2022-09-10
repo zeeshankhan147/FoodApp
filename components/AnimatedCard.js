@@ -294,8 +294,7 @@ const AnimatedCard = ({ route, navigation }) => {
 
             {/* ADD TO CART BUTTON */}
             <View
-                style={{ width: '100%', paddingVertical: 20, alignItems: 'center', justifyContent: 'center', position: 'absolute', bottom: 10 }}
-            >
+                style={{ width: '100%', paddingVertical: 20, alignItems: 'center', justifyContent: 'center', position: 'absolute', bottom: 10 }}>
                 <TouchableOpacity onPress={AddCart} style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <Animated.View
                         style={{
@@ -303,8 +302,8 @@ const AnimatedCard = ({ route, navigation }) => {
                             width: widthAnim,
                             paddingVertical: 10,
                             borderRadius: 50,
-                        }}
-                    >
+                        }}>
+
                         {textAnim ?
                             <Text style={{ color: '#fff', fontSize: 14, fontFamily: 'Montserrat-Bold', alignSelf: 'center' }}>
                                 ADD TO CART

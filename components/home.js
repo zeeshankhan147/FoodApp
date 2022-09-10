@@ -30,6 +30,7 @@ import Banners from '../assets/images/headerBanners'
 import HomeProduct from './HomeProduct';
 import { getUser } from './Redux/Actions/AuthAction';
 import { getProduct } from './Redux/Actions/ProductAction';
+import { getAllOrders } from './Redux/Actions/OrdersAction';
 
 Feather.loadFont();
 MaterialCommunityIcons.loadFont();
@@ -98,6 +99,7 @@ export default Home = ({ navigation, route, props }) => {
         dispatch(getUser())
         setCatSelected(1)
         dispatch(getCart())
+        dispatch(getAllOrders())
         // dispatch(getProduct())     
 
     }, [isFocused])

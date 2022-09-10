@@ -1,7 +1,5 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, ToastAndroid, Alert } from 'react-native'
 import React, { useEffect } from 'react'
-import Home from '../home';
-import SignUp from '../signUp';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ToastAndroid, Alert } from 'react-native'
 import {
     createDrawerNavigator,
     DrawerContentScrollView,
@@ -13,10 +11,10 @@ import colors from '../../assets/colors/colors';
 
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from '../Redux/Actions/AuthAction';
 import LinearGradient from 'react-native-linear-gradient';
+import HomeStack from './HomeStack';
 
 
 Feather.loadFont();
@@ -24,14 +22,25 @@ MaterialCommunityIcons.loadFont();
 
 const Drawer = createDrawerNavigator();
 
-function MyDrawer(props) {
+export default function MyDrawer(props) {
+    return (
+        <Drawer.Navigator
+            drawerContent={props => <CustomDrawer {...props} />}
+            initialRouteName="Tab">
+
+            <Drawer.Screen
+                name="HomeStack"
+                component={HomeStack}
+                options={{ headerShown: false , drawerType:'slide'}}/>
+
+        </Drawer.Navigator>
+
+    );
+}
+const CustomDrawer = props => {
     const { navigation } = props;
     const dispatch = useDispatch();
     const myUser = useSelector(state => state.auth.user)
-
-    useEffect(() => {
-    }, [])
-
     const logout = () => {
         Alert.alert(
             "Logout",
@@ -58,7 +67,6 @@ function MyDrawer(props) {
             navigation.navigate('SignUp')
         }
     }
-
     return (
         <DrawerContentScrollView {...props}
             style={{
@@ -67,7 +75,7 @@ function MyDrawer(props) {
 
             {/* <DrawerItemList {...props} /> */}
 
-            <LinearGradient colors={['#fc7a77','#f65f5c', '#ff5854']} style={{
+            <LinearGradient colors={['#fc7a77', '#f65f5c', '#ff5854']} style={{
                 flexDirection: 'column',
                 padding: 30,
                 marginTop: -5,
@@ -118,23 +126,21 @@ function MyDrawer(props) {
                     /> : null
                 }
 
-                {/* {myUser ? <View style={{ width: '60%', height: 0.5, backgroundColor: colors.textDark, marginTop: 20, }} /> : null} */}
-
                 {myUser ?
                     <DrawerItem
                         label="LOGOUT"
                         onPress={() => logout()}
-                        labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10}}
+                        labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10 }}
                         icon={() => <MaterialCommunityIcons name="logout" size={22} />}
 
                     /> : null
-                } 
+                }
 
             </View>
-
+            
         </DrawerContentScrollView>
-    );
+    )
 }
-export default MyDrawer;
+
 
 

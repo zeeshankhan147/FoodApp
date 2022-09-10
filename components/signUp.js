@@ -11,6 +11,7 @@ import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/Key
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from './Redux/Actions/AuthAction';
 import auth from '@react-native-firebase/auth';
+import Toast from 'react-native-simple-toast';
 
 
 
@@ -50,15 +51,8 @@ export default function signUp({ navigation }) {
                     }
                     dispatch(setUser(userDetails))
                     setLoader(false)
-                    Alert.alert(
-                        "Successfully Login",
-                        ``,
-                        [
-                            { text: "Ok", onPress: () => { console.log('Login Success!'); }, style: "cancel" },
-
-                        ],
-                        { cancelable: false }
-                    );
+                    Toast.showWithGravity('Login Successfully', Toast.LONG, Toast.TOP);
+                    navigation.goBack()
                 })
                 .catch(error => {
                     if (error.code === 'auth/wrong-password') {
@@ -232,8 +226,7 @@ export default function signUp({ navigation }) {
 
 
                 <TouchableOpacity style={{ alignItems: 'center', marginTop: 30 }}
-                    onPress={() => Linking.openURL("https://loremipsum.com")}
-                >
+                    onPress={() => Linking.openURL("https://loremipsum.com")}>
                     <Text style={{ marginBottom: 30, fontFamily: 'Montserrat-Regular', fontSize: 12, }}>Privacy Policy - Terms & Condition  </Text>
 
                 </TouchableOpacity>

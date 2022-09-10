@@ -14,7 +14,6 @@ Feather.loadFont();
 MaterialCommunityIcons.loadFont();
 
 import { useIsFocused } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import MyOrders from '../MyOrders';
 import MyDrawer from './MyDrawer';
 
@@ -33,7 +32,7 @@ function TabRoutes() {
 
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName="HomeStack"
       backBehavior="initialRoute"
       screenOptions={{
         headerShown: false,
@@ -55,7 +54,7 @@ function TabRoutes() {
           }
         }}
       />
-      <Tab.Screen name="Home" component={Home}
+      <Tab.Screen name="HomeStack" component={MyDrawer}
         // options={{ headerShown: false }}
 
         options={{
@@ -66,7 +65,7 @@ function TabRoutes() {
           }
         }}
       />
-      <Tab.Screen name="MyOrders" component={MyOrders}
+      <Tab.Screen name="MyOrders" component={myUser ? MyOrders : SignUp}
         // options={{ headerShown: true }}
 
         options={{
@@ -91,8 +90,8 @@ function TabRoutes() {
                       position: "absolute",
                       bottom: 14,
                       left: 15,
-                    }}
-                  >
+                    }}>
+
                     <MaterialCommunityIcons
                       name="star"
                       style={{ color: colors.price, fontSize: 10, textAlign: "center", fontWeight: '800' }}

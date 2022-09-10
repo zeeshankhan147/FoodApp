@@ -4,12 +4,17 @@ import {
     View,
     Text,
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,
+    TextInput
 } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-simple-toast';
 import colors from "../assets/colors/colors";
 import Feather from 'react-native-vector-icons/FontAwesome5';
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 import { useDispatch, useSelector } from "react-redux";
+import PhoneInput from "react-native-phone-number-input";
+import { orderPlaced } from "./Redux/Actions/OrdersAction";
 
 
 
@@ -19,12 +24,54 @@ const Checkout = ({ navigation }) => {
     let TaxPercent = 20;
     let deliveryFee = 50;
 
+    const dispatch = useDispatch();
     const [updateTotalAmount, setUpdateTotalAmount] = useState(0)
     const [discountTotalAmount, setDiscountTotalAmount] = useState(0)
     const [taxTotalAmount, setTaxTotalAmount] = useState(0)
     const [totalAmount, setTotalAmount] = useState(0)
+    const [address, setAddress] = useState('');
+    const [phone, setPhone] = useState('');
+    const [phWithCode, setPhWithCode] = useState("");
+    const [delivery, setDelivery] = useState(true);
     const isFocused = useIsFocused();
     const myCart = useSelector(state => state.cart.cartData)
+    const orders = useSelector(state => state.orders.myOrders)
+
+    const setDlivery = () => {
+        delivery ? setDelivery(false) : setDelivery(true);
+    }
+
+    const placeOrder = () => {
+        if (address) {
+            if (phone.length === 10) {
+
+                let temp = {
+                    orderId:`#993ss39jjv-12`,
+                    userName:`dumy`,
+                    userEmail:`dumy@gmail.com`,
+                    phoneNumber: phWithCode,
+                    deliveryAddress: address,
+                    deliveryTransc: delivery ? 'Delivery' : 'Pickup',
+                    subTotal: Math.floor(updateTotalAmount),
+                    discountAmount: discountTotalAmount,
+                    taxAmount: taxTotalAmount,
+                    deliveryFee: delivery ? deliveryFee : null,
+                    totalAmount: Math.floor(totalAmount),
+                    cartItem: myCart
+                }
+                
+                dispatch(orderPlaced(temp))
+            }
+            else {
+                Toast.showWithGravity('Please fill the number filled', Toast.SHORT, Toast.TOP);
+            }
+
+        }
+        else {
+            Toast.showWithGravity('Please fill the delivery address', Toast.SHORT, Toast.TOP);
+        }
+
+    }
 
     function updateAmount() {
         let subTotal = 0;
@@ -52,7 +99,7 @@ const Checkout = ({ navigation }) => {
 
         }
 
-    }, [isFocused])
+    },[isFocused])
     return (
         <View style={Styles.mainContainer}>
             <SafeAreaView>
@@ -66,6 +113,71 @@ const Checkout = ({ navigation }) => {
             </SafeAreaView>
 
             <Text style={Styles.cartTitle}>Checkout</Text>
+            <View style={{ width: '100%', paddingVertical: 5 }}>
+
+                {/* DELIVER INPUT */}
+                <View style={{ alignSelf: 'center', }}>
+                    <TextInput
+                        style={{ backgroundColor: '#e9e9e9', elevation: 8, shadowColor: '#989898', paddingHorizontal: 20, borderRadius: 10, width: 300, }}
+                        onChangeText={(address) => setAddress(address)}
+                        placeholder={'Delivery Address'}>
+                    </TextInput>
+                </View>
+
+                {/* PHONE INPUT */}
+                <View style={{ alignSelf: 'center', marginTop: 20 }}>
+                    <PhoneInput
+                        // ref={phoneInput}
+                        defaultValue={phone}
+                        defaultCode="PK"
+                        layout="first"
+                        onChangeText={(num) => {
+                            setPhone(num);
+                        }}
+                        onChangeFormattedText={(ohone) => {
+                            setPhWithCode(ohone);
+                        }}
+                        containerStyle={{ backgroundColor: '#e9e9e9', elevation: 8, shadowColor: '#989898', paddingHorizontal: 10, borderRadius: 10, width: 300 }}
+                        textInputStyle={{ backgroundColor: '#e9e9e9' }}
+                        textContainerStyle={{ backgroundColor: '#e9e9e9' }}
+                        flagButtonStyle={{ backgroundColor: '#e9e9e9', }}
+                    />
+                </View>
+
+                {/* TRANSACTION TYPE SWITCHER */}
+                <View style={{ alignSelf: 'center', marginTop: 20, flexDirection: 'row', width: 300, borderRadius: 10 }}>
+                    <TouchableOpacity onPress={setDlivery} style={
+                        {
+                            borderBottomLeftRadius: 10,
+                            borderTopLeftRadius: 10,
+                            paddingVertical: 10,
+                            width: '50%',
+                            justifyContent: 'flex-end',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: delivery ? colors.primary : '#e9e9e9'
+                        }
+                    }>
+                        <Text style={{ color: delivery ? '#fff' : '#000' }}>Delivery</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={setDlivery} style={
+                        {
+                            borderBottomRightRadius: 10,
+                            borderTopRightRadius: 10,
+                            paddingVertical: 10,
+                            width: '50%',
+                            justifyContent: 'flex-end',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: !delivery ? colors.primary : '#e9e9e9'
+                        }
+                    }>
+                        <Text style={{ color: !delivery ? '#fff' : '#000' }}>Pickup</Text>
+                    </TouchableOpacity>
+
+                </View>
+
+            </View>
             <View style={{ paddingHorizontal: 30, marginTop: 30, marginBottom: 90, justifyContent: 'center', flexDirection: 'row' }}>
                 <View style={{ alignItems: 'flex-start', width: '50%', }}>
                     <Text style={{ color: colors.textLight, fontFamily: 'Montserrat-SemiBold' }}>Sub Total</Text>
@@ -84,7 +196,7 @@ const Checkout = ({ navigation }) => {
                 </View>
             </View>
             <View style={Styles.modal}>
-                <TouchableOpacity onPress={() => alert(`Your ${totalAmount} Rupees Order is Placed Successfully`)} style={{ flexDirection: 'row', width: '90%', height: 70, backgroundColor: colors.primary, borderRadius: 15, }}>
+                <TouchableOpacity onPress={() => placeOrder()} style={{ flexDirection: 'row', width: '90%', height: 70, backgroundColor: colors.primary, borderRadius: 15, }}>
                     <Text style={{ width: '90%', justifyContent: 'flex-start', alignSelf: 'center', paddingLeft: 30, color: colors.white, fontWeight: 'bold', fontSize: 18 }}>
                         Place Order
                     </Text>
