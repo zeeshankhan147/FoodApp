@@ -100,7 +100,7 @@ export default Home = ({ navigation, route, props }) => {
         setCatSelected(1)
         dispatch(getCart())
         dispatch(getAllOrders())
-        // dispatch(getProduct())     
+        // dispatch(getProduct())   
 
     }, [isFocused])
 

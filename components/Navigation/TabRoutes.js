@@ -16,6 +16,7 @@ MaterialCommunityIcons.loadFont();
 import { useIsFocused } from '@react-navigation/native';
 import MyOrders from '../MyOrders';
 import MyDrawer from './MyDrawer';
+import Setting from '../Setting';
 
 
 const Tab = createBottomTabNavigator();
@@ -24,6 +25,7 @@ function TabRoutes() {
   const isFocused = useIsFocused();
   const myUser = useSelector(state => state.auth.user)
   const myCart = useSelector(state => state.cart.cartData)
+  const orders = useSelector(state => state.orders.myOrders)
 
 
   useEffect(() => {
@@ -43,7 +45,7 @@ function TabRoutes() {
       }}
     >
 
-      <Tab.Screen name="SignUp" component={myUser ? MyOrders : SignUp}
+      <Tab.Screen name="SignUp" component={myUser ? Setting : SignUp}
         // options={{ headerShown: false }}
 
         options={{
@@ -78,7 +80,7 @@ function TabRoutes() {
                   color={focused ? colors.secondary : 'grey'}
 
                 />
-                {myCart.length > 0 ? (
+                {orders && orders.length > 0 ? (
                   <View
                     style={{
                       justifyContent: "center",
@@ -91,13 +93,7 @@ function TabRoutes() {
                       bottom: 14,
                       left: 15,
                     }}>
-
-                    <MaterialCommunityIcons
-                      name="star"
-                      style={{ color: colors.price, fontSize: 10, textAlign: "center", fontWeight: '800' }}
-                    />
-
-
+                    {orders != null ? <Text style={{ fontSize: 10, fontWeight: '600', color: colors.primary }}>{orders.length}</Text> : null}
                   </View>
                 ) : <View />}
               </View>

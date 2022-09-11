@@ -5,7 +5,8 @@ import {
     Text,
     StyleSheet,
     TouchableOpacity,
-    TextInput
+    TextInput,
+    ActivityIndicator
 } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-simple-toast';
@@ -15,6 +16,7 @@ import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 import { useDispatch, useSelector } from "react-redux";
 import PhoneInput from "react-native-phone-number-input";
 import { orderPlaced } from "./Redux/Actions/OrdersAction";
+import { removeAllCart } from "./Redux/Actions/CartAction";
 
 
 
@@ -33,22 +35,27 @@ const Checkout = ({ navigation }) => {
     const [phone, setPhone] = useState('');
     const [phWithCode, setPhWithCode] = useState("");
     const [delivery, setDelivery] = useState(true);
+    const [loader, setLoader] = useState(false);
+
     const isFocused = useIsFocused();
+
     const myCart = useSelector(state => state.cart.cartData)
+    const user = useSelector(state => state.auth.user)
     const orders = useSelector(state => state.orders.myOrders)
 
     const setDlivery = () => {
         delivery ? setDelivery(false) : setDelivery(true);
     }
 
-    const placeOrder = () => {
+    const placeOrder = async () => {
+        setLoader(true)
         if (address) {
             if (phone.length === 10) {
 
                 let temp = {
-                    orderId:`#993ss39jjv-12`,
-                    userName:`dumy`,
-                    userEmail:`dumy@gmail.com`,
+                    orderId: '#' + Math.floor(Math.random() * 1677721567).toString(16),
+                    userName: user.givenName + " " + user.familyName,
+                    userEmail: user.email,
                     phoneNumber: phWithCode,
                     deliveryAddress: address,
                     deliveryTransc: delivery ? 'Delivery' : 'Pickup',
@@ -59,15 +66,21 @@ const Checkout = ({ navigation }) => {
                     totalAmount: Math.floor(totalAmount),
                     cartItem: myCart
                 }
-                
-                dispatch(orderPlaced(temp))
+                await dispatch(orderPlaced(temp))
+                setTimeout(() => {
+                    dispatch(removeAllCart)
+                    setLoader(false)
+                    navigation.popToTop()
+                }, 1000);
             }
             else {
+                setLoader(false)
                 Toast.showWithGravity('Please fill the number filled', Toast.SHORT, Toast.TOP);
             }
 
         }
         else {
+            setLoader(false)
             Toast.showWithGravity('Please fill the delivery address', Toast.SHORT, Toast.TOP);
         }
 
@@ -99,7 +112,7 @@ const Checkout = ({ navigation }) => {
 
         }
 
-    },[isFocused])
+    }, [isFocused])
     return (
         <View style={Styles.mainContainer}>
             <SafeAreaView>
@@ -200,10 +213,15 @@ const Checkout = ({ navigation }) => {
                     <Text style={{ width: '90%', justifyContent: 'flex-start', alignSelf: 'center', paddingLeft: 30, color: colors.white, fontWeight: 'bold', fontSize: 18 }}>
                         Place Order
                     </Text>
-                    <Feather style={{ width: '10%', justifyContent: 'flex-end', alignSelf: 'center', }} name='chevron-right' size={20} color={colors.white} />
+                    {
+                        !loader ? <Feather style={{ width: '10%', justifyContent: 'flex-end', alignSelf: 'center', }} name='chevron-right' size={20} color={colors.white} /> :
+                            <ActivityIndicator style={{ justifyContent: 'flex-end', alignSelf: 'center', paddingRight: 10 }} color={"#fff"} size="small" />
+                    }
+
 
                 </TouchableOpacity>
             </View>
+
         </View>
     );
 

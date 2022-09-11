@@ -184,16 +184,23 @@ export default AddToCart = ({ route, navigation }) => {
                                 width: "100%",
                                 alignItems: "center",
                                 justifyContent: "center",
-                            }}
-                        >
+                            }}>
+                            <Image style={{ width: '80%' }} source={require("../assets/images/empty-cart.gif")} />
                             <Text
                                 style={{
-                                    fontSize: 20,
+                                    marginTop: 5,
+                                    fontSize: 16,
                                     color: "#c5c5c5",
                                     fontFamily: "Montserrat-Regular",
                                 }}>
                                 Your cart is empty
                             </Text>
+                            <TouchableOpacity onPress={() => navigation.popToTop()} style={{
+                                flexDirection: 'row', justifyContent: 'center', alignItems: 'center', backgroundColor: colors.primary,
+                                paddingHorizontal: 10, paddingVertical: 3, borderRadius: 5, marginTop: 12
+                            }}>
+                                <Text style={{ fontFamily: 'Montserrat-Bold', fontSize: 12, color: '#fff' }}>Go Menu</Text>
+                            </TouchableOpacity>
                         </View>
                     }
 
