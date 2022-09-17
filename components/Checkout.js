@@ -51,16 +51,18 @@ const Checkout = ({ navigation }) => {
         setLoader(true)
         if (address) {
             if (phone.length === 10) {
-
+                let orderDate = new Date().toUTCString();
                 let temp = {
                     orderId: '#' + Math.floor(Math.random() * 1677721567).toString(16),
-                    userName: user.givenName + " " + user.familyName,
-                    userEmail: user.email,
-                    phoneNumber: phWithCode,
+                    date: orderDate,
+                    userName: user ? user.givenName + " " + user.familyName : null,
+                    userEmail: user ? user.email : null,
+                    phoneNumber: "+92" + phone,
                     deliveryAddress: address,
                     deliveryTransc: delivery ? 'Delivery' : 'Pickup',
                     subTotal: Math.floor(updateTotalAmount),
                     discountAmount: discountTotalAmount,
+                    discountPercent: DiscountPercent,
                     taxAmount: taxTotalAmount,
                     deliveryFee: delivery ? deliveryFee : null,
                     totalAmount: Math.floor(totalAmount),
@@ -75,13 +77,13 @@ const Checkout = ({ navigation }) => {
             }
             else {
                 setLoader(false)
-                Toast.showWithGravity('Please fill the number filled', Toast.SHORT, Toast.TOP);
+                Toast.showWithGravity('Please fill the number filled', Toast.SHORT, Toast.BOTTOM);
             }
 
         }
         else {
             setLoader(false)
-            Toast.showWithGravity('Please fill the delivery address', Toast.SHORT, Toast.TOP);
+            Toast.showWithGravity('Please fill the delivery address', Toast.SHORT, Toast.BOTTOM);
         }
 
     }
@@ -129,60 +131,66 @@ const Checkout = ({ navigation }) => {
             <View style={{ width: '100%', paddingVertical: 5 }}>
 
                 {/* DELIVER INPUT */}
-                <View style={{ alignSelf: 'center', }}>
+                <View style={{ alignSelf: 'center', width: '85%' }}>
                     <TextInput
-                        style={{ backgroundColor: '#e9e9e9', elevation: 8, shadowColor: '#989898', paddingHorizontal: 20, borderRadius: 10, width: 300, }}
+                        style={{ backgroundColor: '#e9e9e9', elevation: 8, shadowColor: '#989898', paddingHorizontal: 20, borderRadius: 10, width: '100%', }}
                         onChangeText={(address) => setAddress(address)}
-                        placeholder={'Delivery Address'}>
+                        placeholder={'Enter your delivery address'}>
                     </TextInput>
                 </View>
 
                 {/* PHONE INPUT */}
-                <View style={{ alignSelf: 'center', marginTop: 20 }}>
-                    <PhoneInput
-                        // ref={phoneInput}
-                        defaultValue={phone}
-                        defaultCode="PK"
-                        layout="first"
-                        onChangeText={(num) => {
-                            setPhone(num);
-                        }}
-                        onChangeFormattedText={(ohone) => {
-                            setPhWithCode(ohone);
-                        }}
-                        containerStyle={{ backgroundColor: '#e9e9e9', elevation: 8, shadowColor: '#989898', paddingHorizontal: 10, borderRadius: 10, width: 300 }}
-                        textInputStyle={{ backgroundColor: '#e9e9e9' }}
-                        textContainerStyle={{ backgroundColor: '#e9e9e9' }}
-                        flagButtonStyle={{ backgroundColor: '#e9e9e9', }}
-                    />
+                <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 20, width: '85%', backgroundColor: '#e9e9e9', elevation: 8, shadowColor: '#989898', paddingHorizontal: 10, borderRadius: 10, }}>
+                    <View style={{ width: '20%', justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 16, fontFamily: 'Montserrat-Bold', color: colors.primary }}>+92</Text>
+                    </View>
+
+                    <View style={{ width: '80%' }}>
+                        <TextInput
+                            keyboardType="numeric"
+                            placeholder={'3368153445'}
+                            onChangeText={(num) => {
+                                setPhone(num);
+                            }}
+                            maxLength={10}
+                            textValue={phone}
+                            style={{ fontSize: 16, fontFamily: 'Montserrat-Bold', color: colors.primary }}
+                        />
+                    </View>
                 </View>
 
                 {/* TRANSACTION TYPE SWITCHER */}
-                <View style={{ alignSelf: 'center', marginTop: 20, flexDirection: 'row', width: 300, borderRadius: 10 }}>
+                <View style={{ alignSelf: 'center', marginTop: 20, flexDirection: 'row', width: '85%', borderRadius: 10, backgroundColor: '#e9e9e9', borderRadius: 20 }}>
                     <TouchableOpacity onPress={setDlivery} style={
                         {
-                            borderBottomLeftRadius: 10,
-                            borderTopLeftRadius: 10,
+                            borderBottomLeftRadius: 20,
+                            borderTopLeftRadius: 20,
+                            borderBottomRightRadius: delivery ? 20 : 0,
+                            borderTopRightRadius: delivery ? 20 : 0,
                             paddingVertical: 10,
                             width: '50%',
                             justifyContent: 'flex-end',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            backgroundColor: delivery ? colors.primary : '#e9e9e9'
+                            backgroundColor: delivery ? colors.primary : '#e9e9e9',
+                            elevation: delivery ? 10 : 0,
                         }
                     }>
                         <Text style={{ color: delivery ? '#fff' : '#000' }}>Delivery</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={setDlivery} style={
                         {
-                            borderBottomRightRadius: 10,
-                            borderTopRightRadius: 10,
+                            borderBottomRightRadius: 20,
+                            borderTopRightRadius: 20,
+                            borderTopLeftRadius: !delivery ? 20 : 0,
+                            borderBottomLeftRadius: !delivery ? 20 : 0,
                             paddingVertical: 10,
                             width: '50%',
                             justifyContent: 'flex-end',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            backgroundColor: !delivery ? colors.primary : '#e9e9e9'
+                            backgroundColor: !delivery ? colors.primary : '#e9e9e9',
+                            elevation: !delivery ? 10 : 0,
                         }
                     }>
                         <Text style={{ color: !delivery ? '#fff' : '#000' }}>Pickup</Text>

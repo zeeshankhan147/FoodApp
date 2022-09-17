@@ -358,7 +358,7 @@ const styles = StyleSheet.create({
     navBar: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: 60,
+        marginTop: '5%',
         marginHorizontal: 30,
         alignItems: 'center',
         marginBottom: 20,

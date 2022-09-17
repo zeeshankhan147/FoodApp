@@ -138,6 +138,10 @@ android {
         versionName "1.0"
         multiDexEnabled true
     }
+    lintOptions {
+checkReleaseBuilds false
+abortOnError false
+}
     splits {
         abi {
             reset()

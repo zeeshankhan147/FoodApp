@@ -17,10 +17,12 @@ import AnimatedCard from '../AnimatedCard';
 import HomeProduct from '../HomeProduct';
 import Checkout from '../Checkout';
 import Setting from '../Setting';
+import OrderDetail from '../OrderDetail';
+import Onboarding from '../Onboarding';
+import MyDrawer from './MyDrawer';
 
 
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import Onboarding from '../Onboarding';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -34,7 +36,7 @@ function Route() {
     AsyncStorage.getItem('@ONBOARDING').then((val) => {
       const data = val;
       if (data && data === "Onboarding") {
-        setInitialRoutname("Tab")
+        setInitialRoutname("HomeStack")
         setLoader(false)
       } else {
         setInitialRoutname("Onboarding")
@@ -52,9 +54,11 @@ function Route() {
             screenOptions={{ headerShown: false }}
             initialRouteName={initialRoutname}>
 
-            <Stack.Screen name="Tab" component={TabRoutes} />
+            {/* <Stack.Screen name="Tab" component={TabRoutes} /> */}
+            <Stack.Screen name="HomeStack" component={MyDrawer} />
             <Stack.Screen name="Onboarding" component={Onboarding} />
             <Drawer.Screen name="MyOrders" component={MyOrders} />
+            <Drawer.Screen name="OrderDetail" component={OrderDetail} />
             <Stack.Screen name="DetailView" component={DetailView} />
             <Stack.Screen name="AddToCart" component={AddToCart} />
             <Stack.Screen name="Register" component={Register} />

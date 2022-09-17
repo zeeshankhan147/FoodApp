@@ -9,7 +9,8 @@ import {
     FlatList,
     ScrollView,
     ToastAndroid,
-    TextInput
+    TextInput,
+    Platform
 } from 'react-native';
 
 import colors from '../assets/colors/colors';
@@ -31,11 +32,10 @@ export default function Search({ navigation }) {
 
 
     useEffect(() => {
-        setText('nnn')
 
     }, [])
 
-    const searching = (value) =>{
+    const searching = (value) => {
         value.length == 0 ? setFind(false) : setFind(true)
         setText(value)
         let searchArr = [];
@@ -52,9 +52,12 @@ export default function Search({ navigation }) {
     return (
         <SafeAreaView style={styles.container}>
             <View style={{ paddingBottom: 20 }}>
-                <View style={styles.searchWrapper}>
-
-                    <TouchableOpacity onPress={()=>navigation.goBack()} style={{ paddingRight: 15, borderRightColor: colors.textLight, borderRightWidth: 1 }}>
+                <View style={[styles.searchWrapper,
+                {
+                    paddingVertical: Platform.OS == "android" ? 0 : 10
+                }
+                ]}>
+                    <TouchableOpacity onPress={() => navigation.goBack()} style={{ paddingRight: 15, borderRightColor: colors.textLight, borderRightWidth: 1 }}>
                         <Feather name="chevron-left" size={20} color={colors.textDark} />
                     </TouchableOpacity>
                     <View style={styles.searchTextWrapper}>
@@ -64,7 +67,7 @@ export default function Search({ navigation }) {
                             onChangeText={(value) => searching(value)}
                             textValue={text}
                             autoFocus={true}
-                            style={styles.searchText}/>
+                            style={styles.searchText} />
                     </View>
                 </View>
             </View>
@@ -135,7 +138,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#d7d7d7f5',
         marginHorizontal: 30,
         borderRadius: 8,
-        paddingVertical: 5
 
     },
     searchTextWrapper: {

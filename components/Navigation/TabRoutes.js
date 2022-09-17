@@ -42,8 +42,7 @@ function TabRoutes() {
         tabBarShowLabel: false,
         tabBarStyle: {
         }
-      }}
-    >
+      }}>
 
       <Tab.Screen name="SignUp" component={myUser ? Setting : SignUp}
         // options={{ headerShown: false }}
@@ -101,6 +100,7 @@ function TabRoutes() {
           }
         }}
       />
+      
 
 
     </Tab.Navigator>

@@ -7,7 +7,7 @@ import colors from "../assets/colors/colors";
 export default function Onboarding({ navigation }) {
     const onSkip = () => {
         AsyncStorage.setItem("@ONBOARDING", "Onboarding");
-        navigation.replace("Tab")
+        navigation.replace("HomeStack")
     }
     return (
         <View style={{ flex: 1 }}>
@@ -31,8 +31,8 @@ export default function Onboarding({ navigation }) {
                     {
                         backgroundColor: colors.primary,
                         image: <Image style={{ width: 150, height: 150 }} source={require('../assets/images/fast-delivery.png')} />,
-                        title: 'Onboarding',
-                        subtitle: 'Done with React Native Onboarding Swiper',
+                        title: 'Quick Delivery',
+                        subtitle: 'Food Delivery is very fast & quick response in your app ordering',
                     },
 
                 ]}
@@ -43,7 +43,7 @@ export default function Onboarding({ navigation }) {
 function doneBtn(navigation) {
     const onDone = () => {
         AsyncStorage.setItem("@ONBOARDING", "Onboarding");
-        navigation.replace("Tab")
+        navigation.replace("HomeStack")
 
     }
     return (

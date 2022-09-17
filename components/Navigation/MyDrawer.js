@@ -31,7 +31,7 @@ export default function MyDrawer(props) {
             <Drawer.Screen
                 name="HomeStack"
                 component={HomeStack}
-                options={{ headerShown: false , drawerType:'slide'}}/>
+                options={{ headerShown: false, drawerType: 'slide' }} />
 
         </Drawer.Navigator>
 
@@ -41,6 +41,7 @@ const CustomDrawer = props => {
     const { navigation } = props;
     const dispatch = useDispatch();
     const myUser = useSelector(state => state.auth.user)
+    const orders = useSelector(state => state.orders.myOrders)
     const logout = () => {
         Alert.alert(
             "Logout",
@@ -96,48 +97,70 @@ const CustomDrawer = props => {
                 </View>
             </LinearGradient>
             <View style={{ paddingLeft: 20, marginTop: 20 }}>
+
+                {/* HOME */}
                 <DrawerItem
-                    label="HOME"
+                    label="Home"
                     onPress={() => navigation.navigate('Home')}
                     labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10 }}
                     icon={() => <MaterialCommunityIcons name="home" size={22} />}
-                />
-                <DrawerItem
-                    label="MENU"
-                    onPress={() => navigation.navigate('Register')}
-                    labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10 }}
-                    icon={() => <MaterialCommunityIcons name="menu" size={22} />}
+                    pressColor={colors.primary}
 
                 />
-                <DrawerItem
-                    label={myUser ? 'SETTING' : "REGISTER"}
-                    onPress={myUser ? () => navigation.navigate('MyOrders') : () => navigation.navigate('Register')}
-                    labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10 }}
-                    icon={() => <MaterialCommunityIcons name="account" size={22} />}
 
-                />
-                {!myUser ?
-                    <DrawerItem
-                        label={'SIGN UP'}
-                        onPress={() => navigation.navigate('SignUp')}
+                {/* SETTING */}
+                {
+                    myUser ? <DrawerItem
+                        label='Setting'
+                        onPress={myUser ? () => navigation.navigate('Setting') : () => navigation.navigate('Register')}
                         labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10 }}
-                        icon={() => <MaterialCommunityIcons name="login" size={22} />}
+                        icon={() => <MaterialCommunityIcons name="setting" size={22} />}
+                        pressColor={colors.primary}
 
-                    /> : null
+                    /> : null}
+
+                {/* SIGN UP */}
+                {
+                    !myUser ?
+                        <DrawerItem
+                            label={'Sign up'}
+                            onPress={() => navigation.navigate('SignUp')}
+                            labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10 }}
+                            icon={() => <MaterialCommunityIcons name="login" size={22} />}
+                            pressColor={colors.primary}
+
+                        /> : null
+                }
+                {/* ORDER */}
+                {
+                    !myUser ?
+                        <DrawerItem
+                            label={`Orders  ${orders != null ? orders.length : ""}`}
+                            onPress={() => navigation.navigate('MyOrders')}
+                            labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10 }}
+                            icon={() => <MaterialCommunityIcons name="clock" size={22} />}
+                            pressColor={colors.primary}
+
+                        /> : null
+
                 }
 
-                {myUser ?
-                    <DrawerItem
-                        label="LOGOUT"
-                        onPress={() => logout()}
-                        labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10 }}
-                        icon={() => <MaterialCommunityIcons name="logout" size={22} />}
+                {/* LOGOUT */}
+                {
+                    myUser ?
+                        <DrawerItem
+                            label="Logout"
+                            onPress={() => logout()}
+                            labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10 }}
+                            icon={() => <MaterialCommunityIcons name="logout" size={22} />}
+                            pressColor={colors.primary}
 
-                    /> : null
+                        /> : null
                 }
+
 
             </View>
-            
+
         </DrawerContentScrollView>
     )
 }
