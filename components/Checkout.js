@@ -6,7 +6,8 @@ import {
     StyleSheet,
     TouchableOpacity,
     TextInput,
-    ActivityIndicator
+    ActivityIndicator,
+    Alert
 } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-simple-toast';
@@ -33,6 +34,7 @@ const Checkout = ({ navigation }) => {
     const [totalAmount, setTotalAmount] = useState(0)
     const [address, setAddress] = useState('');
     const [phone, setPhone] = useState('');
+    const [cardNum, setCardNum] = useState('');
     const [phWithCode, setPhWithCode] = useState("");
     const [delivery, setDelivery] = useState(true);
     const [loader, setLoader] = useState(false);
@@ -58,11 +60,15 @@ const Checkout = ({ navigation }) => {
                     userName: user ? user.givenName + " " + user.familyName : null,
                     userEmail: user ? user.email : null,
                     phoneNumber: "+92" + phone,
+                    cardNumber: cardNum ? cardNum : "Cash On Delivey",
+                    paymentMethod: cardNum ? "Online" : "Cash On Delivey",
                     deliveryAddress: address,
+                    branch: 'Main Orangi Town Phase 15 Karachi',
                     deliveryTransc: delivery ? 'Delivery' : 'Pickup',
                     subTotal: Math.floor(updateTotalAmount),
                     discountAmount: discountTotalAmount,
                     discountPercent: DiscountPercent,
+                    taxPercent: TaxPercent,
                     taxAmount: taxTotalAmount,
                     deliveryFee: delivery ? deliveryFee : null,
                     totalAmount: Math.floor(totalAmount),
@@ -72,7 +78,7 @@ const Checkout = ({ navigation }) => {
                 setTimeout(() => {
                     dispatch(removeAllCart)
                     setLoader(false)
-                    navigation.popToTop()
+                    navigation.navigate("MyOrders")
                 }, 1000);
             }
             else {
@@ -140,7 +146,7 @@ const Checkout = ({ navigation }) => {
                 </View>
 
                 {/* PHONE INPUT */}
-                <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 20, width: '85%', backgroundColor: '#e9e9e9', elevation: 8, shadowColor: '#989898', paddingHorizontal: 10, borderRadius: 10, }}>
+                <View style={Styles.phoneInput}>
                     <View style={{ width: '20%', justifyContent: 'center', alignItems: 'center' }}>
                         <Text style={{ fontSize: 16, fontFamily: 'Montserrat-Bold', color: colors.primary }}>+92</Text>
                     </View>
@@ -154,6 +160,26 @@ const Checkout = ({ navigation }) => {
                             }}
                             maxLength={10}
                             textValue={phone}
+                            style={{ fontSize: 16, fontFamily: 'Montserrat-Bold', color: colors.primary }}
+                        />
+                    </View>
+                </View>
+
+                {/* PAYMENT SECTION */}
+                <View style={Styles.cardInput}>
+                    <View style={{ width: '20%', justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 16, fontFamily: 'Montserrat-Bold', color: 'blue' }}>Visa</Text>
+                    </View>
+
+                    <View style={{ width: '80%' }}>
+                        <TextInput
+                            keyboardType="numeric"
+                            placeholder={'XXX-151223-330-09'}
+                            onChangeText={(cardNum) => {
+                                setCardNum(cardNum);
+                            }}
+                            maxLength={7}
+                            textValue={cardNum}
                             style={{ fontSize: 16, fontFamily: 'Montserrat-Bold', color: colors.primary }}
                         />
                     </View>
@@ -279,8 +305,29 @@ const Styles = StyleSheet.create({
         fontFamily: 'Montserrat-SemiBold'
 
     },
+    phoneInput: {
+        flexDirection: 'row',
+        alignSelf: 'center',
+        marginTop: 20,
+        width: '85%',
+        backgroundColor: '#e9e9e9',
+        elevation: 8,
+        shadowColor: '#989898',
+        paddingHorizontal: 10,
+        borderRadius: 10,
+    },
+    cardInput: {
+        flexDirection: 'row',
+        alignSelf: 'center',
+        marginTop: 20,
+        width: '85%',
+        backgroundColor: '#e9e9e9',
+        elevation: 8,
+        shadowColor: '#989898',
+        paddingHorizontal: 10,
+        borderRadius: 10,
+    },
     modal: {
-        // flex: 1,
         paddingTop: 20,
         paddingBottom: 20,
         width: '100%',

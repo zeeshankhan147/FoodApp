@@ -20,9 +20,11 @@ import Setting from '../Setting';
 import OrderDetail from '../OrderDetail';
 import Onboarding from '../Onboarding';
 import MyDrawer from './MyDrawer';
+import ImageViewer from '../ImageViewer';
 
 
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import colors from '../../assets/colors/colors';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -59,6 +61,7 @@ function Route() {
             <Stack.Screen name="Onboarding" component={Onboarding} />
             <Drawer.Screen name="MyOrders" component={MyOrders} />
             <Drawer.Screen name="OrderDetail" component={OrderDetail} />
+            <Drawer.Screen name="ImageViewer" component={ImageViewer} />
             <Stack.Screen name="DetailView" component={DetailView} />
             <Stack.Screen name="AddToCart" component={AddToCart} />
             <Stack.Screen name="Register" component={Register} />
@@ -72,7 +75,7 @@ function Route() {
           </Stack.Navigator>
         </NavigationContainer>
       ) : null}
-      <ActivityIndicator style={{ position: 'absolute', top: '50%', alignSelf: 'center' }} size="large" color={"pink"} animating={loader} />
+      <ActivityIndicator style={{ position: 'absolute', top: '50%', alignSelf: 'center' }} size="large" color={colors.primary} animating={loader} />
     </View>
 
   );

@@ -228,7 +228,7 @@ export default AddToCart = ({ route, navigation }) => {
             {myCart.length > 0 ? (
                 <View style={Styles.modal}>
 
-                    <TouchableOpacity onPress={() => navigation.navigate(myUser ? 'Checkout' : 'Checkout')} style={{ flexDirection: 'row', width: '90%', height: 70, backgroundColor: colors.primary, borderRadius: 15, }}>
+                    <TouchableOpacity onPress={() => navigation.navigate(myUser ? 'Checkout' : 'SignUp')} style={{ flexDirection: 'row', width: '90%', height: 70, backgroundColor: colors.primary, borderRadius: 15, }}>
                         <Text style={{ width: '90%', justifyContent: 'flex-start', alignSelf: 'center', paddingLeft: 30, color: colors.white, fontWeight: 'bold', fontSize: 18 }}>
                             Address
                         </Text>

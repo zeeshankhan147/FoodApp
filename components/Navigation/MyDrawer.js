@@ -10,6 +10,7 @@ import {
 import colors from '../../assets/colors/colors';
 
 import Feather from 'react-native-vector-icons/Feather';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from '../Redux/Actions/AuthAction';
@@ -103,21 +104,20 @@ const CustomDrawer = props => {
                     label="Home"
                     onPress={() => navigation.navigate('Home')}
                     labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10 }}
-                    icon={() => <MaterialCommunityIcons name="home" size={22} />}
+                    icon={() => <AntDesign name="home" size={22} />}
                     pressColor={colors.primary}
 
                 />
 
                 {/* SETTING */}
-                {
-                    myUser ? <DrawerItem
-                        label='Setting'
-                        onPress={myUser ? () => navigation.navigate('Setting') : () => navigation.navigate('Register')}
-                        labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10 }}
-                        icon={() => <MaterialCommunityIcons name="setting" size={22} />}
-                        pressColor={colors.primary}
+                <DrawerItem
+                    label='Setting'
+                    onPress={myUser ? () => navigation.navigate('Setting') : () => navigation.navigate('SignUp')}
+                    labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10 }}
+                    icon={() => <Feather name="settings" size={22} />}
+                    pressColor={colors.primary}
 
-                    /> : null}
+                />
 
                 {/* SIGN UP */}
                 {
@@ -133,12 +133,12 @@ const CustomDrawer = props => {
                 }
                 {/* ORDER */}
                 {
-                    !myUser ?
+                    myUser ?
                         <DrawerItem
                             label={`Orders  ${orders != null ? orders.length : ""}`}
                             onPress={() => navigation.navigate('MyOrders')}
                             labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10 }}
-                            icon={() => <MaterialCommunityIcons name="clock" size={22} />}
+                            icon={() => <AntDesign name="clockcircleo" size={22} />}
                             pressColor={colors.primary}
 
                         /> : null
@@ -152,7 +152,7 @@ const CustomDrawer = props => {
                             label="Logout"
                             onPress={() => logout()}
                             labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10 }}
-                            icon={() => <MaterialCommunityIcons name="logout" size={22} />}
+                            icon={() => <AntDesign name="logout" size={22} />}
                             pressColor={colors.primary}
 
                         /> : null

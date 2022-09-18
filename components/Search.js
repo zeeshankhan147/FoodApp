@@ -47,6 +47,46 @@ export default function Search({ navigation }) {
         })
 
     }
+    const renderSearch = ({ item, index }) => {
+        return (
+            <TouchableOpacity key={item.id} onPress={() => navigation.navigate('DetailView', { item: item })}>
+                <View style={[styles.popularCardWrapper,
+                {
+                    marginTop: item.id == 1 ? 15 : 20,
+                }
+                ]}>
+                    <View>
+
+                        <View style={styles.popularTopWrapper}>
+                            <MaterialCommunityIcons style={styles.crownIcon} name="crown" size={15} color={colors.primary} />
+                            <Text style={styles.popularTopTitle}>top of the week</Text>
+                        </View>
+
+                        <Text style={styles.popularTitle}>{item.title}</Text>
+                        <Text style={styles.popularWeight}>Weight  {item.weight}</Text>
+
+                        <View style={styles.popularBottomItem}>
+
+                            <View style={styles.addItemBtn}>
+                                <Feather name="plus" size={16} color={colors.black} />
+                            </View>
+
+                            <View style={styles.ratingWrapper}>
+                                <MaterialCommunityIcons name="star" size={15} />
+                                <Text style={styles.ratingText}>{item.rating}</Text>
+                            </View>
+                        </View>
+
+                    </View>
+
+                    <View style={styles.popularImageWrapper}>
+                        <Image style={styles.popularImage} source={item.image} />
+                    </View>
+
+                </View>
+            </TouchableOpacity>
+        )
+    }
 
 
     return (
@@ -74,47 +114,19 @@ export default function Search({ navigation }) {
 
             <ScrollView>
                 <View style={styles.popularWrapper}>
-
-                    {find ? searchData.map((item) => (
-                        <TouchableOpacity key={item.id} onPress={() => navigation.navigate('DetailView', { item: item })}>
-                            <View style={[styles.popularCardWrapper,
-                            {
-                                marginTop: item.id == 1 ? 15 : 20,
-                            }
-                            ]}>
-                                <View>
-
-                                    <View style={styles.popularTopWrapper}>
-                                        <MaterialCommunityIcons style={styles.crownIcon} name="crown" size={15} color={colors.primary} />
-                                        <Text style={styles.popularTopTitle}>top of the week</Text>
-                                    </View>
-
-                                    <Text style={styles.popularTitle}>{item.title}</Text>
-                                    <Text style={styles.popularWeight}>Weight  {item.weight}</Text>
-
-                                    <View style={styles.popularBottomItem}>
-
-                                        <View style={styles.addItemBtn}>
-                                            <Feather name="plus" size={16} color={colors.black} />
-                                        </View>
-
-                                        <View style={styles.ratingWrapper}>
-                                            <MaterialCommunityIcons name="star" size={15} />
-                                            <Text style={styles.ratingText}>{item.rating}</Text>
-                                        </View>
-                                    </View>
-
+                    {find ? <FlatList
+                        data={searchData}
+                        keyExtractor={(item) => item.id}
+                        renderItem={renderSearch}
+                        ListEmptyComponent={() => {
+                            return (
+                                <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: '20%' }}>
+                                    <Image style={{ width: 200, height: 200 }} source={require('../assets/images/search.webp')} />
+                                    <Text style={{ fontSize: 18 }}>No Search Item</Text>
                                 </View>
-
-                                <View style={styles.popularImageWrapper}>
-                                    <Image style={styles.popularImage} source={item.image} />
-                                </View>
-
-                            </View>
-                        </TouchableOpacity>
-                    )) : <View style={{ alignItems: 'center', marginTop: '80%' }}><Text style={{ fontSize: 18 }}>No Search Item</Text></View>}
-
-
+                            )
+                        }}
+                    /> : null}
                 </View>
             </ScrollView>
 
@@ -128,6 +140,7 @@ export default function Search({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#fff'
 
     },
     searchWrapper: {

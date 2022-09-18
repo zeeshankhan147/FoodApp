@@ -3,6 +3,7 @@ import { View, Text, FlatList, StyleSheet, TouchableOpacity, ActivityIndicator, 
 import { useDispatch, useSelector } from "react-redux";
 import { useIsFocused } from '@react-navigation/native';
 import Animated from 'react-native-reanimated';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import BottomSheet from 'reanimated-bottom-sheet';
 import colors from '../assets/colors/colors';
 import { addToCartAction } from './Redux/Actions/CartAction';
@@ -14,7 +15,7 @@ export default function MyOrders({ navigation }) {
   const sheetRef = React.useRef(null);
   const fall = new Animated.Value(1);
 
-  const [sheetData, setSheetData] = useState(orders[0])
+  const [sheetData, setSheetData] = useState(orders ? orders[0] : [])
 
   const openSheet = (item) => {
     sheetRef.current.snapTo(200)
@@ -35,14 +36,16 @@ export default function MyOrders({ navigation }) {
       <View style={styles.amountSec}>
 
         <View style={styles.amountTitleSec}>
+          <Text>{sheetData.cartItem.length} Items</Text>
           <Text style={styles.titleBold}>Sub Total</Text>
           <Text style={styles.titleRegular}>Discount <Text style={styles.titleBold}>{sheetData.discountPercent}%</Text></Text>
-          <Text style={styles.titleRegular}>Tax</Text>
+          <Text style={styles.titleRegular}>Tax <Text style={styles.titleBold}>{sheetData.taxPercent}%</Text></Text>
           {sheetData.deliveryFee && <Text style={styles.titleRegular}>Delivery Fee</Text>}
           <Text style={styles.titleBold}>Total Amount</Text>
         </View>
 
         <View style={styles.amountPriceSec}>
+          <Text>{``}</Text>
           <Text style={styles.titleBold}>Rs {sheetData.subTotal}</Text>
           <Text style={styles.titleRegular}>Rs {sheetData.discountAmount}</Text>
           <Text style={styles.titleRegular}>Rs {sheetData.taxAmount}</Text>
@@ -62,6 +65,9 @@ export default function MyOrders({ navigation }) {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.titleContainer}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+          <FontAwesome5 name='chevron-left' size={22} color="red" />
+        </TouchableOpacity>
         <Text style={styles.mainTitle}>Orders</Text>
       </View>
 
@@ -90,7 +96,7 @@ export default function MyOrders({ navigation }) {
       </View>
       <BottomSheet
         ref={sheetRef}
-        snapPoints={[0, 250]}
+        snapPoints={[0, 270]}
         callbackNode={fall}
         initialSnap={0}
         borderRadius={35}
@@ -108,15 +114,23 @@ const styles = StyleSheet.create({
 
   },
   titleContainer: {
+    marginTop: 20,
+    marginHorizontal: 20,
     width: '100%',
     flexDirection: 'row',
-
+    alignItems: 'center'
+  },
+  backBtn: {
+    backgroundColor: '#fff',
+    width: 40,
+    height: 40,
+    borderRadius: 60,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   mainTitle: {
+    marginLeft: 20,
     fontSize: 26,
-    marginTop: 20,
-    paddingHorizontal: 30,
-    paddingVertical: 6,
     fontFamily: 'Montserrat-Bold',
     color: '#fff',
   },
@@ -176,7 +190,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-Bold'
   },
   bottomSheet: {
-    backgroundColor: '#eeae',
+    backgroundColor: colors.background,
     padding: 16,
     height: '100%',
     elevation: 2
@@ -245,7 +259,7 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   amountSec: {
-    marginTop: 30,
+    marginTop: 20,
     width: '100%',
     flexDirection: 'row'
   },

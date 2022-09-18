@@ -194,17 +194,11 @@ export default Home = ({ navigation, route, props }) => {
         )
     }
 
-
     return (
 
         <View style={styles.container}>
             {/* header */}
             <SafeAreaView style={styles.navBar}>
-                <TouchableOpacity onPress={() => drawerOpening()}>
-                    {/* <Image style={styles.dp} source={require('../assets/images/profile.jpg')} /> */}
-                    <Feather style={styles.ic_menu} name='menu' size={26} color={colors.textDark} />
-                </TouchableOpacity>
-
 
                 <TouchableOpacity style={styles.rightHeader} onPress={() => navigation.navigate('AddToCart')}>
                     {myCart.length > 0 ? (
@@ -218,6 +212,12 @@ export default Home = ({ navigation, route, props }) => {
                     )}
                     <MaterialCommunityIcons name='shopping' size={22} color={colors.white} />
                 </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => drawerOpening()}>
+                    <Image style={styles.dp} source={require('../assets/images/drawer_ic.webp')} />
+                    {/* <Feather style={styles.ic_menu} name='menu' size={26} color={colors.textDark} /> */}
+                </TouchableOpacity>
+
             </SafeAreaView>
             <ScrollView
                 stickyHeaderIndices={[2]}
@@ -373,11 +373,11 @@ const styles = StyleSheet.create({
 
     },
     dp: {
-        width: 40,
-        height: 40,
-        borderRadius: 40,
-        borderColor: colors.textLight,
-        borderWidth: 1,
+        width: 25,
+        height: 25,
+        // borderRadius: 40,
+        // borderColor: colors.textLight,
+        // borderWidth: 1,
     },
     bannerWrapper: {
         marginTop: 20,

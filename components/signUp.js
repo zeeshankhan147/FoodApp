@@ -171,8 +171,7 @@ export default function signUp({ navigation }) {
                             placeholder={'Email Address'}
                             onChangeText={(em) => setEmail(em)}
                             keyboardType="email-address"
-                            importantForAutofill="noExcludeDescendants"
-                        >
+                            importantForAutofill="noExcludeDescendants">
                         </TextInput>
                         <TextInput
 

@@ -101,7 +101,7 @@ export default HomeProduct = (props) => {
                             }}>
 
                             <TouchableOpacity onPress={() => qtyPlus > 1 ? removeQty() : itemDelete()}
-                                style={{ backgroundColor: colors.background, paddingVertical: 3, paddingHorizontal: 3, borderRadius: 4 }}>
+                                style={{ backgroundColor: colors.primary, paddingVertical: 3, paddingHorizontal: 3, borderRadius: 4 }}>
                                 <MaterialCommunityIcons name="minus" size={17} color={colors.white}
                                 />
                             </TouchableOpacity>
@@ -109,7 +109,7 @@ export default HomeProduct = (props) => {
                             <Text style={{ marginHorizontal: 15, color: colors.textLight }}>{qtyPlus}</Text>
 
                             <TouchableOpacity onPress={() => addQty()}
-                                style={{ backgroundColor: colors.background, paddingVertical: 3, paddingHorizontal: 3, borderRadius: 4 }}>
+                                style={{ backgroundColor: colors.primary, paddingVertical: 3, paddingHorizontal: 3, borderRadius: 4 }}>
                                 <MaterialCommunityIcons name="plus" size={17} color={colors.white}
                                 />
                             </TouchableOpacity>
@@ -118,7 +118,7 @@ export default HomeProduct = (props) => {
                     ) : (
                         <TouchableOpacity onPress={() => AddCart(item)}
                             style={{
-                                flexDirection: 'row', backgroundColor: colors.background, paddingHorizontal: 15,
+                                flexDirection: 'row', backgroundColor: colors.primary, paddingHorizontal: 15,
                                 borderRadius: 4, alignItems: 'center', justifyContent: 'center', marginTop: 8, paddingVertical: 3
 
                             }}>
