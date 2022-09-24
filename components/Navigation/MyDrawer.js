@@ -7,7 +7,8 @@ import {
     DrawerItem
 
 } from '@react-navigation/drawer';
-import colors from '../../assets/colors/colors';
+// import colors from '../../assets/colors/colors';
+
 
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -39,6 +40,7 @@ export default function MyDrawer(props) {
     );
 }
 const CustomDrawer = props => {
+    const colors = useSelector(state => state.colors.currentTheme);
     const { navigation } = props;
     const dispatch = useDispatch();
     const myUser = useSelector(state => state.auth.user)
@@ -77,7 +79,7 @@ const CustomDrawer = props => {
 
             {/* <DrawerItemList {...props} /> */}
 
-            <LinearGradient colors={['#fc7a77', '#f65f5c', '#ff5854']} style={{
+            <LinearGradient colors={[colors.primary, colors.primary, colors.primary]} style={{
                 flexDirection: 'column',
                 padding: 30,
                 marginTop: -5,
@@ -103,8 +105,8 @@ const CustomDrawer = props => {
                 <DrawerItem
                     label="Home"
                     onPress={() => navigation.navigate('Home')}
-                    labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10 }}
-                    icon={() => <AntDesign name="home" size={22} />}
+                    labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10, color: colors.textTheme }}
+                    icon={() => <AntDesign name="home" size={22} color={colors.textTheme} />}
                     pressColor={colors.primary}
 
                 />
@@ -112,9 +114,9 @@ const CustomDrawer = props => {
                 {/* SETTING */}
                 <DrawerItem
                     label='Setting'
-                    onPress={myUser ? () => navigation.navigate('Setting') : () => navigation.navigate('SignUp')}
-                    labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10 }}
-                    icon={() => <Feather name="settings" size={22} />}
+                    onPress={myUser ? () => navigation.navigate('Setting') : () => navigation.navigate('Setting')}
+                    labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10, color: colors.textTheme }}
+                    icon={() => <Feather name="settings" size={22} color={colors.textTheme} />}
                     pressColor={colors.primary}
 
                 />
@@ -125,8 +127,8 @@ const CustomDrawer = props => {
                         <DrawerItem
                             label={'Sign up'}
                             onPress={() => navigation.navigate('SignUp')}
-                            labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10 }}
-                            icon={() => <MaterialCommunityIcons name="login" size={22} />}
+                            labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10, color: colors.textTheme }}
+                            icon={() => <MaterialCommunityIcons name="login" size={22} color={colors.textTheme} />}
                             pressColor={colors.primary}
 
                         /> : null
@@ -137,8 +139,8 @@ const CustomDrawer = props => {
                         <DrawerItem
                             label={`Orders  ${orders != null ? orders.length : ""}`}
                             onPress={() => navigation.navigate('MyOrders')}
-                            labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10 }}
-                            icon={() => <AntDesign name="clockcircleo" size={22} />}
+                            labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10, color: colors.textTheme }}
+                            icon={() => <AntDesign name="clockcircleo" size={22} color={colors.textTheme} />}
                             pressColor={colors.primary}
 
                         /> : null
@@ -151,8 +153,8 @@ const CustomDrawer = props => {
                         <DrawerItem
                             label="Logout"
                             onPress={() => logout()}
-                            labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10 }}
-                            icon={() => <AntDesign name="logout" size={22} />}
+                            labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10, color: colors.textTheme }}
+                            icon={() => <AntDesign name="logout" size={22} color={colors.textTheme} />}
                             pressColor={colors.primary}
 
                         /> : null

@@ -31,6 +31,7 @@ import HomeProduct from './HomeProduct';
 import { getUser } from './Redux/Actions/AuthAction';
 import { getProduct } from './Redux/Actions/ProductAction';
 import { getAllOrders } from './Redux/Actions/OrdersAction';
+import { darkTheme, lightTheme } from './Redux/Actions/ThemeAction';
 
 Feather.loadFont();
 MaterialCommunityIcons.loadFont();
@@ -45,6 +46,7 @@ export default Home = ({ navigation, route, props }) => {
     const dispatch = useDispatch();
     const myCart = useSelector(state => state.cart.cartData)
     const menu = useSelector(state => state.menu.product)
+    
     const scrollX = useRef(new Animated.Value(0)).current;
 
     const { width: windowWidth } = useWindowDimensions();
@@ -96,6 +98,19 @@ export default Home = ({ navigation, route, props }) => {
     }
 
     useEffect(() => {
+        // FOR THEMES CHANGING
+        AsyncStorage.getItem('DARK_THEME').then((value) => {
+            if (value !== null) {
+                if (value === 'true') {
+                    dispatch(lightTheme())
+                } else {
+                    dispatch(darkTheme())
+                }
+            } else {
+                dispatch(lightTheme())
+            }
+        })
+
         dispatch(getUser())
         setCatSelected(1)
         dispatch(getCart())

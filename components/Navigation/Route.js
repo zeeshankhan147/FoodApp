@@ -21,6 +21,7 @@ import OrderDetail from '../OrderDetail';
 import Onboarding from '../Onboarding';
 import MyDrawer from './MyDrawer';
 import ImageViewer from '../ImageViewer';
+import TextComponent from '../TextComponent';
 
 
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -71,6 +72,7 @@ function Route() {
             <Stack.Screen name="Animated" component={AnimatedCard} />
             <Stack.Screen name="Checkout" component={Checkout} />
             <Stack.Screen name="Setting" component={Setting} />
+            <Stack.Screen name="TextComponent" component={TextComponent} />
 
           </Stack.Navigator>
         </NavigationContainer>
