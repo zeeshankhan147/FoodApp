@@ -28,7 +28,8 @@ export default AddToCart = ({ route, navigation }) => {
     const [quantity, setQuantity] = useState(1)
     const dispatch = useDispatch();
     const myCart = useSelector(state => state.cart.cartData)
-    const myUser = useSelector(state => state.auth.user)
+    const myUser = useSelector(state => state.auth.user);
+    const colors = useSelector(state => state.colors.currentTheme);
 
 
     const clearCartItem = () => {
@@ -149,19 +150,19 @@ export default AddToCart = ({ route, navigation }) => {
 
     return (
 
-        <View style={Styles.mainContainer}>
+        <View style={[Styles.mainContainer, { backgroundColor: colors.theme }]}>
             <SafeAreaView>
                 <View style={Styles.headerWrapper}>
                     <TouchableOpacity onPress={() => navigation.goBack()}>
                         <View style={Styles.leftHeader}>
-                            <Feather name='chevron-left' size={12} color={colors.textDark} />
+                            <Feather name='chevron-left' size={12} color={colors.black} />
                         </View>
                     </TouchableOpacity>
 
                     {myCart.length > 0 ? (
                         <TouchableOpacity onPress={() => clearCartItem()}>
                             <View style={Styles.rightHeader}>
-                                <Feather name='trash' size={16} color={colors.price} />
+                                <Feather name='trash' size={16} color={colors.secondary} />
                             </View>
                         </TouchableOpacity>
                     ) : (null)}
@@ -170,7 +171,7 @@ export default AddToCart = ({ route, navigation }) => {
                 </View>
             </SafeAreaView>
 
-            <Text style={Styles.cartTitle}>Cart Item</Text>
+            <Text style={[Styles.cartTitle, { color: colors.textTheme }]}>Cart Item</Text>
 
             <ScrollView style={Styles.flexContainer} contentInsetAdjustmentBehavior='automatic' showsVerticalScrollIndicator={false}>
                 <FlatList
@@ -185,10 +186,10 @@ export default AddToCart = ({ route, navigation }) => {
                                 alignItems: "center",
                                 justifyContent: "center",
                             }}>
-                            <Image style={{ width: '80%' }} source={require("../assets/images/empty-cart.gif")} />
+                            <Image style={{ width: '80%', borderRadius: 20, }} source={require("../assets/images/empty-cart.gif")} />
                             <Text
                                 style={{
-                                    marginTop: 5,
+                                    marginTop: 15,
                                     fontSize: 16,
                                     color: "#c5c5c5",
                                     fontFamily: "Montserrat-Regular",
@@ -199,7 +200,7 @@ export default AddToCart = ({ route, navigation }) => {
                                 flexDirection: 'row', justifyContent: 'center', alignItems: 'center', backgroundColor: colors.primary,
                                 paddingHorizontal: 10, paddingVertical: 3, borderRadius: 5, marginTop: 12
                             }}>
-                                <Text style={{ fontFamily: 'Montserrat-Bold', fontSize: 12, color: '#fff' }}>Go Menu</Text>
+                                <Text style={{ fontFamily: 'Montserrat-Bold', fontSize: 12, color: colors.theme }}>Go Menu</Text>
                             </TouchableOpacity>
                         </View>
                     }
@@ -226,13 +227,13 @@ export default AddToCart = ({ route, navigation }) => {
 
 
             {myCart.length > 0 ? (
-                <View style={Styles.modal}>
+                <View style={[Styles.modal, { backgroundColor: colors.theme }]}>
 
                     <TouchableOpacity onPress={() => navigation.navigate(myUser ? 'Checkout' : 'SignUp')} style={{ flexDirection: 'row', width: '90%', height: 70, backgroundColor: colors.primary, borderRadius: 15, }}>
-                        <Text style={{ width: '90%', justifyContent: 'flex-start', alignSelf: 'center', paddingLeft: 30, color: colors.white, fontWeight: 'bold', fontSize: 18 }}>
+                        <Text style={{ width: '90%', justifyContent: 'flex-start', alignSelf: 'center', paddingLeft: 30, color: colors.black_white, fontWeight: 'bold', fontSize: 18 }}>
                             Address
                         </Text>
-                        <Feather style={{ width: '10%', justifyContent: 'flex-end', alignSelf: 'center', }} name='chevron-right' size={20} color={colors.white} />
+                        <Feather style={{ width: '10%', justifyContent: 'flex-end', alignSelf: 'center', }} name='chevron-right' size={20} color={colors.black_white} />
 
                     </TouchableOpacity>
                 </View>

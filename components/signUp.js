@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUser } from './Redux/Actions/AuthAction';
 import auth from '@react-native-firebase/auth';
 import Toast from 'react-native-simple-toast';
+import { color } from 'react-native-reanimated';
 
 
 
@@ -26,13 +27,14 @@ export default function signUp({ navigation }) {
     const [appleLoader, setAppleLoader] = useState(false)
     const dispatch = useDispatch();
     const heightAnim = new Animated.Value(1000)
+    const colors = useSelector(state => state.colors.currentTheme);
 
     useEffect(() => {
         GoogleSignin.configure();
     }, [])
     useEffect(() => {
         Animated.timing(heightAnim, { toValue: 0, duration: 600, useNativeDriver: false }).start()
-    },[])
+    }, [colors])
 
     const login = async () => {
         if (email && password) {
@@ -147,14 +149,14 @@ export default function signUp({ navigation }) {
 
     return (
 
-        <View style={Styles.mainContainer}>
+        <View style={[Styles.mainContainer, { backgroundColor: colors.background }]}>
             {/* header */}
             <ScrollView contentInsetAdjustmentBehavior='automatic' showsVerticalScrollIndicator={false}>
                 <SafeAreaView>
                     <View style={Styles.headerWrapper}>
                         <TouchableOpacity onPress={() => navigation.goBack()}>
                             <View style={Styles.leftHeader}>
-                                <Feather name='chevron-left' size={12} color={colors.textDark} />
+                                <Feather name='chevron-left' size={16} color={color.black} />
                             </View>
                         </TouchableOpacity>
 
@@ -162,13 +164,14 @@ export default function signUp({ navigation }) {
                 </SafeAreaView>
                 <Animated.View style={{ width: '100%', height: heightAnim, }} />
                 <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: '30%', width: '100%', }}>
-                    <Text style={{ fontSize: 25, fontWeight: '600', color: colors.secondary, fontFamily: 'Montserrat-Bold' }}>
+                    <Text style={{ fontSize: 25, fontWeight: '600', color: colors.primary, fontFamily: 'Montserrat-Bold' }}>
                         PLEASE LOGIN!
                     </Text>
                     <View style={{ height: 200 }}>
                         <TextInput
                             style={{ paddingHorizontal: 20, paddingVertical: 10, borderColor: colors.primary, borderWidth: 1, borderRadius: 10, width: 300, marginTop: 40 }}
                             placeholder={'Email Address'}
+                            placeholderTextColor={'grey'}
                             onChangeText={(em) => setEmail(em)}
                             keyboardType="email-address"
                             importantForAutofill="noExcludeDescendants">
@@ -177,6 +180,7 @@ export default function signUp({ navigation }) {
 
                             style={{ paddingHorizontal: 20, paddingVertical: 10, borderColor: colors.primary, borderWidth: 1, borderRadius: 10, width: 300, marginTop: 20 }}
                             placeholder={'Password'}
+                            placeholderTextColor={'grey'}
                             onChangeText={(pass) => setPassword(pass)}
                             secureTextEntry
                             autoCorrect={false}
@@ -192,7 +196,7 @@ export default function signUp({ navigation }) {
                         </TouchableOpacity>
 
                         <View style={{ flexDirection: 'row', alignSelf: 'center', justifyContent: 'center', marginTop: 20, }}>
-                            <Text style={{ marginRight: 5, fontSize: 12, fontFamily: 'Montserrat-SemiBold' }}>Do you not have your account!</Text>
+                            <Text style={{ marginRight: 5, fontSize: 12, fontFamily: 'Montserrat-SemiBold', color: colors.textTheme }}>Do you not have your account!</Text>
                             <TouchableOpacity onPress={() => navigation.navigate("Register")}>
                                 <Text style={{ fontSize: 12, color: '#1a73e8', fontFamily: 'Montserrat-SemiBold', }}>Register</Text>
 
@@ -226,7 +230,7 @@ export default function signUp({ navigation }) {
 
                 <TouchableOpacity style={{ alignItems: 'center', marginTop: 30 }}
                     onPress={() => Linking.openURL("https://loremipsum.com")}>
-                    <Text style={{ marginBottom: 30, fontFamily: 'Montserrat-Regular', fontSize: 12, }}>Privacy Policy - Terms & Condition  </Text>
+                    <Text style={{ marginBottom: 30, fontFamily: 'Montserrat-Regular', fontSize: 12, color: colors.textTheme }}>Privacy Policy - Terms & Condition  </Text>
 
                 </TouchableOpacity>
             </ScrollView>

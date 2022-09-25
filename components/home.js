@@ -40,13 +40,14 @@ const BannerHeight = (BannerWidth / 7) * 2;
 
 export default Home = ({ navigation, route, props }) => {
     const isFocused = useIsFocused();
-    const [catSelected, setCatSelected] = useState(null)
-    const [quantity, setQuantity] = useState(1)
-    const [popularData, setPopularData] = useState(popular)
+    const [catSelected, setCatSelected] = useState(null);
+    const [quantity, setQuantity] = useState(1);
+    const [popularData, setPopularData] = useState(popular);
     const dispatch = useDispatch();
-    const myCart = useSelector(state => state.cart.cartData)
-    const menu = useSelector(state => state.menu.product)
-    
+    const myCart = useSelector(state => state.cart.cartData);
+    const menu = useSelector(state => state.menu.product);
+    const colors = useSelector(state => state.colors.currentTheme);
+
     const scrollX = useRef(new Animated.Value(0)).current;
 
     const { width: windowWidth } = useWindowDimensions();
@@ -127,7 +128,7 @@ export default Home = ({ navigation, route, props }) => {
         return (
             <TouchableOpacity style={[styles.categoryListBox,
             {
-                backgroundColor: item.id == catSelected ? colors.primary : colors.white,
+                backgroundColor: item.id == catSelected ? colors.primary : colors.black_white,
                 marginLeft: item.id == 1 ? 30 : 0,
                 elevation: item.id == catSelected ? 3 : 8,
 
@@ -136,16 +137,16 @@ export default Home = ({ navigation, route, props }) => {
             ]} onPress={() => categorySelection(item)}>
                 <Image style={styles.categoryListImage} source={item.image} />
                 <Text style={[styles.categorylistText, {
-                    color: item.id == catSelected ? colors.white : colors.black
+                    color: item.id == catSelected ? colors.theme : colors.textTheme
                 }]}>{item.title}</Text>
                 <View style={[styles.categoryIconCircle,
                 {
-                    backgroundColor: item.id == catSelected ? colors.white : colors.secondary,
+                    backgroundColor: item.id == catSelected ? colors.black_white : colors.primary,
                 }
                 ]}>
                     <Feather style={[styles.categoryListIcon,
                     {
-                        color: item.id == catSelected ? colors.black : colors.white,
+                        color: item.id == catSelected ? colors.primary : colors.black_white,
                     }
                     ]} name="chevron-right" size={15} />
                 </View>
@@ -156,10 +157,11 @@ export default Home = ({ navigation, route, props }) => {
     const renderPopularItem = ({ item }) => {
         return (
             <TouchableOpacity
-                activeOpacity={0.8}
+                activeOpacity={1}
                 key={item.id} onPress={() => navigation.navigate('DetailView', { item: item })}>
                 <View style={[styles.popularCardWrapper,
                 {
+                    backgroundColor: colors.black_white,
                     marginLeft: item.id == 1 ? 30 : 0,
                 }
                 ]}>
@@ -167,16 +169,16 @@ export default Home = ({ navigation, route, props }) => {
 
                         <View style={styles.popularTopWrapper}>
                             <MaterialCommunityIcons style={styles.crownIcon} name="crown" size={15} color={colors.primary} />
-                            <Text style={styles.popularTopTitle}>top of the week</Text>
+                            <Text style={[styles.popularTopTitle, { color: colors.textTheme }]}>top of the week</Text>
                         </View>
 
-                        <Text style={styles.popularTitle}>{item.title}</Text>
+                        <Text style={[styles.popularTitle]}>{item.title}</Text>
                         <Text style={styles.popularWeight}>Weight  {item.weight}</Text>
 
                         <View style={styles.popularBottomItem}>
 
                             <View style={styles.ratingWrapper}>
-                                <MaterialCommunityIcons name="star" size={15} color={colors.background} />
+                                <MaterialCommunityIcons name="star" size={15} color={colors.primary} />
                                 <Text style={styles.ratingText}>{item.rating}</Text>
                             </View>
                         </View>
@@ -211,7 +213,7 @@ export default Home = ({ navigation, route, props }) => {
 
     return (
 
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: colors.theme }]}>
             {/* header */}
             <SafeAreaView style={styles.navBar}>
 
@@ -283,7 +285,7 @@ export default Home = ({ navigation, route, props }) => {
                             return (
                                 <Animated.View
                                     key={imageIndex}
-                                    style={[styles.normalDot, { width: width }]}
+                                    style={[styles.normalDot, { width: width, backgroundColor: colors.primary }]}
                                 />
                             );
                         })}
@@ -292,8 +294,8 @@ export default Home = ({ navigation, route, props }) => {
 
 
                 {/* search */}
-                <View style={styles.searchWrapper} >
-                    <View style={styles.searchBox} >
+                <View style={[styles.searchWrapper, { backgroundColor: colors.theme }]} >
+                    <View style={[styles.searchBox, { backgroundColor: colors.black_white, borderRadius: 8, }]} >
                         <TouchableOpacity>
                             <Feather name="search" size={20} color={colors.textDark} />
                         </TouchableOpacity>
@@ -305,9 +307,9 @@ export default Home = ({ navigation, route, props }) => {
                 </View>
 
                 {/* category */}
-                <View style={styles.categoryWrapper}>
-                    <Text style={styles.categoryText}>Category</Text>
-                    <View style={styles.categoryListWrapper}>
+                <View style={[styles.categoryWrapper, { backgroundColor: colors.theme }]}>
+                    <Text style={[styles.categoryText, { color: colors.textDark }]}>Category</Text>
+                    <View style={[styles.categoryListWrapper]}>
                         <FlatList
                             data={category}
                             renderItem={renderCategoryItem}
@@ -321,7 +323,7 @@ export default Home = ({ navigation, route, props }) => {
 
                 {/* populars */}
                 <View style={styles.popularWrapper}>
-                    <Text style={styles.popularText}>20% Off Exclusive Deal</Text>
+                    <Text style={[styles.popularText, { color: colors.textTheme }]}>20% Off Exclusive Deal</Text>
                     <View style={{ flex: 1, paddingVertical: 10, marginTop: 10 }}>
                         <FlatList
                             data={popular}
@@ -367,7 +369,7 @@ export default Home = ({ navigation, route, props }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff'
+        // backgroundColor: '#fff'
     },
 
     navBar: {
@@ -417,7 +419,7 @@ const styles = StyleSheet.create({
     },
     searchWrapper: {
         marginTop: 2,
-        backgroundColor: '#fff',
+        // backgroundColor: '#fff',
 
 
     },
@@ -427,9 +429,9 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         paddingHorizontal: 20,
         alignItems: 'center',
-        backgroundColor: '#e4e4e4f5',
+        // backgroundColor: '#e4e4e4f5',
         marginHorizontal: 30,
-        borderRadius: 8,
+        // borderRadius: 8,
         paddingVertical: 12,
     },
     searchTextWrapper: {
@@ -448,7 +450,7 @@ const styles = StyleSheet.create({
     },
     categoryWrapper: {
         marginTop: 20,
-        backgroundColor: '#fff',
+        // backgroundColor: '#fff',
 
     },
     categoryText: {

@@ -43,7 +43,8 @@ const Checkout = ({ navigation }) => {
 
     const myCart = useSelector(state => state.cart.cartData)
     const user = useSelector(state => state.auth.user)
-    const orders = useSelector(state => state.orders.myOrders)
+    const orders = useSelector(state => state.orders.myOrders);
+    const colors = useSelector(state => state.colors.currentTheme);
 
     const setDlivery = () => {
         delivery ? setDelivery(false) : setDelivery(true);
@@ -78,7 +79,7 @@ const Checkout = ({ navigation }) => {
                 setTimeout(() => {
                     dispatch(removeAllCart)
                     setLoader(false)
-                    navigation.navigate("MyOrders")
+                    navigation.navigate("Home")
                 }, 1000);
             }
             else {
@@ -122,18 +123,18 @@ const Checkout = ({ navigation }) => {
 
     }, [isFocused])
     return (
-        <View style={Styles.mainContainer}>
+        <View style={[Styles.mainContainer, { backgroundColor: colors.theme }]}>
             <SafeAreaView>
                 <View style={Styles.headerWrapper}>
                     <TouchableOpacity onPress={() => navigation.navigate("AddToCart")}>
                         <View style={Styles.leftHeader}>
-                            <Feather name='chevron-left' size={12} color={colors.textDark} />
+                            <Feather name='chevron-left' size={12} color={colors.black} />
                         </View>
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>
 
-            <Text style={Styles.cartTitle}>Checkout</Text>
+            <Text style={[Styles.cartTitle, { color: colors.textTheme }]}>Checkout</Text>
             <View style={{ width: '100%', paddingVertical: 5 }}>
 
                 {/* DELIVER INPUT */}
@@ -148,7 +149,7 @@ const Checkout = ({ navigation }) => {
                 {/* PHONE INPUT */}
                 <View style={Styles.phoneInput}>
                     <View style={{ width: '20%', justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={{ fontSize: 16, fontFamily: 'Montserrat-Bold', color: colors.primary }}>+92</Text>
+                        <Text style={{ fontSize: 16, fontFamily: 'Montserrat-Bold', color: '#F26C68' }}>+92</Text>
                     </View>
 
                     <View style={{ width: '80%' }}>
@@ -160,7 +161,7 @@ const Checkout = ({ navigation }) => {
                             }}
                             maxLength={10}
                             textValue={phone}
-                            style={{ fontSize: 16, fontFamily: 'Montserrat-Bold', color: colors.primary }}
+                            style={{ fontSize: 16, fontFamily: 'Montserrat-Bold', color: colors.secondary }}
                         />
                     </View>
                 </View>
@@ -180,7 +181,7 @@ const Checkout = ({ navigation }) => {
                             }}
                             maxLength={7}
                             textValue={cardNum}
-                            style={{ fontSize: 16, fontFamily: 'Montserrat-Bold', color: colors.primary }}
+                            style={{ fontSize: 16, fontFamily: 'Montserrat-Bold', color: colors.secondary }}
                         />
                     </View>
                 </View>
@@ -198,7 +199,7 @@ const Checkout = ({ navigation }) => {
                             justifyContent: 'flex-end',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            backgroundColor: delivery ? colors.primary : '#e9e9e9',
+                            backgroundColor: delivery ? '#F26C68' : '#e9e9e9',
                             elevation: delivery ? 10 : 0,
                         }
                     }>
@@ -215,7 +216,7 @@ const Checkout = ({ navigation }) => {
                             justifyContent: 'flex-end',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            backgroundColor: !delivery ? colors.primary : '#e9e9e9',
+                            backgroundColor: !delivery ? '#F26C68' : '#e9e9e9',
                             elevation: !delivery ? 10 : 0,
                         }
                     }>
@@ -242,14 +243,14 @@ const Checkout = ({ navigation }) => {
                     <Text style={{ color: colors.textDark, fontWeight: '600', fontFamily: 'Montserrat-Bold', fontSize: 18 }}>{`${currency} ${Math.floor(totalAmount)}`}</Text>
                 </View>
             </View>
-            <View style={Styles.modal}>
+            <View style={[Styles.modal, { backgroundColor: colors.theme }]}>
                 <TouchableOpacity onPress={() => placeOrder()} style={{ flexDirection: 'row', width: '90%', height: 70, backgroundColor: colors.primary, borderRadius: 15, }}>
-                    <Text style={{ width: '90%', justifyContent: 'flex-start', alignSelf: 'center', paddingLeft: 30, color: colors.white, fontWeight: 'bold', fontSize: 18 }}>
+                    <Text style={{ width: '90%', justifyContent: 'flex-start', alignSelf: 'center', paddingLeft: 30, color: colors.black_white, fontWeight: 'bold', fontSize: 18 }}>
                         Place Order
                     </Text>
                     {
-                        !loader ? <Feather style={{ width: '10%', justifyContent: 'flex-end', alignSelf: 'center', }} name='chevron-right' size={20} color={colors.white} /> :
-                            <ActivityIndicator style={{ justifyContent: 'flex-end', alignSelf: 'center', paddingRight: 10 }} color={"#fff"} size="small" />
+                        !loader ? <Feather style={{ width: '10%', justifyContent: 'flex-end', alignSelf: 'center', }} name='chevron-right' size={20} color={colors.black_white} /> :
+                            <ActivityIndicator style={{ justifyContent: 'flex-end', alignSelf: 'center', paddingRight: 10 }} color={colors.theme} size="small" />
                     }
 
 

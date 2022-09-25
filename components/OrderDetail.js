@@ -18,6 +18,7 @@ import { addToCartAction } from './Redux/Actions/CartAction';
 
 
 export default function OrderDetail(props) {
+    const colors = useSelector(state => state.colors.currentTheme);
     const { item } = props.route.params;
     const dispatch = useDispatch()
     const [loading, setLoading] = useState(false)
@@ -49,10 +50,10 @@ export default function OrderDetail(props) {
                     <TouchableOpacity onPress={() => props.navigation.navigate("ImageViewer", { item: item.image })}>
                         <Image style={styles.cartImage} source={item.image} />
                     </TouchableOpacity>
-                    <Text style={styles.cartTitle}>{item.title}</Text>
+                    <Text style={[styles.cartTitle, { color: colors.textTheme }]}>{item.title}</Text>
                 </View>
                 <View style={styles.cartPrice}>
-                    <Text style={[styles.BOLD, { fontSize: 14, color: '#000' }]}>Rs {item.price}</Text>
+                    <Text style={[styles.BOLD, { fontSize: 14, color: colors.textTheme }]}>Rs {item.price}</Text>
                 </View>
             </View>
         );
@@ -63,12 +64,12 @@ export default function OrderDetail(props) {
         <View style={styles.mainContainer}>
             <View style={styles.titleContainer}>
                 <TouchableOpacity onPress={() => props.navigation.goBack()} style={styles.backBtn}>
-                    <FontAwesome5 name='chevron-left' size={22} color={colors.primary} />
+                    <FontAwesome5 name='chevron-left' size={22} color={'#F26C68'} />
                 </TouchableOpacity>
                 <Text style={styles.mainTitle}>Orders Details</Text>
             </View>
 
-            <ScrollView style={styles.dataContainer}>
+            <ScrollView style={[styles.dataContainer, { backgroundColor: colors.black_white }]}>
                 {/* MAP IMAGE SECTION */}
                 <Image style={styles.mapImage} source={require('../assets/images/map.jpeg')} />
                 <View style={styles.mapAddress}>
@@ -83,18 +84,18 @@ export default function OrderDetail(props) {
                 <View style={styles.orderIdSec}>
 
                     <View style={styles.orderIdBox}>
-                        <Text style={[styles.BOLD, styles.boldTitle]}>Order Id {item.orderId}</Text>
-                        <Text style={[styles.BOLD, styles.regularTitle]}>{item.date.replace("GMT", "")}</Text>
-                        <Text style={[styles.MEDIUM, { marginTop: 15, }]}>{`${item.deliveryFee ? "Deliver to" : "Pickup to"}`}</Text>
-                        <Text style={[styles.BOLD, styles.boldTitle, { marginTop: 4, }]}>{`${item.deliveryFee ? item.deliveryAddress : item.branch}`}</Text>
-                        <Text style={[styles.MEDIUM, { marginTop: 15 }]}>Payment Method</Text>
-                        <Text style={[styles.BOLD, styles.boldTitle, { marginTop: 4, }]}>{item.paymentMethod == "Online" ? item.cardNumber + " Visa" : item.paymentMethod}</Text>
+                        <Text style={[styles.BOLD, styles.boldTitle, { color: colors.textTheme }]}>Order Id {item.orderId}</Text>
+                        <Text style={[styles.BOLD, styles.regularTitle, { color: 'grey' }]}>{item.date.replace("GMT", "")}</Text>
+                        <Text style={[styles.MEDIUM, { marginTop: 15, color: colors.textTheme }]}>{`${item.deliveryFee ? "Deliver to" : "Pickup to"}`}</Text>
+                        <Text style={[styles.BOLD, styles.boldTitle, { marginTop: 4, color: colors.textTheme }]}>{`${item.deliveryFee ? item.deliveryAddress : item.branch}`}</Text>
+                        <Text style={[styles.MEDIUM, { marginTop: 15, color: colors.textTheme }]}>Payment Method</Text>
+                        <Text style={[styles.BOLD, styles.boldTitle, { marginTop: 4, color: colors.textTheme }]}>{item.paymentMethod == "Online" ? item.cardNumber + " Visa" : item.paymentMethod}</Text>
                     </View>
 
                     <View style={styles.statusBox}>
                         <View style={styles.status}>
                             <FontAwesome name='check-square-o' size={22} color="green" />
-                            <Text style={[styles.BOLD, { marginLeft: 8 }]}>{item.deliveryFee ? "Delivered" : "Ready to Pick"}</Text>
+                            <Text style={[styles.BOLD, { marginLeft: 8, color: colors.textTheme }]}>{item.deliveryFee ? "Delivered" : "Ready to Pick"}</Text>
                         </View>
                     </View>
 
@@ -106,7 +107,7 @@ export default function OrderDetail(props) {
                 {/* RENDER ALL ORDER ITEMS */}
 
                 <View style={styles.itemsContainer}>
-                    <Text>ITEM</Text>
+                    <Text style={{ color: colors.textTheme }}>ITEM</Text>
                     <View>
                         <FlatList
                             data={item.cartItem}
@@ -122,28 +123,28 @@ export default function OrderDetail(props) {
                 {/* ALL AMOUNT SECTION */}
                 <View style={styles.calculationSec}>
                     <View style={styles.titleAmount}>
-                        <Text style={styles.titles}>Sub Total</Text>
-                        {item.deliveryFee && <Text style={styles.titles}>Delivery Fee</Text>}
-                        {item.discountAmount && <Text style={styles.titles}>Discount {item.discountPercent}%</Text>}
-                        <Text style={styles.titles}>Tax {item.taxPercent}%</Text>
-                        <Text style={styles.titles}>Total</Text>
+                        <Text style={[styles.titles, { color: colors.textTheme }]}>Sub Total</Text>
+                        {item.deliveryFee && <Text style={[styles.titles, { color: colors.textTheme }]}>Delivery Fee</Text>}
+                        {item.discountAmount && <Text style={[styles.titles, { color: colors.textTheme }]}>Discount {item.discountPercent}%</Text>}
+                        <Text style={[styles.titles, { color: colors.textTheme }]}>Tax {item.taxPercent}%</Text>
+                        <Text style={[styles.titles, { color: colors.textTheme }]}>Total</Text>
                         <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => props.navigation.navigate("Home")}>
                             <Text style={[styles.BOLD, styles.viewMore]}>View More Item</Text>
                         </TouchableOpacity>
 
                     </View>
                     <View style={styles.amountSec}>
-                        <Text style={styles.titles}>Rs {item.subTotal}</Text>
-                        {item.deliveryFee && <Text style={styles.titles}>Rs {item.deliveryFee}</Text>}
-                        {item.discountAmount && <Text style={styles.titles}>Rs {item.discountAmount}</Text>}
-                        {item.taxAmount && <Text style={styles.titles}>Rs {item.taxAmount}</Text>}
-                        <Text style={styles.titles}>Rs {item.totalAmount}</Text>
+                        <Text style={[styles.titles, { color: colors.textTheme }]}>Rs {item.subTotal}</Text>
+                        {item.deliveryFee && <Text style={[styles.titles, { color: colors.textTheme }]}>Rs {item.deliveryFee}</Text>}
+                        {item.discountAmount && <Text style={[styles.titles, { color: colors.textTheme }]}>Rs {item.discountAmount}</Text>}
+                        {item.taxAmount && <Text style={[styles.titles, { color: colors.textTheme }]}>Rs {item.taxAmount}</Text>}
+                        <Text style={[styles.titles, { color: colors.textTheme }]}>Rs {item.totalAmount}</Text>
                     </View>
                 </View>
             </ScrollView>
 
             {/* RE-ORDER BUTTON */}
-            <View style={styles.btnSec}>
+            <View style={[styles.btnSec, { backgroundColor: colors.black_white }]}>
                 <TouchableOpacity onPress={() => reorder()} style={styles.reorderBtn}>
                     {
                         loading ? <ActivityIndicator animating={loading} color="#fff" size={"small"} /> :

@@ -18,6 +18,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import category from '../assets/data/category';
 import popular from '../assets/data/popular';
+import { useDispatch, useSelector } from "react-redux";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
 
@@ -26,6 +27,7 @@ MaterialCommunityIcons.loadFont();
 
 
 export default function Search({ navigation }) {
+    const colors = useSelector(state => state.colors.currentTheme);
     const [searchData, setSearchData] = useState([])
     const [text, setText] = useState('')
     const [find, setFind] = useState(false)
@@ -52,6 +54,7 @@ export default function Search({ navigation }) {
             <TouchableOpacity key={item.id} onPress={() => navigation.navigate('DetailView', { item: item })}>
                 <View style={[styles.popularCardWrapper,
                 {
+                    backgroundColor: colors.black_white,
                     marginTop: item.id == 1 ? 15 : 20,
                 }
                 ]}>
@@ -59,7 +62,7 @@ export default function Search({ navigation }) {
 
                         <View style={styles.popularTopWrapper}>
                             <MaterialCommunityIcons style={styles.crownIcon} name="crown" size={15} color={colors.primary} />
-                            <Text style={styles.popularTopTitle}>top of the week</Text>
+                            <Text style={[styles.popularTopTitle, { color: colors.textTheme }]}>top of the week</Text>
                         </View>
 
                         <Text style={styles.popularTitle}>{item.title}</Text>
@@ -72,8 +75,8 @@ export default function Search({ navigation }) {
                             </View>
 
                             <View style={styles.ratingWrapper}>
-                                <MaterialCommunityIcons name="star" size={15} />
-                                <Text style={styles.ratingText}>{item.rating}</Text>
+                                <MaterialCommunityIcons name="star" size={15} color={colors.textTheme} />
+                                <Text style={[styles.ratingText, { color: colors.textTheme }]}>{item.rating}</Text>
                             </View>
                         </View>
 
@@ -90,10 +93,11 @@ export default function Search({ navigation }) {
 
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={[styles.container, { backgroundColor: colors.theme }]}>
             <View style={{ paddingBottom: 20 }}>
                 <View style={[styles.searchWrapper,
                 {
+                    backgroundColor: colors.black_white,
                     paddingVertical: Platform.OS == "android" ? 0 : 10
                 }
                 ]}>
@@ -104,10 +108,11 @@ export default function Search({ navigation }) {
                         <TextInput
                             autoCapitalize='none'
                             placeholder={'Explore your food'}
+                            placeholderTextColor={'grey'}
                             onChangeText={(value) => searching(value)}
                             textValue={text}
                             autoFocus={true}
-                            style={styles.searchText} />
+                            style={[styles.searchText, { color: colors.textTheme }]} />
                     </View>
                 </View>
             </View>
@@ -121,8 +126,8 @@ export default function Search({ navigation }) {
                         ListEmptyComponent={() => {
                             return (
                                 <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: '20%' }}>
-                                    <Image style={{ width: 200, height: 200 }} source={require('../assets/images/search.webp')} />
-                                    <Text style={{ fontSize: 18 }}>No Search Item</Text>
+                                    <Image style={{ width: 200, height: 200, borderRadius: 200 }} source={require('../assets/images/search.webp')} />
+                                    <Text style={{ marginTop: 20, fontSize: 18, color: 'grey' }}>No Search Item</Text>
                                 </View>
                             )
                         }}
@@ -213,7 +218,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-SemiBold',
         marginLeft: 22,
         fontSize: 14,
-        color: colors.textDark,
+        color: 'grey',
         marginTop: 20,
 
     },

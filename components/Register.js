@@ -10,6 +10,7 @@ import { setUser } from './Redux/Actions/AuthAction';
 import { useDispatch, useSelector } from "react-redux";
 
 export default function Register({ navigation }) {
+    const colors = useSelector(state => state.colors.currentTheme);
     const [FirstName, setFirstName] = useState("")
     const [LastName, setLastName] = useState("")
     const [Email, setEmail] = useState("")
@@ -21,7 +22,7 @@ export default function Register({ navigation }) {
 
     useEffect(() => {
         Animated.timing(heightAnim, { toValue: 0, duration: 600, useNativeDriver: false }).start()
-    }, [])
+    }, [colors])
 
     const register = () => {
         setLoader(true)
@@ -101,7 +102,7 @@ export default function Register({ navigation }) {
     }
 
     return (
-        <View style={Styles.mainContainer}>
+        <View style={[Styles.mainContainer, { backgroundColor: colors.background }]}>
             {/* header */}
             <ScrollView contentInsetAdjustmentBehavior='automatic' showsVerticalScrollIndicator={false}>
 
@@ -109,7 +110,7 @@ export default function Register({ navigation }) {
                     <View style={Styles.headerWrapper}>
                         <TouchableOpacity onPress={() => navigation.goBack()}>
                             <View style={Styles.leftHeader}>
-                                <Feather name='chevron-left' size={12} color={colors.textDark} />
+                                <Feather name='chevron-left' size={16} color={colors.black} />
                             </View>
                         </TouchableOpacity>
 
@@ -118,11 +119,12 @@ export default function Register({ navigation }) {
 
                 <Animated.View style={{ width: '100%', height: heightAnim, }} />
                 <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: '30%', width: '100%', }}>
-                    <Text style={{ fontSize: 20, fontWeight: '600', color: colors.secondary, fontFamily: 'Montserrat-Bold' }}>
+                    <Text style={{ fontSize: 20, fontWeight: '600', color: colors.primary, fontFamily: 'Montserrat-Bold' }}>
                         CREATE A ACCOUNT
                     </Text>
                     <View style={{ height: '100%' }}>
                         <TextInput
+                            placeholderTextColor={'grey'}
                             style={{ paddingHorizontal: 20, paddingVertical: 10, borderColor: colors.primary, borderWidth: 1, borderRadius: 10, width: 300, marginTop: 30, }}
                             placeholder={'First Name'}
                             onChangeText={(FN) => setFirstName(FN)}
@@ -131,7 +133,7 @@ export default function Register({ navigation }) {
                         >
                         </TextInput>
                         <TextInput
-
+                            placeholderTextColor={'grey'}
                             style={{ paddingHorizontal: 20, paddingVertical: 10, borderColor: colors.primary, borderWidth: 1, borderRadius: 10, width: 300, marginTop: 20 }}
                             placeholder={'Last Name'}
                             onChangeText={(LN) => setLastName(LN)}
@@ -141,7 +143,7 @@ export default function Register({ navigation }) {
                         >
                         </TextInput>
                         <TextInput
-
+                            placeholderTextColor={'grey'}
                             style={{ paddingHorizontal: 20, paddingVertical: 10, borderColor: colors.primary, borderWidth: 1, borderRadius: 10, width: 300, marginTop: 20 }}
                             placeholder={'Email Address'}
                             onChangeText={(EM) => setEmail(EM)}
@@ -151,7 +153,7 @@ export default function Register({ navigation }) {
                         >
                         </TextInput>
                         <TextInput
-
+                            placeholderTextColor={'grey'}
                             style={{ paddingHorizontal: 20, paddingVertical: 10, borderColor: colors.primary, borderWidth: 1, borderRadius: 10, width: 300, marginTop: 20 }}
                             placeholder={'Phone Number EX: 333-111-888'}
                             onChangeText={(NUM) => setNumber(NUM)}
@@ -162,7 +164,7 @@ export default function Register({ navigation }) {
                         >
                         </TextInput>
                         <TextInput
-
+                            placeholderTextColor={'grey'}
                             style={{ paddingHorizontal: 20, paddingVertical: 10, borderColor: colors.primary, borderWidth: 1, borderRadius: 10, width: 300, marginTop: 20 }}
                             placeholder={'Create New Password'}
                             onChangeText={(PASS) => setPassword(PASS)}
@@ -181,7 +183,7 @@ export default function Register({ navigation }) {
                         <TouchableOpacity style={{ alignItems: 'center', marginTop: 30 }}
                             onPress={() => Linking.openURL("https://loremipsum.com")}
                         >
-                            <Text style={{ marginBottom: 1, fontFamily: 'Montserrat-Regular', fontSize: 12, }}>Privacy Policy - Terms & Condition  </Text>
+                            <Text style={{ color: colors.textTheme, marginBottom: 1, fontFamily: 'Montserrat-Regular', fontSize: 12, }}>Privacy Policy - Terms & Condition  </Text>
 
                         </TouchableOpacity>
                     </View>

@@ -31,7 +31,8 @@ export default HomeProduct = (props) => {
     const [qtyPlus, setQtyPlus] = useState(qty)
     const [quick, setQuick] = useState(false)
     const dispatch = useDispatch();
-    const myCart = useSelector(state => state.cart.cartData)
+    const myCart = useSelector(state => state.cart.cartData);
+    const colors = useSelector(state => state.colors.currentTheme);
     const isFocused = useIsFocused();
 
     useEffect(() => {
@@ -102,7 +103,7 @@ export default HomeProduct = (props) => {
 
                             <TouchableOpacity onPress={() => qtyPlus > 1 ? removeQty() : itemDelete()}
                                 style={{ backgroundColor: colors.primary, paddingVertical: 3, paddingHorizontal: 3, borderRadius: 4 }}>
-                                <MaterialCommunityIcons name="minus" size={17} color={colors.white}
+                                <MaterialCommunityIcons name="minus" size={17} color={colors.black_white}
                                 />
                             </TouchableOpacity>
 
@@ -110,7 +111,7 @@ export default HomeProduct = (props) => {
 
                             <TouchableOpacity onPress={() => addQty()}
                                 style={{ backgroundColor: colors.primary, paddingVertical: 3, paddingHorizontal: 3, borderRadius: 4 }}>
-                                <MaterialCommunityIcons name="plus" size={17} color={colors.white}
+                                <MaterialCommunityIcons name="plus" size={17} color={colors.black_white}
                                 />
                             </TouchableOpacity>
 
@@ -122,15 +123,15 @@ export default HomeProduct = (props) => {
                                 borderRadius: 4, alignItems: 'center', justifyContent: 'center', marginTop: 8, paddingVertical: 3
 
                             }}>
-                            <MaterialCommunityIcons name="cart" size={17} color={colors.white} />
-                            <Text style={{ marginLeft: 3, color: colors.white }}>ADD</Text>
+                            <MaterialCommunityIcons name="cart" size={17} color={colors.black_white} />
+                            <Text style={{ marginLeft: 3, color: colors.black_white }}>ADD</Text>
                         </TouchableOpacity>
                     )}
                 </View>
                 <TouchableOpacity onPress={() => navigation.navigate('Animated', { item: item })} style={{ width: 300, }}>
-                    <Text style={{ fontFamily: 'Montserrat-Bold', fontSize: 16 }}>{item.title}</Text>
-                    <Text style={{ fontFamily: 'Montserrat-Regular', fontSize: 12, marginTop: 6 }}>{item.description}</Text>
-                    <Text style={{ fontFamily: 'Montserrat-Bold', marginTop: 6 }}>Rs. {item.price}</Text>
+                    <Text style={{ fontFamily: 'Montserrat-Bold', fontSize: 16, color: colors.textTheme }}>{item.title}</Text>
+                    <Text style={{ fontFamily: 'Montserrat-Regular', fontSize: 12, marginTop: 6, color: 'grey' }}>{item.description}</Text>
+                    <Text style={{ fontFamily: 'Montserrat-Bold', marginTop: 6, color: colors.textTheme }}>Rs. {item.price}</Text>
 
                 </TouchableOpacity>
             </View>

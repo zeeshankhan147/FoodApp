@@ -5,7 +5,7 @@ import { DARK_THEME, LIGHT_THEME } from './types';
 export const darkTheme = () => {
     AsyncStorage.setItem('DARK_THEME', 'false');
     let dark = {
-        background: '#000',
+        background: '#373737',
         textDark: '#eee',
         primary: '#eee',
         secondary: '#000',
@@ -14,7 +14,9 @@ export const darkTheme = () => {
         white: '#fff',
         black: '#000',
         theme: '#373737',
-        textTheme:'#eee'
+        secondTheme:'#4f4f4f',
+        textTheme:'#eee',
+        black_white:'#000'
     }
     return (dispatch) => {
         dispatch({
@@ -36,8 +38,10 @@ export const lightTheme = () => {
         price: '#E4723C',
         white: '#fff',
         black: '#000',
-        theme: '#eee',
-        textTheme:'#313234'
+        theme: '#fff',
+        secondTheme:'#d7d7d7',
+        textTheme:'#3d3e40',
+        black_white:'#e4e4e4f5'
     }
     return (dispatch) => {
         dispatch({

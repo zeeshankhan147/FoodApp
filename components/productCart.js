@@ -3,7 +3,7 @@ import { Text, View, Image, TouchableOpacity, StyleSheet, FlatList, Alert, SafeA
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import colors from "../assets/colors/colors";
-import Feather from 'react-native-vector-icons/Feather';
+import Feather from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { addToCartAction, removeCart, updateCart } from './Redux/Actions/CartAction';
 import { useDispatch, useSelector } from "react-redux";
@@ -13,33 +13,34 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 export default ProductCard = (props) => {
     const {
         item,
-        addons ,
+        addons,
         index,
         itemId,
-        image ,
+        image,
         title,
         price,
-        qty ,
+        qty,
         navigation,
-        addQuantity ,
+        addQuantity,
         removeQuantity,
         deleteItem,
         updateAmount,
     } = props;
     const [qtyPlus, setQtyPlus] = useState(qty)
     const dispatch = useDispatch();
-    const myCart = useSelector(state => state.cart.cartData)
+    const myCart = useSelector(state => state.cart.cartData);
+    const colors = useSelector(state => state.colors.currentTheme);
 
 
     const adding = () => {
         setQtyPlus(qtyPlus + 1)
-        addQuantity(price,index)
+        addQuantity(price, index)
         updateAmount()
 
     }
     const minus = () => {
         setQtyPlus(qtyPlus - 1)
-        removeQuantity(price,index)
+        removeQuantity(price, index)
         updateAmount()
     }
     const itemDel = () => {
@@ -66,26 +67,26 @@ export default ProductCard = (props) => {
 
                 <View style={Styles.textView}>
 
-                    <Text style={Styles.title}>{title}</Text>
+                    <Text style={[Styles.title, { color: colors.textTheme }]}>{title}</Text>
                     {addons && addons.map((item, index) => {
-                        return <Text style={Styles.addon}>{`(${index + 1}) ${item.name}`}</Text>
+                        return <Text style={[Styles.addon, { color: 'grey' }]}>{`(${index + 1}) ${item.name}`}</Text>
 
 
                     })}
-                    <Text style={Styles.price}>Rs.{Math.round(price) * qty}</Text>
+                    <Text style={[Styles.price, { color: colors.textTheme }]}>Rs.{Math.round(price) * qty}</Text>
 
                     <View style={Styles.quantityController}>
                         <TouchableOpacity style={Styles.qtyPlus} onPress={adding}>
                             <Feather name='plus' size={12} color={colors.secondary} />
                         </TouchableOpacity>
-                        <Text style={Styles.count} >{qty}</Text>
+                        <Text style={[Styles.count, { color: colors.textTheme }]} >{qty}</Text>
                         <TouchableOpacity style={[Styles.qtyMinus,
                         {
                             backgroundColor: qty > 1 ? colors.white : colors.textLight,
                             borderColor: qty > 1 ? colors.primary : colors.textLight
 
                         }]} key={index} onPress={() => { qty > 1 ? minus() : itemDel() }}>
-                            <Feather name={qty > 1 ? 'minus' : 'trash'} size={12} color={qty > 1 ? colors.primary : colors.white} />
+                            <Feather name={qty > 1 ? 'minus' : 'trash'} size={12} color={qty > 1 ? colors.secondary : colors.theme} />
                         </TouchableOpacity>
                     </View>
 

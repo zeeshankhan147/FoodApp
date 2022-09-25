@@ -88,7 +88,7 @@ export default function Setting({ navigation }) {
 
       {/* PROFILES SECTION */}
       <View style={styles.profileContainer}>
-        <TouchableOpacity onPress={!myUser ? () => navigation.navigate("SignUp") : null} style={styles.profileBox}>
+        <TouchableOpacity onPress={!myUser ? () => navigation.navigate("SignUp") : null} style={[styles.profileBox, { backgroundColor: colors.secondTheme }]}>
           <View style={styles.imgContainer}>
             {
               myUser && myUser.photo !== null ? <Image style={styles.pfImg} source={myUser.photo} /> :
@@ -96,20 +96,20 @@ export default function Setting({ navigation }) {
             }
           </View>
           <View style={styles.pfTextContainer}>
-            <Text style={styles.title}>{myUser && myUser.name !== null ? myUser.name : "Login"}</Text>
-            <Text style={styles.email}>{myUser && myUser.name !== null ? myUser.email : "You are not a authorized \nuser so please login"}</Text>
+            <Text style={[styles.title, { color: colors.textDark }]}>{myUser && myUser.name !== null ? myUser.name : "Login"}</Text>
+            <Text style={[styles.email, { color: colors.textDark }]}>{myUser && myUser.name !== null ? myUser.email : "You are not a authorized \nuser so please login"}</Text>
           </View>
         </TouchableOpacity>
       </View>
 
       {/* NOTIFICATION & THEMES SECTION*/}
-      <View style={styles.commonSettingSec}>
-        <Text style={styles.notifyText}>Notification & Themes</Text>
+      <View style={[styles.commonSettingSec, { backgroundColor: colors.secondTheme }]}>
+        <Text style={[styles.notifyText, { color: colors.textDark }]}>General Settings</Text>
 
         <View style={styles.notificationSec}>
           <View style={styles.textSec}>
-            <Text style={styles.headingText}>Push Notification</Text>
-            <Text style={styles.descText}>Recieve weekly notifications</Text>
+            <Text style={[styles.headingText, { color: colors.textDark }]}>Push Notification</Text>
+            <Text style={[styles.descText, { color: colors.textDark }]}>Recieve weekly notifications</Text>
           </View>
           <View style={styles.switchSec}>
             <Switch
@@ -123,27 +123,23 @@ export default function Setting({ navigation }) {
         </View>
         <Devider width={'100%'} height={0.5} bgColor={'#000'} marginTop={20} align={'center'} />
 
-        <View style={styles.notificationSec}>
-          <View style={styles.textSec}>
-            <Text style={styles.headingText}>Email Notification</Text>
-            <Text style={styles.descText}>Recieve weekly email notifications every and regular</Text>
+        <TouchableOpacity style={styles.notificationSec}>
+          <View style={[styles.textSec, { color: colors.textDark }]}>
+            <Text style={[styles.headingText, { color: colors.textDark }]}>Edit Profile</Text>
+            <Text style={[styles.descText, { color: colors.textDark }]}>Easily customize your profile & pictures etc.</Text>
           </View>
           <View style={styles.switchSec}>
-            <Switch
-              trackColor={{ false: "#767577", true: colors.background }}
-              thumbColor={isEmail ? colors.primary : "#f4f3f4"}
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={() => toggleSwitch('email')}
-              value={isEmail}
-            />
+            <View style={styles.switchSec}>
+              <Ionicons name='chevron-forward' size={24} color={colors.textDark} style={{ padding: 5 }} />
+            </View>
           </View>
-        </View>
+        </TouchableOpacity>
         <Devider width={'100%'} height={0.5} bgColor={'#000'} marginTop={20} align={'center'} />
 
         <View style={[styles.notificationSec, { paddingBottom: 10 }]}>
           <View style={styles.textSec}>
-            <Text style={styles.headingText}>Themes</Text>
-            <Text style={styles.descText}>{`Customize app themes ${isTheme ? "Light" : "Dark"} `}</Text>
+            <Text style={[styles.headingText, { color: colors.textDark }]}>{`Switch ${isTheme ? 'Light' : 'Dark'}`}</Text>
+            <Text style={[styles.descText, { color: colors.textDark }]}>{`Customize your app themes `}</Text>
           </View>
           <View style={styles.switchSec}>
             <Switch
@@ -158,8 +154,8 @@ export default function Setting({ navigation }) {
       </View>
 
       {/* SUPPORT CONTACT ABOUT SECTION */}
-      <View style={styles.commonSettingSec}>
-        <Text style={styles.notifyText}>Support</Text>
+      <View style={[styles.commonSettingSec, { backgroundColor: colors.secondTheme }]}>
+        <Text style={[styles.notifyText, { color: colors.textDark }]}>Support</Text>
 
         <TouchableOpacity onPress={() => navigation.navigate("TextComponent",
           {
@@ -182,10 +178,10 @@ export default function Setting({ navigation }) {
         )}
           style={styles.notificationSec}>
           <View style={styles.textSec}>
-            <Text style={styles.headingText}>About</Text>
+            <Text style={[styles.headingText, { color: colors.textDark }]}>About</Text>
           </View>
           <View style={styles.switchSec}>
-            <Ionicons name='chevron-forward' size={24} color={'#373737'} style={{ padding: 5 }} />
+            <Ionicons name='chevron-forward' size={24} color={colors.textDark} style={{ padding: 5 }} />
           </View>
         </TouchableOpacity>
 
@@ -203,10 +199,10 @@ export default function Setting({ navigation }) {
 
         )} style={[styles.notificationSec, { paddingBottom: 10 }]}>
           <View style={styles.textSec}>
-            <Text style={styles.headingText}>Contact Us</Text>
+            <Text style={[styles.headingText, { color: colors.textDark }]}>Contact Us</Text>
           </View>
           <View style={styles.switchSec}>
-            <Ionicons name='chevron-forward' size={24} color={'#373737'} style={{ padding: 5 }} />
+            <Ionicons name='chevron-forward' size={24} color={colors.textDark} style={{ padding: 5 }} />
           </View>
         </TouchableOpacity>
 
@@ -214,10 +210,10 @@ export default function Setting({ navigation }) {
 
         {myUser && <TouchableOpacity onPress={() => logout()} style={[styles.notificationSec, { paddingBottom: 10 }]}>
           <View style={styles.textSec}>
-            <Text style={styles.headingText}>Logout</Text>
+            <Text style={[styles.headingText, { color: colors.textDark }]}>Logout</Text>
           </View>
           <View style={styles.switchSec}>
-            <MaterialIcons name='logout' size={24} color={'#373737'} style={{ padding: 5 }} />
+            <MaterialIcons name='logout' size={24} color={colors.textDark} style={{ padding: 5 }} />
           </View>
         </TouchableOpacity>}
 
@@ -254,7 +250,7 @@ const styles = StyleSheet.create({
   profileBox: {
     width: '100%',
     flexDirection: 'row',
-    backgroundColor: '#d7d7d7',
+    // backgroundColor: '#d7d7d7',
     borderRadius: 18,
     elevation: 8
   },
@@ -292,12 +288,12 @@ const styles = StyleSheet.create({
     marginTop: 30,
     borderRadius: 20,
     padding: 20,
-    backgroundColor: '#d7d7d7',
+    // backgroundColor: '#d7d7d7',
     elevation: 2
   },
   notifyText: {
     // color: colors.textDark,
-    fontSize: 16,
+    fontSize: 20,
     fontFamily: 'Montserrat-Bold',
   },
   notificationSec: {

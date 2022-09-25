@@ -11,7 +11,8 @@ import { addToCartAction } from './Redux/Actions/CartAction';
 
 export default function MyOrders({ navigation }) {
   const dispatch = useDispatch();
-  const orders = useSelector(state => state.orders.myOrders)
+  const orders = useSelector(state => state.orders.myOrders);
+  const colors = useSelector(state => state.colors.currentTheme);
   const sheetRef = React.useRef(null);
   const fall = new Animated.Value(1);
 
@@ -23,9 +24,9 @@ export default function MyOrders({ navigation }) {
   }
 
   const renderContent = () => (
-    <View style={styles.bottomSheet}>
+    <View style={[styles.bottomSheet, { backgroundColor: colors.background }]}>
       <View style={{ alignSelf: 'center' }}>
-        <Text style={[styles.titleRegular, { fontSize: 12 }]}>{sheetData.date.replace("GMT", "")}</Text>
+        <Text style={[styles.titleRegular, { fontSize: 12, color: 'grey' }]}>{sheetData.date.replace("GMT", "")}</Text>
       </View>
       <TouchableOpacity
         style={styles.closeBtn}
@@ -36,21 +37,21 @@ export default function MyOrders({ navigation }) {
       <View style={styles.amountSec}>
 
         <View style={styles.amountTitleSec}>
-          <Text>{sheetData.cartItem.length} Items</Text>
-          <Text style={styles.titleBold}>Sub Total</Text>
-          <Text style={styles.titleRegular}>Discount <Text style={styles.titleBold}>{sheetData.discountPercent}%</Text></Text>
-          <Text style={styles.titleRegular}>Tax <Text style={styles.titleBold}>{sheetData.taxPercent}%</Text></Text>
-          {sheetData.deliveryFee && <Text style={styles.titleRegular}>Delivery Fee</Text>}
-          <Text style={styles.titleBold}>Total Amount</Text>
+          <Text style={{ color: colors.textTheme }}>{sheetData.cartItem.length} Items</Text>
+          <Text style={[styles.titleBold, { color: colors.textTheme }]}>Sub Total</Text>
+          <Text style={[styles.titleRegular, { color: colors.textTheme }]}>Discount <Text style={styles.titleBold}>{sheetData.discountPercent}%</Text></Text>
+          <Text style={[styles.titleRegular, { color: colors.textTheme }]}>Tax <Text style={styles.titleBold}>{sheetData.taxPercent}%</Text></Text>
+          {sheetData.deliveryFee && <Text style={[styles.titleRegular, { color: colors.textTheme }]}>Delivery Fee</Text>}
+          <Text style={[styles.titleBold, { color: colors.textTheme }]}>Total Amount</Text>
         </View>
 
         <View style={styles.amountPriceSec}>
           <Text>{``}</Text>
-          <Text style={styles.titleBold}>Rs {sheetData.subTotal}</Text>
-          <Text style={styles.titleRegular}>Rs {sheetData.discountAmount}</Text>
-          <Text style={styles.titleRegular}>Rs {sheetData.taxAmount}</Text>
-          {sheetData.deliveryFee && <Text style={styles.titleRegular}>Rs {sheetData.deliveryFee}</Text>}
-          <Text style={styles.titleBold}>Rs {sheetData.totalAmount}</Text>
+          <Text style={[styles.titleBold, { color: colors.textTheme }]}>Rs {sheetData.subTotal}</Text>
+          <Text style={[styles.titleRegular, { color: colors.textTheme }]}>Rs {sheetData.discountAmount}</Text>
+          <Text style={[styles.titleRegular, { color: colors.textTheme }]}>Rs {sheetData.taxAmount}</Text>
+          {sheetData.deliveryFee && <Text style={[styles.titleRegular, { color: colors.textTheme }]}>Rs {sheetData.deliveryFee}</Text>}
+          <Text style={[styles.titleBold, { color: colors.textTheme }]}>Rs {sheetData.totalAmount}</Text>
         </View>
 
       </View>
@@ -63,28 +64,28 @@ export default function MyOrders({ navigation }) {
   );
 
   return (
-    <View style={styles.mainContainer}>
+    <View style={[styles.mainContainer]}>
       <View style={styles.titleContainer}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-          <FontAwesome5 name='chevron-left' size={22} color="red" />
+          <FontAwesome5 name='chevron-left' size={22} color="#F26C68" />
         </TouchableOpacity>
         <Text style={styles.mainTitle}>Orders</Text>
       </View>
 
-      <View style={styles.flatListContainer}>
+      <View style={[styles.flatListContainer, { backgroundColor: colors.black_white }]}>
         <FlatList
           data={orders}
           renderItem={({ item, index }) => {
             return (
-              <TouchableOpacity onPress={() => openSheet(item)} style={styles.orderBox}>
+              <TouchableOpacity onPress={() => openSheet(item)} style={[styles.orderBox, { backgroundColor: colors.theme }]}>
 
                 <View style={styles.orderIdSec}>
-                  <Text style={styles.orderId}>{item.orderId}</Text>
+                  <Text style={[styles.orderId, { color: colors.textTheme }]}>{item.orderId}</Text>
                   <Text style={styles.dateTime}>{sheetData.date}</Text>
                 </View>
 
                 <View style={styles.priceSec}>
-                  <Text style={styles.totalAmount}>Rs {item.totalAmount}</Text>
+                  <Text style={[styles.totalAmount, { color: colors.textTheme }]}>Rs {item.totalAmount}</Text>
                   <Text style={styles.deliveryTransc}>{item.deliveryTransc}</Text>
                 </View>
               </TouchableOpacity>

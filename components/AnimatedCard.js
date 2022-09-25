@@ -36,7 +36,8 @@ const AnimatedCard = ({ route, navigation }) => {
     const [addons, setAddons] = useState([])
     const [toppingAdd, setToppingAdd] = useState()
     const dispatch = useDispatch();
-    const myCart = useSelector(state => state.cart.cartData)
+    const myCart = useSelector(state => state.cart.cartData);
+    const colors = useSelector(state => state.colors.currentTheme);
     const { width: windowWidth } = useWindowDimensions();
 
     const spinValue = new Animated.Value(0);
@@ -148,7 +149,7 @@ const AnimatedCard = ({ route, navigation }) => {
                 style={{ marginHorizontal: 20, padding: 10 }}>
                 <View style={[
                     {
-                        backgroundColor: addons.some((val) => val.id === item.id) ? colors.primary : '#fff',
+                        backgroundColor: addons.some((val) => val.id === item.id) ? colors.secondary : '#fff',
                         opacity: addons.includes(item) ? 0.5 : 1,
                         width: 60, height: 60, alignItems: 'center', justifyContent: 'center',
                         borderRadius: 60,
@@ -160,7 +161,7 @@ const AnimatedCard = ({ route, navigation }) => {
                         style={[
                             {
                                 width: 40, height: 40, borderRadius: 40,
-                                backgroundColor: addons.some((val) => val.id === item.id) ? colors.primary : '#fff',
+                                backgroundColor: addons.some((val) => val.id === item.id) ? colors.secondary : '#fff',
                                 opacity: addons.some((val) => val.id === item.id) ? 0.4 : 1
                             }
                         ]}
@@ -188,9 +189,9 @@ const AnimatedCard = ({ route, navigation }) => {
                         color: colors.primary
                     }}>{item.title}</Text>
                 </View>
-                {addons.map((item,index)=>{
+                {addons.map((item, index) => {
                     console.warn(item);
-                    return(
+                    return (
                         <Animated.Image source={item.topping} style={{ top: -20, width: 500, height: 500, position: 'absolute', alignSelf: 'center', zIndex: 1000, opacity: opacityAnim, transform: [{ scale: toppingScale }] }} />
                     )
                 })}
@@ -208,7 +209,7 @@ const AnimatedCard = ({ route, navigation }) => {
 
     return (
 
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: colors.secondTheme }]}>
 
             <View style={{ position: 'absolute', width: '100%', top: 76 }}>
                 <Animated.Image
@@ -261,19 +262,19 @@ const AnimatedCard = ({ route, navigation }) => {
                 marginTop: 40,
             }}>
                 <View style={{
-                    flexDirection: 'row', alignItems: 'baseline', borderColor: '#000', borderWidth: 0.5,
+                    flexDirection: 'row', alignItems: 'baseline', borderColor: colors.textTheme, borderWidth: 0.5,
                     paddingHorizontal: 10, paddingVertical: 3, borderRadius: 5
                 }}>
                     <TouchableOpacity onPress={qtyPlus > 1 ? minus : null}>
-                        <MaterialCommunityIcons name='minus' size={20} style={{ paddingRight: 10, borderRightColor: '#000', borderRightWidth: 0.4, marginRight: 15 }} />
+                        <MaterialCommunityIcons name='minus' size={20} color={colors.textTheme} style={{ paddingRight: 10, borderRightColor: colors.textTheme, borderRightWidth: 0.4, marginRight: 15 }} />
                     </TouchableOpacity>
 
                     {/* <Text style={{ fontSize: 20, fontWeight: '800' }}>Price </Text> */}
                     <Animated.View>
-                        <Text style={{ fontWeight: '500', fontSize: 20, }}>{`Rs ${Math.round(item.price * qtyPlus)}`}</Text>
+                        <Text style={{ fontWeight: '500', fontSize: 20, color: colors.textTheme }}>{`Rs ${Math.round(item.price * qtyPlus)}`}</Text>
                     </Animated.View>
                     <TouchableOpacity onPress={plus}>
-                        <MaterialCommunityIcons name='plus' size={20} style={{ paddingLeft: 10, borderLeftColor: '#000', borderLeftWidth: 0.4, marginLeft: 15 }} />
+                        <MaterialCommunityIcons name='plus' size={20} color={colors.textTheme} style={{ paddingLeft: 10, borderLeftColor: colors.textTheme, borderLeftWidth: 0.4, marginLeft: 15 }} />
                     </TouchableOpacity>
                 </View>
 
@@ -305,7 +306,7 @@ const AnimatedCard = ({ route, navigation }) => {
                         }}>
 
                         {textAnim ?
-                            <Text style={{ color: '#fff', fontSize: 14, fontFamily: 'Montserrat-Bold', alignSelf: 'center' }}>
+                            <Text style={{ color: colors.secondTheme, fontSize: 14, fontFamily: 'Montserrat-Bold', alignSelf: 'center' }}>
                                 ADD TO CART
                             </Text> :
                             <MaterialCommunityIcons name='check' size={20} color="#fff" style={{ alignSelf: 'center' }} />

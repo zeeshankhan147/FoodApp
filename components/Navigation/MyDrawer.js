@@ -45,6 +45,9 @@ const CustomDrawer = props => {
     const dispatch = useDispatch();
     const myUser = useSelector(state => state.auth.user)
     const orders = useSelector(state => state.orders.myOrders)
+    // useEffect(()=>{
+    //    alert(orders.length)
+    // })
     const logout = () => {
         Alert.alert(
             "Logout",
@@ -79,7 +82,7 @@ const CustomDrawer = props => {
 
             {/* <DrawerItemList {...props} /> */}
 
-            <LinearGradient colors={[colors.primary, colors.primary, colors.primary]} style={{
+            <View style={{
                 flexDirection: 'column',
                 padding: 30,
                 marginTop: -5,
@@ -95,10 +98,10 @@ const CustomDrawer = props => {
 
                 <View style={{ marginLeft: 5, marginRight: 70, marginTop: 10 }}>
                     <Text style={{ color: colors.background, fontFamily: 'Montserrat-Bold', fontSize: 18, }}>{myUser ? myUser.name : "Please Login"}</Text>
-                    <Text style={{ color: colors.white, fontFamily: 'Montserrat-regular', fontSize: 10 }}>{myUser && myUser.email ? myUser.email : ""}</Text>
-                    <Text style={{ color: colors.white, fontFamily: 'Montserrat-Bold', fontSize: 10 }}>{myUser ? myUser.id : ""}</Text>
+                    <Text style={{ color: colors.background, fontFamily: 'Montserrat-regular', fontSize: 10 }}>{myUser && myUser.email ? myUser.email : ""}</Text>
+                    <Text style={{ color: colors.background, fontFamily: 'Montserrat-Bold', fontSize: 10 }}>{myUser ? myUser.id : ""}</Text>
                 </View>
-            </LinearGradient>
+            </View>
             <View style={{ paddingLeft: 20, marginTop: 20 }}>
 
                 {/* HOME */}
@@ -114,7 +117,7 @@ const CustomDrawer = props => {
                 {/* SETTING */}
                 <DrawerItem
                     label='Setting'
-                    onPress={myUser ? () => navigation.navigate('Setting') : () => navigation.navigate('Setting')}
+                    onPress={() => navigation.navigate('Setting')}
                     labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10, color: colors.textTheme }}
                     icon={() => <Feather name="settings" size={22} color={colors.textTheme} />}
                     pressColor={colors.primary}
@@ -135,9 +138,9 @@ const CustomDrawer = props => {
                 }
                 {/* ORDER */}
                 {
-                    myUser ?
+                    orders !== null && orders.length > 0 && myUser ?
                         <DrawerItem
-                            label={`Orders  ${orders != null ? orders.length : ""}`}
+                            label={`Orders  ${orders.length}`}
                             onPress={() => navigation.navigate('MyOrders')}
                             labelStyle={{ paddingBottom: 0, fontFamily: 'Montserrat-Bold', marginLeft: -10, color: colors.textTheme }}
                             icon={() => <AntDesign name="clockcircleo" size={22} color={colors.textTheme} />}
