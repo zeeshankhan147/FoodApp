@@ -36,6 +36,10 @@ export default HomeProduct = (props) => {
     const isFocused = useIsFocused();
 
     useEffect(() => {
+        setQuick(hiddenBtn)
+    }, [isFocused])
+
+    useEffect(() => {
         Object.values(myCart).map((i, ind) => {
             if (i.id == itemId) {
                 setQtyPlus(myCart[ind].quantity)
@@ -43,7 +47,6 @@ export default HomeProduct = (props) => {
             }
 
         })
-
     }, [isFocused])
 
     const AddCart = (item) => {

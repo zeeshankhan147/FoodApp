@@ -341,22 +341,24 @@ export default Home = ({ navigation, route, props }) => {
                     flex: 1, marginTop: 20, marginHorizontal: 10, paddingBottom: 100
                 }}>
 
-                    {popularData.map((item, index) => (
-                        <HomeProduct
-                            from={'home'}
-                            item={item}
-                            hiddenBtn={myCart.hasOwnProperty(item.id) ? true : false}
-                            index={index}
-                            itemId={item.id}
-                            image={item.image}
-                            title={item.title}
-                            price={item.price}
-                            qty={quantity}
-                            navigation={navigation}
-                            deleteItem={deleteItem}
-                            cartBtn={AddtoCart}
-                        />
-                    ))}
+                    {popularData.map((item, index) => {
+                        return (
+                            <HomeProduct
+                                from={'home'}
+                                item={item}
+                                hiddenBtn={myCart.hasOwnProperty(item.id)}
+                                index={index}
+                                itemId={item.id}
+                                image={item.image}
+                                title={item.title}
+                                price={item.price}
+                                qty={myCart.hasOwnProperty(item.id) ? myCart[item.id].quantity : 1}
+                                navigation={navigation}
+                                deleteItem={deleteItem}
+                                cartBtn={AddtoCart}
+                            />
+                        );
+                    })}
                 </View>
 
             </ScrollView>
