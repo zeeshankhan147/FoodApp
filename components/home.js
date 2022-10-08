@@ -346,13 +346,13 @@ export default Home = ({ navigation, route, props }) => {
                             <HomeProduct
                                 from={'home'}
                                 item={item}
-                                hiddenBtn={myCart.hasOwnProperty(item.id)}
+                                hiddenBtn={myCart.some((val) => val.id === item.id)}
                                 index={index}
                                 itemId={item.id}
                                 image={item.image}
                                 title={item.title}
                                 price={item.price}
-                                qty={myCart.hasOwnProperty(item.id) ? myCart[item.id].quantity : 1}
+                                qty={item.quantity}
                                 navigation={navigation}
                                 deleteItem={deleteItem}
                                 cartBtn={AddtoCart}

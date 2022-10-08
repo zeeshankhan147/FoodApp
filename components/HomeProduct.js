@@ -28,7 +28,7 @@ export default HomeProduct = (props) => {
         cartBtn,
         hiddenBtn
     } = props;
-    const [qtyPlus, setQtyPlus] = useState(qty)
+    const [qtyPlus, setQtyPlus] = useState(1)
     const [quick, setQuick] = useState(false)
     const dispatch = useDispatch();
     const myCart = useSelector(state => state.cart.cartData);
@@ -37,7 +37,7 @@ export default HomeProduct = (props) => {
 
     useEffect(() => {
         setQuick(hiddenBtn)
-    }, [isFocused])
+    }, [hiddenBtn])
 
     useEffect(() => {
         Object.values(myCart).map((i, ind) => {
